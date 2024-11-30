@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
         buttonContainer.className = 'button-container';
 
         const downloadButton = document.createElement('button');
-        downloadButton.className = 'btn btn-success';
+        downloadButton.className = 'btn btn-primary';
         downloadButton.textContent = 'ダウンロード';
         downloadButton.addEventListener('click', downloadSVG);
 
