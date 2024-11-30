@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シナリオ自動生成</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'flowchart/css/chatbot.css' %}">
+    <script src="{% static 'flowchart/js/chatbot.js' %}"></script>
+</head>
+<body class="bg-white">
+    <!-- Tiêu đề -->
+    <div class="container mt-4">
+        <div class="col-12">
+            <h1 class="text-center border border-primary bg-light text-primary py-3 rounded">
+                シナリオ自動生成
+            </h1>
+        </div>
+    </div>
+
+    <!-- Nội dung chính -->
+    <div class="container mt-4">
+        <div class="row g-3 mb-4 px-2">
+            <!-- Nửa màn hình bên trái -->
+            <div class="col-md-6 d-flex flex-column border bg-light">
+                <h2 class="text-center mt-2">インポートシナリオ</h2>
+                <div class="flowchart-container flex-grow-1 overflow-auto">
+                    <svg class="svg-flowchart" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Nodes -->
+                        <rect x="140" y="20" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                        <text x="200" y="50" text-anchor="middle" font-size="14" fill="black">開始</text>
+
+                        <!-- Black Box surrounding nodes -->
+                        <rect x="120" y="100" width="320" height="260" fill="none" stroke="black" stroke-width="2"></rect>
+
+                        <rect x="140" y="120" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                        <text x="200" y="150" text-anchor="middle" font-size="14" fill="black">操作1</text>
+
+                        <rect x="140" y="200" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                        <text x="200" y="230" text-anchor="middle" font-size="14" fill="black">操作2</text>
+
+                        <rect x="140" y="280" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                        <text x="200" y="310" text-anchor="middle" font-size="14" fill="black">操作3</text>
+
+                        <rect x="300" y="200" width="120" height="50" rx="10" fill="#C1E5F5"></rect>
+                        <text x="360" y="230" text-anchor="middle" font-size="14" fill="black">操作4</text>
+
+                        <rect x="140" y="410" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                        <text x="200" y="440" text-anchor="middle" font-size="14" fill="black">完了</text>
+                        <!-- Arrows -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#0d6efd"></polygon>
+                            </marker>
+                        </defs>
+
+                        <!-- Arrows -->
+                        <line x1="200" y1="70" x2="200" y2="100" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+                        <line x1="200" y1="170" x2="200" y2="200" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+                        <line x1="200" y1="250" x2="200" y2="280" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+                        <line x1="200" y1="360" x2="200" y2="410" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                        <!-- Polyline from 操作1 to 操作4 -->
+                        <polyline points="260,145 360,145 360,200" fill="none" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                        <!-- Polyline from 操作4 to 操作3 -->
+                        <polyline points="360,250 360,305 260,305" fill="none" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Nửa màn hình bên phải -->
+            <div class="col-md-6 d-flex flex-column border bg-light">
+                <h2 class="text-center mt-2">チャットボット</h2>
+               <div class="chat-container d-flex flex-column flex-grow-1 mb-2">
+                    <div id="chat-output" class="chat-output overflow-auto"></div>
+                    <div class="chat-input-container d-flex align-items-center p-2 bg-white border-top">
+                        <textarea id="user-input" class="form-control me-2" rows="1" placeholder="メッセージを送信する"></textarea>
+                        <button id="send-button" class="btn btn-primary" disabled>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

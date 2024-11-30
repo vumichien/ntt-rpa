@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>シナリオ自動生成</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'flowchart/css/styles.css' %}">
+    <script src="{% static 'flowchart/js/scripts.js' %}"></script>
+</head>
+<body class="bg-white">
+    <div class="container mt-5">
+        <!-- Tiêu đề trang -->
+        <div class="col-12">
+            <h1 class="text-center border border-primary bg-light text-primary py-3 rounded">
+                シナリオ自動生成
+            </h1>
+        </div>
+        <!-- Card bao quanh nội dung -->
+        <div class="card shadow mt-4">
+            <!-- Header của card -->
+            <div class="card-header bg-primary text-white text-center">
+                シナリオファイル読込
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" onsubmit="event.preventDefault(); showProcessing();">
+                    {% csrf_token %}
+                    <div class="row mb-4">
+                        <!-- 指摘データ -->
+                        <div class="col-md-6">
+                            <label class="form-label">指摘データ</label>
+                            <div class="position-relative">
+                                <input type="file" class="form-control pe-5" id="feedbackFile" name="feedbackFile">
+                                <span class="position-absolute top-50 end-0 translate-middle-y me-2">
+                                    <img src="{% static 'flowchart/images/upload-icon.png' %}" alt="Upload" class="img-fluid" style="width: 24px; height: 24px; cursor: pointer;">
+                                </span>
+                            </div>
+                        </div>
+                        <!-- 修正が必要なシナリオ -->
+                        <div class="col-md-6">
+                            <label class="form-label">修正が必要なシナリオ</label>
+                            <div class="position-relative">
+                                <input type="file" class="form-control pe-5" id="revisionFile" name="revisionFile">
+                                <span class="position-absolute top-50 end-0 translate-middle-y me-2">
+                                    <img src="{% static 'flowchart/images/upload-icon.png' %}" alt="Upload" class="img-fluid" style="width: 24px; height: 24px; cursor: pointer;">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- パスワード(任意) và 保存 Button -->
+                    <div class="row align-items-end mb-4">
+                        <div class="col-md-8">
+                            <label for="password" class="form-label">パスワード(任意):</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Phần xử lý -->
+                <div id="processing" class="text-center d-none">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-danger mt-3">AIがデータを分析しています</p>
+                </div>
+
+                <!-- Phần kết quả -->
+                <div id="hint-section" class="d-none mt-3">
+                    <label class="form-label">ヒント</label>
+                    <div class="d-flex flex-wrap gap-3 mt-2">
+                        <!-- Checkbox 1 -->
+                        <div class="border rounded p-3 bg-light text-primary border-primary d-flex align-items-center flex-row gap-1">
+                            <input class="form-check-input mt-0" type="checkbox" id="checkbox1">
+                            <label class="form-check-label text-center" for="checkbox1">入力操作を追加</label>
+                        </div>
+                        <!-- Checkbox 2 -->
+                        <div class="border rounded p-3 bg-light text-primary border-primary d-flex align-items-center flex-row gap-1">
+                            <input class="form-check-input mt-0" type="checkbox" id="checkbox2">
+                            <label class="form-check-label text-center" for="checkbox2">データベースのデータを削除</label>
+                        </div>
+                        <!-- Checkbox 3 -->
+                        <div class="border rounded p-3 bg-light text-primary border-primary d-flex align-items-center flex-row gap-1">
+                            <input class="form-check-input mt-0" type="checkbox" id="checkbox3">
+                            <label class="form-check-label text-center" for="checkbox3">入力ボックスの表示テキストを変更</label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-4">
+                        <button class="btn btn-primary me-3" onclick="generateFlows()">自動生成</button>
+                        <button class="btn btn-primary" onclick="redirectToChatbot()">チャットボット</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="flowcharts-section" class="card shadow mt-4 d-none">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                   <div class="flowchart-container text-center">
+                        <h2>ログインシナリオ</h2>
+                        <svg class="svg-flowchart" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Nodes -->
+                            <rect x="140" y="20" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                            <text x="200" y="50" text-anchor="middle" font-size="14" fill="black">開始</text>
+
+                            <!-- Black Box surrounding nodes -->
+                            <rect x="120" y="100" width="320" height="260" fill="none" stroke="black" stroke-width="2"></rect>
+
+                            <rect id="node-1" x="140" y="120" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                            <text x="200" y="150" text-anchor="middle" font-size="14" fill="black">操作1</text>
+
+                            <rect id="node-2" x="140" y="200" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                            <text x="200" y="230" text-anchor="middle" font-size="14" fill="black">操作2</text>
+
+                            <rect id="node-3" x="140" y="280" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                            <text x="200" y="310" text-anchor="middle" font-size="14" fill="black">操作3</text>
+
+                            <rect x="140" y="410" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                            <text x="200" y="440" text-anchor="middle" font-size="14" fill="black">完了</text>
+
+                            <!-- Arrows -->
+                            <defs>
+                                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" fill="#0d6efd"></polygon>
+                                </marker>
+                            </defs>
+
+                            <!-- Line from 開始 to top of black box -->
+                            <line x1="200" y1="70" x2="200" y2="100" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                            <!-- Line connections inside the box -->
+                            <line x1="200" y1="170" x2="200" y2="200" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+                            <line x1="200" y1="250" x2="200" y2="280" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                            <!-- Line from bottom of black box to 完了 -->
+                            <line x1="200" y1="360" x2="200" y2="410" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                            <!-- Polyline from 操作1 to 操作3 -->
+                            <polyline points="260,145 300,145 300,305 260,305" fill="none" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+                        </svg>
+                    </div>
+
+                    <!-- Flowchart インポートシナリオ -->
+                    <div id="import-scenario" class="flowchart-container text-center">
+                        <h2>インポートシナリオ</h2>
+                        <svg class="svg-flowchart" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Nodes -->
+                            <rect x="140" y="20" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                            <text x="200" y="50" text-anchor="middle" font-size="14" fill="black">開始</text>
+
+                            <!-- Black Box surrounding nodes -->
+                            <rect x="120" y="100" width="320" height="260" fill="none" stroke="black" stroke-width="2"></rect>
+
+                            <rect x="140" y="120" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                            <text x="200" y="150" text-anchor="middle" font-size="14" fill="black">操作1</text>
+
+                            <rect x="140" y="200" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                            <text x="200" y="230" text-anchor="middle" font-size="14" fill="black">操作2</text>
+
+                            <rect x="140" y="280" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                            <text x="200" y="310" text-anchor="middle" font-size="14" fill="black">操作3</text>
+
+                            <rect x="300" y="200" width="120" height="50" rx="10" fill="#C1E5F5"></rect>
+                            <text x="360" y="230" text-anchor="middle" font-size="14" fill="black">操作4</text>
+
+                            <rect x="140" y="410" width="120" height="50" rx="10" fill="#f7b066"></rect>
+                            <text x="200" y="440" text-anchor="middle" font-size="14" fill="black">完了</text>
+
+                            <!-- Arrows -->
+                            <defs>
+                                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" fill="#0d6efd"></polygon>
+                                </marker>
+                            </defs>
+
+                            <!-- Arrows -->
+                            <line x1="200" y1="70" x2="200" y2="100" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+                            <line x1="200" y1="170" x2="200" y2="200" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+                            <line x1="200" y1="250" x2="200" y2="280" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+                            <line x1="200" y1="360" x2="200" y2="410" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                            <!-- Polyline from 操作1 to 操作4 -->
+                            <polyline points="260,145 360,145 360,200" fill="none" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+
+                            <!-- Polyline from 操作4 to 操作3 -->
+                            <polyline points="360,250 360,305 260,305" fill="none" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Thêm câu hỏi và nút bên dưới flow -->
+                <div class="text-center mt-4">
+                    <p class="text-dark fw-bold">シナリオの結果に満足していますか？</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <button class="btn btn-danger text-white px-4" onclick="redirectToChatbot()">いいえ</button>
+                        <button class="btn btn-primary text-white px-4" onclick="downloadSVG()">はい</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

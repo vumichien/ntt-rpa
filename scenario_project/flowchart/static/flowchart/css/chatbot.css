@@ -1,0 +1,172 @@
+.flowchart-container {
+    height: calc(100vh - 250px);
+}
+
+/* Chat container sử dụng Bootstrap classes */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 150px);
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.chat-output {
+    flex-grow: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #ddd;
+}
+
+.chat-input-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input {
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    resize: none;
+    min-height: 40px;
+    font-size: 1rem;
+    line-height: 1.5;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.chat-send-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.chat-send-button:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+}
+
+.chat-send-button:hover:enabled {
+    background-color: #0056b3;
+}
+
+/* Messages */
+.message-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.chatbot-message-container {
+    flex-direction: row;
+}
+
+.chatbot-message {
+    background-color: #e9ecef;
+    color: #333;
+    max-width: 60%;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-message-container {
+    justify-content: flex-end;
+}
+
+.user-message {
+    background-color: #007bff;
+    color: #fff;
+    max-width: 60%;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Thinking indicator */
+.thinking-indicator .chatbot-message {
+    display: flex;
+    align-items: center;
+}
+
+.typing-dots {
+    display: flex;
+    gap: 0.25rem;
+    justify-content: center;
+}
+
+.typing-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: #333;
+    animation: blink 1.4s infinite both;
+}
+
+.typing-dot:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes blink {
+    0%, 80%, 100% {
+        opacity: 0;
+    }
+    40% {
+        opacity: 1;
+    }
+}
+
+/* Scrollbar customization */
+.chat-output::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-output::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+.chat-output::-webkit-scrollbar-track {
+    background-color: #f7f7f7;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
