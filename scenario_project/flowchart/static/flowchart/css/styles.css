@@ -1,0 +1,11 @@
+.flowchart-container {
+    flex: 1;
+    padding: 20px;
+    max-width: 50%;
+    box-sizing: border-box;
+}
+
+.svg-flowchart {
+    width: 100%;
+    height: auto;
+}
