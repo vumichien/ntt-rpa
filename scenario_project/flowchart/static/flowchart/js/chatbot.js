@@ -116,10 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             thinkingIndicator.remove();
 
-            if (userMessage.includes('操作1と操作4の接続を削除し、操作2を操作4に接続するように修正します')) {
+            if (userMessage.includes('システム起動とパスワード入力の接続を削除し、ID入力をパスワード入力に接続するように修正します')) {
                 updateFlowchartStep1();
                 appendChatbotMessage('修正しました。他に修正したい点はありますか？');
-            } else if (userMessage.includes('操作4を操作5に接続し、操作3と操作5を操作6に接続します')) {
+            } else if (userMessage.includes('パスワード入力をパスワード再入力に接続し、ID存在チェックを追加し、ID存在チェック3とパスワード再入力をログインクリックに接続します')) {
                 updateFlowchartStep2();
                 appendChatbotMessage('修正しました。他に修正したい点はありますか？');
             } else if (userMessage.includes('大丈夫だと思います')) {
@@ -150,27 +150,33 @@ document.addEventListener('DOMContentLoaded', () => {
    function updateFlowchartStep2() {
         const polylineToRemove = flowchartSvg.querySelector('polyline[points="360,250 360,305 260,305"]');
         if (polylineToRemove) polylineToRemove.remove();
-        // Thêm 操作5
-        const operation5 = createNode(300, 280, '操作5', '#C1E5F5');
+
+        // Đổi tên label từ 'ログインをクリック' thành 'ID存在チェック'
+        const textToUpdate = flowchartSvg.querySelector('text[x="200"][y="310"]');
+        if (textToUpdate) {
+            textToUpdate.textContent = 'ID存在チェック';
+        }
+        // Thêm パスワードを再入力
+        const operation5 = createNode(300, 280, 'パスワードを再入力', '#C1E5F5');
         flowchartSvg.appendChild(operation5.node);
         flowchartSvg.appendChild(operation5.text);
 
-        // Thêm 操作6
-        const operation6 = createNode(220, 390, '操作6', '#C1E5F5');
+        // Thêm ログインをクリック
+        const operation6 = createNode(220, 390, 'ログインをクリック', '#C1E5F5');
         flowchartSvg.appendChild(operation6.node);
         flowchartSvg.appendChild(operation6.text);
 
-        // Thêm đường từ 操作4 đến 操作5
+        // Thêm đường từ パスワード入力 đến パスワード再入力
         flowchartSvg.appendChild(createLine(360, 250, 360, 280));
 
-        // Tạo hai đường thẳng từ 操作3 và 操作5 đi xuống
+        // Tạo hai đường thẳng từ ID存在チェック và パスワード再入力 đi xuống
         flowchartSvg.appendChild(createLineNoMarker(200, 330, 200, 350));
         flowchartSvg.appendChild(createLineNoMarker(360, 330, 360, 350));
 
-        // Tạo đường ngang nối điểm từ 操作3 và 操作5
+        // Tạo đường ngang nối điểm từ ID存在チェック và パスワード再入力
         flowchartSvg.appendChild(createLineNoMarker(200, 350, 360, 350));
 
-        // Tạo đường thẳng từ điểm giữa (nối 操作3 và 操作5) xuống 操作6
+        // Tạo đường thẳng từ điểm giữa (nối ID存在チェック và パスワード再入力) xuống ログインをクリック
         flowchartSvg.appendChild(createLine(280, 350, 280, 390));
 
         // Mở rộng blackbox nếu cần
