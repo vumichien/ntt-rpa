@@ -27,15 +27,15 @@ function showProcessing() {
   }, 2000);
 }
 
-function typeText(text, index, callback) {
-  const typingElement = document.getElementById("typing-text");
+function typeText(text, index, callback, elementId = "typing-text") {
+  const typingElement = document.getElementById(elementId);
   if (index < text.length) {
     typingElement.innerHTML = text
       .substring(0, index + 1)
       .replace(/\n/g, "<br>");
     setTimeout(() => {
-      typeText(text, index + 1, callback);
-    }, 50); // Tốc độ hiển thị từng ký tự
+      typeText(text, index + 1, callback, elementId);
+    }, 50);
   } else {
     callback();
   }
@@ -43,9 +43,32 @@ function typeText(text, index, callback) {
 
 function generateFlows() {
   const flowchartsSection = document.getElementById("flowcharts-section");
-
-  // Hiển thị flowchart
   flowchartsSection.classList.remove("d-none");
+
+  // Get selected actions
+  const checkbox1 = document.getElementById("checkbox1").checked;
+  const checkbox2 = document.getElementById("checkbox2").checked;
+  const checkbox3 = document.getElementById("checkbox3").checked;
+
+  // Generate description based on selected checkboxes
+  let description = "以下の操作が選択されました：\n";
+  if (checkbox1) {
+    description += "・システムに新しい入力操作が追加されました。\n";
+  }
+  if (checkbox2) {
+    description += "・データベースから古いデータが削除されました。\n";
+  }
+  if (checkbox3) {
+    description += "・入力ボックスの表示テキストが更新されました。\n";
+  }
+  if (!checkbox1 && !checkbox2 && !checkbox3) {
+    description += "・操作は選択されませんでした。\n";
+  }
+
+  // Type out the description
+  const actionDescription = document.getElementById("action-description");
+  actionDescription.innerHTML = ""; // Clear existing content
+  typeText(description, 0, () => {}, "action-description");
 }
 
 function redirectToChatbot() {
@@ -106,4 +129,10 @@ function resetAllSections() {
   checkboxes.forEach((checkbox) => {
     checkbox.checked = false;
   });
+
+  // Also reset action description
+  const actionDescription = document.getElementById("action-description");
+  if (actionDescription) {
+    actionDescription.innerHTML = "";
+  }
 }
