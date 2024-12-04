@@ -28,7 +28,7 @@
                     {% csrf_token %}
                     <div class="row mb-4">
                         <!-- 指摘データ -->
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <label class="form-label">指摘データ</label>
                             <div class="position-relative">
                                 <input type="file" class="form-control pe-5" id="feedbackFile" name="feedbackFile">
@@ -38,7 +38,7 @@
                             </div>
                         </div>
                         <!-- 修正が必要なシナリオ -->
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <label class="form-label">修正が必要なシナリオ</label>
                             <div class="position-relative">
                                 <input type="file" class="form-control pe-5" id="revisionFile" name="revisionFile">
@@ -47,19 +47,20 @@
                                 </span>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- パスワード(任意) và 保存 Button -->
-                    <div class="row align-items-end mb-4">
-                        <div class="col-md-8">
-                            <label for="password" class="form-label">パスワード(任意):</label>
-                            <input type="password" class="form-control" id="password" name="password">
-                        </div>
-                        <div class="col-md-4">
-                            <button type="submit" class="btn btn-primary">保存</button>
+                        <!-- 保存 Button -->
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">保存</button>
                         </div>
                     </div>
                 </form>
+
+                <!-- Sau phần form và trước phần processing -->
+                <div id="summary-section" class="d-none mt-3">
+                    <h5 class="form-label mb-3">まとめ</h5>
+                    <div class="border rounded p-3 bg-light">
+                        <div id="typing-text" class="mb-3"></div>
+                    </div>
+                </div>
 
                 <!-- Phần xử lý -->
                 <div id="processing" class="text-center d-none">
