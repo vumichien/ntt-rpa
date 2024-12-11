@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'flowchart',
+    'workflow',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
