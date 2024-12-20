@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>自動生成</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{% static 'flowchart/css/styles.css' %}">
     <script src="{% static 'flowchart/js/scripts.js' %}"></script>
     <script src="{% static 'workflow/js/workflow.js' %}"></script>
@@ -74,7 +75,7 @@
         }
     
         /* Flow container styles */
-        #flow-container {
+        #flow-container, #flow-container-sub {
             background: white;
             border-radius: 15px;
             padding: 20px;
@@ -114,21 +115,21 @@
         }
     
         /* Summary section */
-        #summary-section {
+        #summary-section, #summary-sub-section {
             background: white;
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
     
-        #summary-section h5 {
+        #summary-section h5, #summary-sub-section h5 {
             color: #0d6efd;
             font-weight: 600;
             position: relative;
             padding-left: 15px;
         }
     
-        #summary-section h5::before {
+        #summary-section h5::before, #summary-sub-section h5::before {
             content: '';
             position: absolute;
             left: 0;
@@ -140,7 +141,7 @@
             border-radius: 2px;
         }
     
-        #summary-section .border {
+        #summary-section .border, #summary-sub-section .border {
             border: none !important;
             border-radius: 12px;
             background: linear-gradient(to right bottom, #f8f9fa, #ffffff);
@@ -148,14 +149,14 @@
             padding: 20px;
         }
     
-        #typing-text {
+        #typing-text, #typing-text-sub-section {
             font-size: 1rem;
             line-height: 1.8;
             color: #495057;
             white-space: pre-line;
         }
     
-        #typing-text::before {
+        #typing-text::before, #typing-text-sub-section::before {
             content: '';
             display: inline-block;
             width: 2px;
@@ -188,7 +189,7 @@
         }
     
         /* Text highlight effect */
-        #typing-text strong {
+        #typing-text strong, #flow-explanation-text strong, #typing-text-sub-section strong, #flow-explanation-text-sub-section strong{
             background: linear-gradient(120deg, rgba(13, 110, 253, 0.1) 0%, rgba(13, 110, 253, 0.1) 100%);
             padding: 0 4px;
             border-radius: 3px;
@@ -196,7 +197,7 @@
         }
     
         /* Flow section */
-        #flow-section {
+        #flow-section, #flow-section-sub {
             background-color: #f8f9fa;
             border-radius: 15px;
             padding: 20px;
@@ -204,14 +205,14 @@
         }
     
         /* Loading animation styles */
-        .loading-container {
+        .loading-container, .loading-container-sub {
             padding: 2rem;
             border-radius: 15px;
             background: rgba(255, 255, 255, 0.9);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
     
-        .loading-spinner {
+        .loading-spinner, .loading-spinner-sub {
             width: 50px;
             height: 50px;
             margin: 0 auto 1rem;
@@ -221,25 +222,25 @@
             animation: spin 1s linear infinite;
         }
     
-        .loading-text {
+        .loading-text, .loading-text-sub {
             color: #0d6efd;
             font-size: 1.2rem;
             font-weight: 500;
             margin-bottom: 0.5rem;
         }
     
-        .loading-dots span {
+        .loading-dots span, .loading-dots-sub span {
             display: inline-block;
             animation: dots 1.5s infinite;
             font-size: 1.5rem;
             color: #0d6efd;
         }
     
-        .loading-dots span:nth-child(2) {
+        .loading-dots span:nth-child(2), .loading-dots-sub span:nth-child(2) {
             animation-delay: 0.5s;
         }
     
-        .loading-dots span:nth-child(3) {
+        .loading-dots span:nth-child(3), .loading-dots-sub span:nth-child(3) {
             animation-delay: 1s;
         }
     
@@ -327,6 +328,48 @@
             color: #adb5bd;
             opacity: 0.8;
         }
+    
+        /* Summary section và Flow explanation styles */
+        #summary-section, #flow-explanation, #summary-section-sub, #flow-explanation-sub-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+    
+        #summary-section h5, #flow-explanation h5, #summary-section-sub h5, #flow-explanation-sub-section h5 {
+            color: #0d6efd;
+            font-weight: 600;
+            position: relative;
+            padding-left: 15px;
+        }
+    
+        #summary-section h5::before, #flow-explanation h5::before, #summary-section-sub h5::before, #flow-explanation-sub-section h5::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: #0d6efd;
+            border-radius: 2px;
+        }
+    
+        #summary-section .border, #flow-explanation .border, #summary-section-sub .border, #flow-explanation-sub-section .border {
+            border: none !important;
+            border-radius: 12px;
+            background: linear-gradient(to right bottom, #f8f9fa, #ffffff);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+        }
+    
+        #typing-text, #flow-explanation-text, #typing-text-sub-section, #flow-explanation-text-sub-section {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #495057;
+            white-space: pre-line;
+        }
     </style>
 </head>
 <body class="bg-white">
@@ -340,9 +383,9 @@
             <div class="col-md-4">
                 <div class="card text-center h-100" style="cursor:pointer;" onclick="showCard(1)">
                     <div class="card-body">
-                        <img src="{% static 'workflow/images/card1.png' %}" alt="Icon" class="img-fluid mb-2"
+                        <img src="{% static 'workflow/images/card4.png' %}" alt="Icon" class="img-fluid mb-2"
                             style="width:50px;">
-                        <p class="card-text">作業手順が知りたい/マニュアルを作成したい</p>
+                        <p class="card-text">自動化シナリオを作成したい</p>
                     </div>
                 </div>
             </div>
@@ -350,7 +393,7 @@
             <div class="col-md-4">
                 <div class="card text-center h-100" style="cursor:pointer;" onclick="showCard(2)">
                     <div class="card-body">
-                        <img src="{% static 'workflow/images/card2.png' %}" alt="Icon" class="img-fluid mb-2" style="width:50px;">
+                        <img src="{% static 'workflow/images/card5.png' %}" alt="Icon" class="img-fluid mb-2" style="width:50px;">
                         <p class="card-text">自動化シナリオの更新をしたい</p>
                     </div>
                 </div>
@@ -359,8 +402,8 @@
             <div class="col-md-4">
                 <div class="card text-center h-100" style="cursor:pointer;" onclick="showCard(3)">
                     <div class="card-body">
-                        <img src="{% static 'workflow/images/card3.png' %}" alt="Icon" class="img-fluid mb-2" style="width:50px;">
-                        <p class="card-text">自動化シナリオを作成したい</p>
+                        <img src="{% static 'workflow/images/card1.png' %}" alt="Icon" class="img-fluid mb-2" style="width:50px;">
+                        <p class="card-text">作業手順が知りたい/マニュアルを作成したい</p>
                     </div>
                 </div>
             </div>
@@ -369,17 +412,32 @@
         <!-- Card 1 Form -->
         <div id="card1-section" class="d-none mt-4">
             <div class="mb-3">
-                <label class="form-label">やりたい作業内容/分からない作業内容</label>
+                <label class="form-label">自動化したい作業の概要</label>
                 <input type="text" class="form-control" id="card1-input-text">
             </div>
             <div class="mb-3">
-                <label class="form-label">指摘データ</label>
-                <div class="position-relative">
-                    <input type="file" class="form-control pe-5" id="card1-feedbackFile" name="feedbackFile">
-                    <span class="position-absolute top-50 end-0 translate-middle-y me-2">
-                        <img src="{% static 'flowchart/images/upload-icon.png' %}" alt="Upload" class="img-fluid" style="width: 24px; height: 24px; cursor: pointer;">
-                    </span>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="form-label mb-0">指摘データ</label>
+                    <button type="button" class="btn btn-outline-primary btn-sm" id="add-file-btn">
+                        <i class="bi bi-plus-circle"></i> ファイル追加
+                    </button>
                 </div>
+                <div id="file-upload-container">
+                    <div class="mb-3 file-input-group">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="position-relative flex-grow-1">
+                                <input type="file" class="form-control pe-5" name="feedbackFile">
+                                <span class="position-absolute top-50 end-0 translate-middle-y me-2">
+                                    <img src="{% static 'flowchart/images/upload-icon.png' %}" alt="Upload" class="img-fluid"
+                                        style="width: 24px; height: 24px; cursor: pointer;">
+                                    </span>
+                                    </div>
+                            <button type="button" class="btn btn-danger btn-sm remove-file" style="display: none;">
+                                <i class="bi bi-trash"></i> 削除
+                            </button>
+                            </div>
+                            </div>
+                            </div>
             </div>
             <button class="btn btn-primary" onclick="createScenario(1)">作成</button>
         </div>
@@ -412,7 +470,7 @@
         <!-- Card 3 Form -->
         <div id="card3-section" class="d-none mt-4">
             <div class="mb-3">
-                <label class="form-label">自動化したい業務内容</label>
+                <label class="form-label">やりたい作業内容/分からない作業内容</label>
                 <textarea class="form-control auto-expand" id="card3-input-text" rows="2" style="resize: none;"
                     placeholder="業務内容を入力してください"></textarea>
             </div>
@@ -444,6 +502,32 @@
             <div id="flow-container" class="d-flex justify-content-center">
             </div>
         </div>
+<!-- フローの説明 -->
+<div id="flow-explanation" class="d-none mt-4">
+    <div class="border rounded p-3 bg-light">
+        <div id="flow-explanation-text" class="mb-3"></div>
+    </div>
+</div>
+
+<!-- Summary sub section-->
+<div id="summary-sub-section" class="d-none mt-4">
+    <div class="border rounded p-3 bg-light">
+        <div id="typing-text-sub-section" class="mb-3"></div>
+    </div>
+</div>
+
+<!-- Flow SVG sub section-->
+<div id="flow-section-sub" class="d-none mt-4 text-center">
+    <h5 class="form-label mb-3">手順</h5>
+    <div id="flow-container-sub" class="d-flex justify-content-center"></div>
+</div>
+
+<!-- Flow explanation sub section-->
+<div id="flow-explanation-sub-section" class="d-none mt-4">
+    <div class="border rounded p-3 bg-light">
+        <div id="flow-explanation-text-sub-section" class="mb-3"></div>
+    </div>
+</div>
     </div>
 </body>
 </html>
