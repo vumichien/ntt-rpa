@@ -11,48 +11,59 @@ document.addEventListener("DOMContentLoaded", function () {
     textarea.style.height = textarea.scrollHeight + "px";
   });
 
-  // Add file input handling
-  const addFileBtn = document.getElementById("add-file-btn");
-  const fileContainer = document.getElementById("file-upload-container");
+  // Function to initialize file upload functionality
+  function initializeFileUpload(addBtnId, containerId) {
+    const addFileBtn = document.getElementById(addBtnId);
+    const fileContainer = document.getElementById(containerId);
 
-  if (addFileBtn && fileContainer) {
-    addFileBtn.addEventListener("click", function () {
-      const newFileInput = document.createElement("div");
-      newFileInput.className = "mb-3 file-input-group";
-      newFileInput.innerHTML = `
-                <div class="d-flex align-items-center gap-2">
-                    <div class="position-relative flex-grow-1">
-                        <input type="file" class="form-control pe-5" name="feedbackFile">
-                        <span class="position-absolute top-50 end-0 translate-middle-y me-2">
-                            <img src="/static/flowchart/images/upload-icon.png" alt="Upload" class="img-fluid" style="width: 24px; height: 24px; cursor: pointer;">
-                        </span>
-                    </div>
-                    <button type="button" class="btn btn-danger btn-sm remove-file">
-                        <i class="bi bi-trash"></i> 削除
-                    </button>
-                </div>
-            `;
-      fileContainer.appendChild(newFileInput);
+    if (addFileBtn && fileContainer) {
+      addFileBtn.addEventListener("click", function () {
+        const newFileInput = document.createElement("div");
+        newFileInput.className = "mb-3 file-input-group";
+        newFileInput.innerHTML = `
+          <div class="d-flex align-items-center gap-2">
+            <div class="position-relative flex-grow-1">
+              <input type="file" class="form-control pe-5">
+              <span class="position-absolute top-50 end-0 translate-middle-y me-2">
+                <img src="/static/flowchart/images/upload-icon.png" alt="Upload" class="img-fluid" style="width: 24px; height: 24px; cursor: pointer;">
+              </span>
+            </div>
+            <button type="button" class="btn btn-danger btn-sm remove-file">
+              <i class="bi bi-trash"></i> 削除
+            </button>
+          </div>
+        `;
+        fileContainer.appendChild(newFileInput);
 
-      // Show all remove buttons when there's more than one file input
-      const removeButtons = fileContainer.querySelectorAll(".remove-file");
-      removeButtons.forEach((btn) => (btn.style.display = "block"));
-    });
-
-    // Handle remove button clicks using event delegation
-    fileContainer.addEventListener("click", function (e) {
-      if (e.target.closest(".remove-file")) {
-        const fileInputGroup = e.target.closest(".file-input-group");
-        fileInputGroup.remove();
-
-        // Hide remove button if only one file input remains
+        // Show all remove buttons when there's more than one file input
         const removeButtons = fileContainer.querySelectorAll(".remove-file");
-        if (removeButtons.length === 1) {
-          removeButtons[0].style.display = "none";
+        removeButtons.forEach((btn) => (btn.style.display = "block"));
+      });
+
+      // Handle remove button clicks using event delegation
+      fileContainer.addEventListener("click", function (e) {
+        if (e.target.closest(".remove-file")) {
+          const fileInputGroup = e.target.closest(".file-input-group");
+          fileInputGroup.remove();
+
+          // Hide remove button if only one file input remains
+          const removeButtons = fileContainer.querySelectorAll(".remove-file");
+          if (removeButtons.length === 1) {
+            removeButtons[0].style.display = "none";
+          }
         }
-      }
-    });
+      });
+    }
   }
+
+  // Initialize file upload for all containers
+  initializeFileUpload("add-file-btn", "file-upload-container"); // For card 1
+  initializeFileUpload(
+    "add-file-btn-scenario",
+    "file-upload-container-scenario"
+  ); // For card 2 scenario
+  initializeFileUpload("add-file-btn-update", "file-upload-container-update"); // For card 2 update info
+  initializeFileUpload("add-file-btn-card3", "file-upload-container-card3"); // For card 3
 });
 
 function typeText(text, index, callback, elementId = "typing-text") {
@@ -91,6 +102,7 @@ function showCard(cardNumber) {
   document
     .getElementById("flow-explanation-sub-section")
     .classList.add("d-none");
+  document.getElementById("sample-image-section").classList.add("d-none");
 
   // Xóa trạng thái active của tất cả các card
   const cards = document.querySelectorAll("#card-section .card");
@@ -121,22 +133,32 @@ function createScenario(cardNumber) {
   const flowExplanation = document.getElementById("flow-explanation");
   const summarySubSection = document.getElementById("summary-sub-section");
   const flowSubSection = document.getElementById("flow-section-sub");
+  const summaryTitle = document.getElementById("summary-title");
   const flowExplanationSubSection = document.getElementById(
     "flow-explanation-sub-section"
   );
-
+  const sampleImageSection = document.getElementById("sample-image-section");
+  if (cardNumber === 3) {
+    summaryTitle.textContent = "マニュアル";
+  } else {
+    summaryTitle.textContent = "まとめ";
+  }
   // Ẩn các section khác với hiệu ứng fade
-  [summarySection, flowSection, flowExplanation, summarySubSection].forEach(
-    (section) => {
-      if (!section.classList.contains("d-none")) {
-        section.classList.add("fade-out");
-        setTimeout(() => {
-          section.classList.add("d-none");
-          section.classList.remove("fade-out");
-        }, 500);
-      }
+  [
+    summarySection,
+    flowSection,
+    flowExplanation,
+    summarySubSection,
+    sampleImageSection,
+  ].forEach((section) => {
+    if (!section.classList.contains("d-none")) {
+      section.classList.add("fade-out");
+      setTimeout(() => {
+        section.classList.add("d-none");
+        section.classList.remove("fade-out");
+      }, 500);
     }
-  );
+  });
 
   // Hiện processing
   processingElement.classList.remove("d-none");
@@ -160,29 +182,124 @@ function createScenario(cardNumber) {
       let explanationTextSub = "";
 
       if (cardNumber === 1) {
-        summaryText = `実行する必要がある操作の内容を要約する
--納品書の確認: 納品書と注文書を照る。数量、品名、品番などを確認する。
--入庫記録の入力: システムに納品内容を入力する（例: 商品名、数量、入庫日）。
--商品の検品: 商品に破損や不良品がないか検査する。
--保管場所の決定: 商品を保管する棚やエリアを決定する。
--作業記録の保存: システムに作業の進捗と完了情報を記録する。`;
+        summaryText = `この画面は、<strong>旅費精算申請</strong>を行うためのフォームです。申請者情報、出張期間、目的地、目的、旅費明細などの情報を入力することで、上司に申請を提出できます。
+主な構成は以下の通りです：
+
+<strong>申請者情報:</strong> 申請者および承認者の情報を入力します。
+<strong>出張情報:</strong> 出張期間、目的地、目的、日当額を設定します。
+<strong>旅費明細:</strong> 出張中の交通手段や詳細な費用を入力します。`;
 
         // Tạo SVG flow đơn giản (theo chiều dọc, màu cam #f7b066)
         svgContent = createFlowSVG(
-          [
-            "納品書の確認",
-            "入庫記録の入力",
-            "商品の検品",
-            "保管場所の決定",
-            "作業記録の保存",
-          ],
+          ["申請者情報の入力", "出張情報の入力", "旅費明細の入力"],
           "#f7b066"
         );
+
+        explanationText = `
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead class="table-light">
+      <tr>
+        <th scope="col">項目</th>
+        <th scope="col">説明</th>
+        <th scope="col">例</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="3" class="table-primary"><strong>1. 申請者情報の入力</strong></td>
+      </tr>
+      <tr>
+        <td>申請者（左側の入力欄）</td>
+        <td>🔍アイコンをクリックして申請者名を検索または直接入力します。</td>
+        <td>「washino」</td>
+      </tr>
+      <tr>
+        <td>上長（右側の入力欄）</td>
+        <td>🔍アイコンをクリックして承認者（上司）の名前を検索または直接入力します。</td>
+        <td>「hiyoko」</td>
+      </tr>
+      <tr>
+        <td>No（右上の入力欄）</td>
+        <td>自動生成または64文字以内で番号を入力します。</td>
+        <td>「1」</td>
+      </tr>
+
+      <tr>
+        <td colspan="3" class="table-primary"><strong>2. 出張情報の入力</strong></td>
+      </tr>
+      <tr>
+        <td>期間（出発 - 帰着）</td>
+        <td>出発日と帰着日をカレンダーから選択します。</td>
+        <td>出発日「2021-03-01」<br>帰着日「2021-03-31」</td>
+      </tr>
+      <tr>
+        <td>地域</td>
+        <td>ドロップダウンリストから出張の地域を選択します。</td>
+        <td>「海外」</td>
+      </tr>
+      <tr>
+        <td>日当</td>
+        <td>出張の日当額を入力します。</td>
+        <td>「10000」</td>
+      </tr>
+      <tr>
+        <td>行き先</td>
+        <td>出張先の都市や国を入力します。</td>
+        <td>「サンフランシスコ」</td>
+      </tr>
+      <tr>
+        <td>目的</td>
+        <td>出張の目的を入力します。</td>
+        <td>「営業面談」</td>
+      </tr>
+
+      <tr>
+        <td colspan="3" class="table-primary"><strong>3. 旅費明細の入力</strong></td>
+      </tr>
+      <tr>
+        <td>日付</td>
+        <td>各旅費の発生日時を入力します。</td>
+        <td>「2021-04-21」</td>
+      </tr>
+      <tr>
+        <td>手段</td>
+        <td>使用した交通手段をドロップダウンリストから選択します。</td>
+        <td>「電車」</td>
+      </tr>
+      <tr>
+        <td>摘要</td>
+        <td>旅費の内容や利用区間を具体的に入力します。</td>
+        <td>「栄駅〜名古屋駅」</td>
+      </tr>
+      <tr>
+        <td>金額</td>
+        <td>旅費の金額（円）を入力します。</td>
+        <td>「210」</td>
+      </tr>
+      <tr>
+        <td>領収書</td>
+        <td>領収書の有無にチェックを入れます。</td>
+        <td>「✔あり」</td>
+      </tr>
+      <tr>
+        <td>+/-ボタン</td>
+        <td>「+」ボタンで新しい旅費項目を追加、「-」ボタンで不要な項目を削除できます。</td>
+        <td>-</td>
+      </tr>
+    </tbody>
+  </table>
+</div>`;
       } else if (cardNumber === 2) {
         summaryText = `変更内容の要約:
 -追加: 「バーコードスキャン」と「温度・湿度チェック」ステップを導入。
 -削除: 「保管場所の決定」をシステムによる自動化に変更。
--変更: 「入庫記録の入力」をバーコードスキャンによる自動入力へ改善。`;
+-変更: 「入庫記録の入力」をバーコードスキャンによる自動入力へ改善。
+
+主な改善点：
+• 作業効率の向上：バーコードスキャンによる自動入力で作業時間を短縮
+• ヒューマンエラーの削減：手動入力を減らし、入力ミスを防止
+• 品質管理の強化：温度・湿度チェックの導入で保管品質を向上`;
 
         svgContent = createFlowSVG(
           [
@@ -195,6 +312,65 @@ function createScenario(cardNumber) {
           "#f7b066",
           [1, 3]
         );
+
+        explanationText = `
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">ステップ</th>
+                <th scope="col">変更内容</th>
+                <th scope="col">改善効果</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="3" class="table-primary"><strong>1. 納品書の確認</strong></td>
+            </tr>
+            <tr>
+                <td>変更なし</td>
+                <td>従来通りの納品書確認プロセス</td>
+                <td>正確な入荷確認の維持</td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="table-success"><strong>2. バーコードスキャン（新規追加）</strong></td>
+            </tr>
+            <tr>
+                <td>新機能</td>
+                <td>• 商品のバーコードをスキャン<br>• 自動でデータベースに登録</td>
+                <td>• 入力時間の短縮（約70%削減）<br>• 入力ミスの防止<br>• トレーサビリティの向上</td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="table-primary"><strong>3. 商品の検品</strong></td>
+            </tr>
+            <tr>
+                <td>一部変更</td>
+                <td>• タブレットでの検品作業<br>• リアルタイムでの数量確認</td>
+                <td>• ペーパーレス化<br>• 即時の在庫反映</td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="table-success"><strong>4. 温度・湿度チェック（新規追加）</strong></td>
+            </tr>
+            <tr>
+                <td>新機能</td>
+                <td>• IoTセンサーによる自動計測<br>• 異常値の自動アラート</td>
+                <td>• 品質管理の強化<br>• 保管環境の最適化<br>• 商品劣化の防止</td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="table-primary"><strong>5. 作業記録の保存</strong></td>
+            </tr>
+            <tr>
+                <td>自動化</td>
+                <td>• 作業内容の自動記録<br>• クラウドでのデータ保存</td>
+                <td>• 作業履歴の完全保存<br>• データ分析の容易化</td>
+            </tr>
+        </tbody>
+    </table>
+</div>`;
       } else if (cardNumber === 3) {
         summaryText = `<strong>旅費精算</strong>を行うには、出張する従業員に前もって概算で旅費を渡しておく<strong>「事前仮払い精算」</strong>と、いったん従業員が全額を立て替えてから後日精算する<strong>「事後精算」</strong>の、大きく2つの方法があります。どちらの方法を選ぶかで、旅費精算の流れは変わります。
                 ここでは、旅費精算の2つの方法について、それぞれ説明します。
@@ -229,7 +405,7 @@ function createScenario(cardNumber) {
 -4. 出張後に従業員が仮払経費精算書を提出する
 張から戻った従業員は、実際にかかった費用の領収書などをもとに、仮払経費精算書を作成します。仮払経費精算書は、仮払いされた現金が、実際に何にいくら使われたのかを申告するための書類です。
 
--5. 仮払いした金額と実費との差額を精算する
+-5. 仮払いした額と実費との差額を精算する
 業員が作成した仮払経費精算書は、上司の承認を経て、領収書などとともに経理部に提出されます。経理担当者は内容を確認し、仮払金に余剰や不足があった場合は返金や追加支払いを行います。`;
 
         summarySubText = `<strong>事後精算</strong>
@@ -246,7 +422,7 @@ function createScenario(cardNumber) {
         ];
         svgContentSub = createFlowSVG(flowStepsSub, "#f7b066");
 
-        explanationTextSub = `-1. 出張前に従業員が旅費の申請をする
+        explanationTextSub = `-1. 出張前に従業員���旅費の申請をする
         出張する従業員は、事前に必要な金額を上司または経理部に申請します。出張にかかる費用は高額になることが多いため、事前に申請しておことで後の旅費精算がスムースになります。
 
 -2. 出張中の経費を立て替える
@@ -273,60 +449,84 @@ function createScenario(cardNumber) {
             const flowContainer = document.getElementById("flow-container");
             flowContainer.innerHTML = svgContent;
 
-            // Sau khi flowSection hiện, hiện và type explanationText
+            // Sau khi flowSection hiện, hiện explanationText
             if (explanationText) {
               setTimeout(() => {
                 flowExplanation.classList.remove("d-none");
                 flowExplanation.classList.add("fade-in");
-                typeText(
-                  explanationText,
-                  0,
-                  () => {
-                    // Sau khi explanationText hoàn thành, hiện và type summarySubText
-                    if (summarySubText) {
-                      setTimeout(() => {
-                        summarySubSection.classList.remove("d-none");
-                        summarySubSection.classList.add("fade-in");
-                        typeText(
-                          summarySubText,
-                          0,
-                          () => {
-                            // Sau khi summarySubText hoàn thành, hiện flowSvgSubSection
-                            if (svgContentSub) {
-                              setTimeout(() => {
-                                flowSubSection.classList.remove("d-none");
-                                flowSubSection.classList.add("fade-in");
-                                const flowContainerSub =
-                                  document.getElementById("flow-container-sub");
-                                flowContainerSub.innerHTML = svgContentSub;
 
-                                // Sau khi flowSvgSubSection hiện, hiện và type explanationTextSub
-                                if (explanationTextSub) {
-                                  setTimeout(() => {
-                                    flowExplanationSubSection.classList.remove(
-                                      "d-none"
-                                    );
-                                    flowExplanationSubSection.classList.add(
-                                      "fade-in"
-                                    );
-                                    typeText(
-                                      explanationTextSub,
-                                      0,
-                                      () => {},
-                                      "flow-explanation-text-sub-section"
-                                    );
-                                  }, 500);
-                                }
-                              }, 500);
-                            }
-                          },
-                          "typing-text-sub-section"
-                        );
+                // Nếu là cardNumber 1 hoặc 2
+                if (cardNumber === 1 || cardNumber === 2) {
+                  document.getElementById("flow-explanation-text").innerHTML =
+                    explanationText;
+
+                  // Chỉ hiện sample image section cho cardNumber === 1
+                  if (cardNumber === 1) {
+                    const sampleImageSection = document.getElementById(
+                      "sample-image-section"
+                    );
+                    setTimeout(() => {
+                      sampleImageSection.classList.remove("d-none");
+                      sampleImageSection.classList.add("fade-in");
+
+                      // Sau khi hiện ảnh xong, mới hiện explanation
+                      setTimeout(() => {
+                        flowExplanation.classList.remove("d-none");
+                        flowExplanation.classList.add("fade-in");
                       }, 500);
-                    }
-                  },
-                  "flow-explanation-text"
-                );
+                    }, 500);
+                  }
+                } else {
+                  // Các cardNumber khác vẫn giữ nguyên hiệu ứng typing
+                  typeText(
+                    explanationText,
+                    0,
+                    () => {
+                      if (summarySubText) {
+                        setTimeout(() => {
+                          summarySubSection.classList.remove("d-none");
+                          summarySubSection.classList.add("fade-in");
+                          typeText(
+                            summarySubText,
+                            0,
+                            () => {
+                              if (svgContentSub) {
+                                setTimeout(() => {
+                                  flowSubSection.classList.remove("d-none");
+                                  flowSubSection.classList.add("fade-in");
+                                  const flowContainerSub =
+                                    document.getElementById(
+                                      "flow-container-sub"
+                                    );
+                                  flowContainerSub.innerHTML = svgContentSub;
+
+                                  if (explanationTextSub) {
+                                    setTimeout(() => {
+                                      flowExplanationSubSection.classList.remove(
+                                        "d-none"
+                                      );
+                                      flowExplanationSubSection.classList.add(
+                                        "fade-in"
+                                      );
+                                      typeText(
+                                        explanationTextSub,
+                                        0,
+                                        () => {},
+                                        "flow-explanation-text-sub-section"
+                                      );
+                                    }, 500);
+                                  }
+                                }, 500);
+                              }
+                            },
+                            "typing-text-sub-section"
+                          );
+                        }, 500);
+                      }
+                    },
+                    "flow-explanation-text"
+                  );
+                }
               }, 500);
             }
           }

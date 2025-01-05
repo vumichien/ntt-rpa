@@ -417,7 +417,7 @@
             </div>
             <div class="mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <label class="form-label mb-0">指摘データ</label>
+                    <label class="form-label mb-0">参考データ</label>
                     <button type="button" class="btn btn-outline-primary btn-sm" id="add-file-btn">
                         <i class="bi bi-plus-circle"></i> ファイル追加
                     </button>
@@ -446,27 +446,56 @@
         <div id="card2-section" class="d-none mt-4">
             <div class="row g-3 mb-3">
                 <div class="col-md-6">
-                    <label class="form-label">既存自動化シナリオ</label>
-                    <div class="position-relative">
-                        <input type="file" class="form-control pe-5">
-                        <span class="position-absolute top-50 end-0 translate-middle-y me-2">
-                            <img src="{% static 'flowchart/images/upload-icon.png' %}" alt="Upload" class="img-fluid" style="width: 24px; height: 24px; cursor: pointer;">
-                        </span>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="form-label mb-0">既存自動化シナリオ</label>
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="add-file-btn-scenario">
+                            <i class="bi bi-plus-circle"></i> ファイル追加
+                        </button>
                     </div>
+                    <div id="file-upload-container-scenario">
+                        <div class="mb-3 file-input-group">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="position-relative flex-grow-1">
+                                    <input type="file" class="form-control pe-5">
+                                    <span class="position-absolute top-50 end-0 translate-middle-y me-2">
+                                        <img src="{% static 'flowchart/images/upload-icon.png' %}" alt="Upload" class="img-fluid"
+                                            style="width: 24px; height: 24px; cursor: pointer;">
+                                        </span>
+                                        </div>
+                                <button type="button" class="btn btn-danger btn-sm remove-file" style="display: none;">
+                                    <i class="bi bi-trash"></i> 削除
+                                </button>
+                                </div>
+                                </div>
+                                </div>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">更新情報</label>
-                    <div class="position-relative">
-                        <input type="file" class="form-control pe-5">
-                        <span class="position-absolute top-50 end-0 translate-middle-y me-2">
-                            <img src="{% static 'flowchart/images/upload-icon.png' %}" alt="Upload" class="img-fluid" style="width: 24px; height: 24px; cursor: pointer;">
-                        </span>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="form-label mb-0">更新情報</label>
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="add-file-btn-update">
+                            <i class="bi bi-plus-circle"></i> ファイル追加
+                        </button>
                     </div>
+                    <div id="file-upload-container-update">
+                        <div class="mb-3 file-input-group">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="position-relative flex-grow-1">
+                                    <input type="file" class="form-control pe-5">
+                                    <span class="position-absolute top-50 end-0 translate-middle-y me-2">
+                                        <img src="{% static 'flowchart/images/upload-icon.png' %}" alt="Upload" class="img-fluid"
+                                            style="width: 24px; height: 24px; cursor: pointer;">
+                                        </span>
+                                        </div>
+                                <button type="button" class="btn btn-danger btn-sm remove-file" style="display: none;">
+                                    <i class="bi bi-trash"></i> 削除
+                                </button>
+                                </div>
+                                </div>
+                                </div>
                 </div>
             </div>
             <button class="btn btn-primary" onclick="createScenario(2)">作成</button>
         </div>
-
         <!-- Card 3 Form -->
         <div id="card3-section" class="d-none mt-4">
             <div class="mb-3">
@@ -474,9 +503,32 @@
                 <textarea class="form-control auto-expand" id="card3-input-text" rows="2" style="resize: none;"
                     placeholder="業務内容を入力してください"></textarea>
             </div>
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="form-label mb-0">参考データ</label>
+                    <button type="button" class="btn btn-outline-primary btn-sm" id="add-file-btn-card3">
+                        <i class="bi bi-plus-circle"></i> ファイル追加
+                    </button>
+                </div>
+                <div id="file-upload-container-card3">
+                    <div class="mb-3 file-input-group">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="position-relative flex-grow-1">
+                                <input type="file" class="form-control pe-5" name="feedbackFile">
+                                <span class="position-absolute top-50 end-0 translate-middle-y me-2">
+                                    <img src="{% static 'flowchart/images/upload-icon.png' %}" alt="Upload" class="img-fluid"
+                                        style="width: 24px; height: 24px; cursor: pointer;">
+                                </span>
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm remove-file" style="display: none;">
+                                <i class="bi bi-trash"></i> 削除
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <button class="btn btn-primary" onclick="createScenario(3)">作成</button>
         </div>
-
         <!-- Processing -->
         <div id="processing" class="text-center d-none mt-4">
             <div class="loading-container">
@@ -487,47 +539,49 @@
                 </div>
             </div>
         </div>
-
         <!-- Summary -->
         <div id="summary-section" class="d-none mt-4">
-            <h5 class="form-label mb-3">まとめ</h5>
+            <h5 class="form-label mb-3" id="summary-title">まとめ</h5>
             <div class="border rounded p-3 bg-light">
                 <div id="typing-text" class="mb-3"></div>
             </div>
         </div>
-
         <!-- Flow SVG -->
         <div id="flow-section" class="d-none mt-4 text-center">
             <h5 class="form-label mb-3">手順</h5>
             <div id="flow-container" class="d-flex justify-content-center">
             </div>
         </div>
-<!-- フローの説明 -->
-<div id="flow-explanation" class="d-none mt-4">
-    <div class="border rounded p-3 bg-light">
-        <div id="flow-explanation-text" class="mb-3"></div>
-    </div>
-</div>
-
-<!-- Summary sub section-->
-<div id="summary-sub-section" class="d-none mt-4">
-    <div class="border rounded p-3 bg-light">
-        <div id="typing-text-sub-section" class="mb-3"></div>
-    </div>
-</div>
-
-<!-- Flow SVG sub section-->
-<div id="flow-section-sub" class="d-none mt-4 text-center">
-    <h5 class="form-label mb-3">手順</h5>
-    <div id="flow-container-sub" class="d-flex justify-content-center"></div>
-</div>
-
-<!-- Flow explanation sub section-->
-<div id="flow-explanation-sub-section" class="d-none mt-4">
-    <div class="border rounded p-3 bg-light">
-        <div id="flow-explanation-text-sub-section" class="mb-3"></div>
-    </div>
-</div>
+        <!-- Sample Image Section -->
+        <div id="sample-image-section" class="d-none mt-4 text-center">
+            <h5 class="form-label mb-3">サンプル画面</h5>
+            <div class="border rounded p-3 bg-light">
+                <img id="sample-image" src="{% static 'workflow/images/sample.png' %}" alt="Sample" class="img-fluid">
+            </div>
+        </div>
+        <!-- フローの説明 -->
+        <div id="flow-explanation" class="d-none mt-4">
+            <div class="border rounded p-3 bg-light">
+                <div id="flow-explanation-text" class="mb-3"></div>
+            </div>
+        </div>
+        <!-- Summary sub section-->
+        <div id="summary-sub-section" class="d-none mt-4">
+            <div class="border rounded p-3 bg-light">
+                <div id="typing-text-sub-section" class="mb-3"></div>
+            </div>
+        </div>
+        <!-- Flow SVG sub section-->
+        <div id="flow-section-sub" class="d-none mt-4 text-center">
+            <h5 class="form-label mb-3">手順</h5>
+            <div id="flow-container-sub" class="d-flex justify-content-center"></div>
+        </div>
+        <!-- Flow explanation sub section-->
+        <div id="flow-explanation-sub-section" class="d-none mt-4">
+            <div class="border rounded p-3 bg-light">
+                <div id="flow-explanation-text-sub-section" class="mb-3"></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
