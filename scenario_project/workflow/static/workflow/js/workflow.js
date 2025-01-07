@@ -138,6 +138,12 @@ function showStepsSequentially(stepIndex = 0) {
         // Tạo nút menu tương ứng với step hiện tại
         button.className = "btn btn-outline-primary w-100 mb-2";
         button.textContent = `${stepIndex + 1}. ${explanations[stepIndex].split('\n')[0]}`;
+        button.addEventListener("click", () => {
+            // Khi click nút, hiển thị nội dung tương ứng trong flow-explanation
+            const flowExplanation = document.getElementById("flow-explanation-text");
+            flowExplanation.innerHTML = ""; // Reset nội dung cũ
+            typeText(explanations[stepIndex], 0, () => {}, "flow-explanation-text");
+        });
         menuButtons.appendChild(button);
 
         // Hiển thị nội dung trong flow-explanation
@@ -147,6 +153,7 @@ function showStepsSequentially(stepIndex = 0) {
         }, "flow-explanation-text");
     }
 }
+
 
 
 function createScenario(cardNumber) {
