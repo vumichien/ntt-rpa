@@ -96,12 +96,8 @@ function showCard(cardNumber) {
   document.getElementById("processing").classList.add("d-none");
   document.getElementById("summary-section").classList.add("d-none");
   document.getElementById("flow-section").classList.add("d-none");
+  document.getElementById("menu-buttons").classList.add("d-none");
   document.getElementById("flow-explanation").classList.add("d-none");
-  document.getElementById("summary-sub-section").classList.add("d-none");
-  document.getElementById("flow-section-sub").classList.add("d-none");
-  document
-    .getElementById("flow-explanation-sub-section")
-    .classList.add("d-none");
   document.getElementById("sample-image-section").classList.add("d-none");
 
   // Xóa trạng thái active của tất cả các card
@@ -126,18 +122,42 @@ function showCard(cardNumber) {
   }
 }
 
+function showStepsSequentially(stepIndex = 0) {
+    const explanations = [
+        "出張前に従業員が仮払申請書を提出する\n従業員は仮払申請書を提出し、旅費の仮払いを申請します。仮払申請書には、出張の日程や移動ルート、交通手段などから計算した概算費用の金額を記載します。",
+        "経理部が必要費用を確認する\n経理部は申請内容を確認し、必要費用が妥当かどうか、申請書に漏れがないかをチェックします。",
+        "従業員に仮払分の金額を渡す\n経理部は申請された金額を従業員に支払います。従業員の受領印などで、仮払いを確認します。",
+        "出張後に仮払経費精算書を提出する\n出張から戻った従業員は、実際にかかった費用の領収書を基に、仮払経費精算書を作成します。",
+        "仮払いした額と実費との差額を精算する\n経理部は仮払経費精算書を確認し、余剰や不足を精算します。"
+    ];
+
+    const menuButtons = document.getElementById("menu-buttons");
+    const button = document.createElement("button");
+
+    if (stepIndex < explanations.length) {
+        // Tạo nút menu tương ứng với step hiện tại
+        button.className = "btn btn-outline-primary w-100 mb-2";
+        button.textContent = `${stepIndex + 1}. ${explanations[stepIndex].split('\n')[0]}`;
+        menuButtons.appendChild(button);
+
+        // Hiển thị nội dung trong flow-explanation
+        typeText(explanations[stepIndex], 0, () => {
+            // Sau khi nội dung hoàn tất, gọi lại showStepsSequentially cho step tiếp theo
+            showStepsSequentially(stepIndex + 1);
+        }, "flow-explanation-text");
+    }
+}
+
+
 function createScenario(cardNumber) {
   const processingElement = document.getElementById("processing");
   const summarySection = document.getElementById("summary-section");
   const flowSection = document.getElementById("flow-section");
   const flowExplanation = document.getElementById("flow-explanation");
-  const summarySubSection = document.getElementById("summary-sub-section");
-  const flowSubSection = document.getElementById("flow-section-sub");
   const summaryTitle = document.getElementById("summary-title");
-  const flowExplanationSubSection = document.getElementById(
-    "flow-explanation-sub-section"
-  );
   const sampleImageSection = document.getElementById("sample-image-section");
+  const menuButtons = document.getElementById("menu-buttons");
+  menuButtons.innerHTML = ""; // Xóa menu cũ (nếu có)
   if (cardNumber === 3) {
     summaryTitle.textContent = "マニュアル";
   } else {
@@ -148,7 +168,6 @@ function createScenario(cardNumber) {
     summarySection,
     flowSection,
     flowExplanation,
-    summarySubSection,
     sampleImageSection,
   ].forEach((section) => {
     if (!section.classList.contains("d-none")) {
@@ -177,9 +196,6 @@ function createScenario(cardNumber) {
       let summaryText = "";
       let svgContent = "";
       let explanationText = "";
-      let summarySubText = "";
-      let svgContentSub = "";
-      let explanationTextSub = "";
 
       if (cardNumber === 1) {
         summaryText = `この画面は、<strong>旅費精算申請</strong>を行うためのフォームです。申請者情報、出張期間、目的地、目的、旅費明細などの情報を入力することで、上司に申請を提出できます。
@@ -405,37 +421,7 @@ function createScenario(cardNumber) {
 -5. 仮払いした額と実費との差額を精算する
 業員が作成した仮払経費精算書は、上司の承認を経て、領収書などとともに経理部に提出されます。経理担当者は内容を確認し、仮払金に余剰や不足があった場合は返金や追加支払いを行います。`;
 
-        summarySubText = `<strong>事後精算</strong>
-        事後精算は、出張にかかる費用を従業員が立て替え、後日、実費精算をする方法です。
-        事後精算の場合は、下記のような流れで旅費精算を行います。`;
 
-        const flowStepsSub = [
-          "1.出張前に従業員が旅費の申請をする",
-          "2.出張中の経費を立て替える",
-          "3.領収書をもとに従業員が旅費精算書を作成する",
-          "4.旅費精算書を提出し、上司の承認を得る",
-          "5.経理部が旅費精算書を確認する",
-          "6.小口現金や振込などで精算する",
-        ];
-        svgContentSub = createFlowSVG(flowStepsSub, "#f7b066");
-
-        explanationTextSub = `-1. 出張前に従業員が旅費の申請をする
-        出張する従業員は、事前に必要な金額を上司または経理部に申請します。出張にかかる費用は高額になることが多いため、事前に申請しておことで後の旅費精算がスムースになります。
-
--2. 出張中の経費を立て替える
-出張中は、必要な費用を従業員が立て替えて支払います。立替払いにあたって受け取った領収書やレシートは、必ず保管しておかなければなりません。
-
--3. 領収書をもとに従業員が旅費精算書を作成する
-出張から戻った従業員は、領収書などをもとに旅費精算書を作成します。旅費精算書には、費用の項目や目的、金額などを漏れなく記載します。
-
--4. 旅費精算書を提出し、上司の承認を得る
-従業員は作成した旅費精算書を領収書に上司に提出します。上司は事前申請と旅費精算書を比較し、予定外の支出がないかなどを確認します。確認後、問題がなければ、上司の承認を経て経理部に旅費精算書が提出されます。
-
--5. 経理部が旅費精算書を確認する
-経理担当者は、提出された旅費精算書を細かくチェックします。記載内容や計算に誤りはないか、計上されている金額は適切か、経費とみなされない費用が含まれていないかなど、しっかりと精査が必要です。経理担当者によるチェックで漏れやミスが見つかった場合は、差し戻しとなります。
-
--6. 小口現金や振込などで精算する
-経理担当者によるチェックで問題なければ、従業員に精算金が支給されます。精算方法は、小口現金での支払いや銀行振込、翌月の給与と合算しての支払いなど、会社によって異なります。`;
       }
       if (summaryText) {
         typeText(summaryText, 0, () => {
@@ -475,51 +461,15 @@ function createScenario(cardNumber) {
                   }
                 } else {
                   // Các cardNumber khác vẫn giữ nguyên hiệu ứng typing
+                  document.getElementById("menu-buttons").classList.remove("d-none");
+                  typeText("手順の詳細は以下の通りです。", 0, () => {
+                      showStepsSequentially();
+                  }, "flow-explanation-text");
                   typeText(
                     explanationText,
                     0,
                     () => {
-                      if (summarySubText) {
-                        setTimeout(() => {
-                          summarySubSection.classList.remove("d-none");
-                          summarySubSection.classList.add("fade-in");
-                          typeText(
-                            summarySubText,
-                            0,
-                            () => {
-                              if (svgContentSub) {
-                                setTimeout(() => {
-                                  flowSubSection.classList.remove("d-none");
-                                  flowSubSection.classList.add("fade-in");
-                                  const flowContainerSub =
-                                    document.getElementById(
-                                      "flow-container-sub"
-                                    );
-                                  flowContainerSub.innerHTML = svgContentSub;
 
-                                  if (explanationTextSub) {
-                                    setTimeout(() => {
-                                      flowExplanationSubSection.classList.remove(
-                                        "d-none"
-                                      );
-                                      flowExplanationSubSection.classList.add(
-                                        "fade-in"
-                                      );
-                                      typeText(
-                                        explanationTextSub,
-                                        0,
-                                        () => {},
-                                        "flow-explanation-text-sub-section"
-                                      );
-                                    }, 500);
-                                  }
-                                }, 500);
-                              }
-                            },
-                            "typing-text-sub-section"
-                          );
-                        }, 500);
-                      }
                     },
                     "flow-explanation-text"
                   );
