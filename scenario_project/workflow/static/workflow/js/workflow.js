@@ -141,7 +141,7 @@ function createScenario(cardNumber) {
   if (cardNumber === 3) {
     summaryTitle.textContent = "マニュアル";
   } else {
-    summaryTitle.textContent = "まとめ";
+    summaryTitle.textContent = "シナリオ";
   }
   // Ẩn các section khác với hiệu ứng fade
   [
@@ -422,7 +422,7 @@ function createScenario(cardNumber) {
         ];
         svgContentSub = createFlowSVG(flowStepsSub, "#f7b066");
 
-        explanationTextSub = `-1. 出張前に従業員���旅費の申請をする
+        explanationTextSub = `-1. 出張前に従業員が仮払申請書を提出する
         出張する従業員は、事前に必要な金額を上司または経理部に申請します。出張にかかる費用は高額になることが多いため、事前に申請しておことで後の旅費精算がスムースになります。
 
 -2. 出張中の経費を立て替える
