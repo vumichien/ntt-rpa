@@ -132,27 +132,76 @@ function showStepsSequentially(stepIndex = 0) {
     ];
 
     const menuButtons = document.getElementById("menu-buttons");
-    const button = document.createElement("button");
+    const flowExplanation = document.getElementById("flow-explanation-text");
 
-    if (stepIndex < explanations.length) {
-        // Tạo nút menu tương ứng với step hiện tại
-        button.className = "btn btn-outline-primary w-100 mb-2";
-        button.textContent = `${stepIndex + 1}. ${explanations[stepIndex].split('\n')[0]}`;
-        button.addEventListener("click", () => {
-            // Khi click nút, hiển thị nội dung tương ứng trong flow-explanation
-            const flowExplanation = document.getElementById("flow-explanation-text");
-            flowExplanation.innerHTML = ""; // Reset nội dung cũ
-            typeText(explanations[stepIndex], 0, () => {}, "flow-explanation-text");
-        });
-        menuButtons.appendChild(button);
-
-        // Hiển thị nội dung trong flow-explanation
-        typeText(explanations[stepIndex], 0, () => {
-            // Sau khi nội dung hoàn tất, gọi lại showStepsSequentially cho step tiếp theo
-            showStepsSequentially(stepIndex + 1);
-        }, "flow-explanation-text");
+    // Reset nội dung menu và giải thích
+    if (stepIndex === 0) {
+        menuButtons.innerHTML = `<h5 class="text-center mb-3">事前仮払精算のマニュアル</h5>`;
+        flowExplanation.innerHTML = ""; // Xóa các phần giải thích cũ (chỉ reset 1 lần)
     }
+
+    // Tạo menu item cho bước hiện tại
+    const menuCard = document.createElement("div");
+    menuCard.className = "menu-card";
+    menuCard.id = `menu-${stepIndex + 1}`;
+
+    // Biểu tượng
+    const icon = document.createElement("div");
+    icon.className = "menu-icon";
+    icon.textContent = stepIndex + 1;
+
+    // Văn bản menu
+    const text = document.createElement("div");
+    text.className = "menu-text";
+    text.textContent = explanations[stepIndex].split("\n")[0];
+
+    menuCard.appendChild(icon);
+    menuCard.appendChild(text);
+
+    // Sự kiện click vào menu
+    menuCard.addEventListener("click", () => {
+        // Đặt menu trạng thái active
+        document.querySelectorAll(".menu-card").forEach((card) => card.classList.remove("active"));
+        menuCard.classList.add("active");
+
+        // Focus và highlight phần giải thích tương ứng
+        document.querySelectorAll(".explanation-step").forEach((step) => step.classList.remove("highlight"));
+        const target = document.getElementById(`step-${stepIndex + 1}`);
+        if (target) {
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            target.classList.add("highlight");
+        }
+    });
+
+    menuButtons.appendChild(menuCard); // Thêm menu vào danh sách
+
+    // Tạo phần giải thích cho bước hiện tại
+    const explanationDiv = document.createElement("div");
+    explanationDiv.id = `step-${stepIndex + 1}`;
+    explanationDiv.className = "explanation-step";
+    flowExplanation.appendChild(explanationDiv);
+
+    // Đặt menu active và chạy typeText
+    menuCard.classList.add("active");
+
+    const explanationWithStep = `<strong>${stepIndex + 1}. </strong>${explanations[stepIndex]}`;
+    typeText(
+        explanationWithStep,
+        0,
+        () => {
+            // Khi hoàn thành typeText, highlight phần giải thích và hiển thị menu tiếp theo
+            explanationDiv.classList.add("highlight");
+            explanationDiv.scrollIntoView({ behavior: "smooth", block: "start" });
+
+            // Sau khi xong phần hiện tại, hiển thị bước tiếp theo nếu có
+            if (stepIndex + 1 < explanations.length) {
+                setTimeout(() => showStepsSequentially(stepIndex + 1), 500); // Delay trước khi hiển thị menu tiếp theo
+            }
+        },
+        explanationDiv.id
+    );
 }
+
 
 
 
@@ -395,9 +444,7 @@ function createScenario(cardNumber) {
     </table>
 </div>`;
       } else if (cardNumber === 3) {
-        summaryText = `<strong>旅費精算</strong>を行うには、出張する従業員に前もって概算で旅費を渡しておく<strong>「事前仮払い精算」</strong>と、いったん従業員が全額を立て替えてから後日精算する<strong>「事後精算」</strong>の、大きく2つの方法があります。
-                
-                <strong>事前仮払精算</strong>
+        summaryText = `<strong>事前仮払精算</strong>
                 仮払いは、出張にかかる費用を概算で見積もり、あらかじめ従業員に渡しておく方法です。
 
 仮払いで旅費精算を行う流れは、下記のとおりです。`;
@@ -469,17 +516,7 @@ function createScenario(cardNumber) {
                 } else {
                   // Các cardNumber khác vẫn giữ nguyên hiệu ứng typing
                   document.getElementById("menu-buttons").classList.remove("d-none");
-                  typeText("手順の詳細は以下の通りです。", 0, () => {
-                      showStepsSequentially();
-                  }, "flow-explanation-text");
-                  typeText(
-                    explanationText,
-                    0,
-                    () => {
-
-                    },
-                    "flow-explanation-text"
-                  );
+                  showStepsSequentially(0);
                 }
               }, 500);
             }
