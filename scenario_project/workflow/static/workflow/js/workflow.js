@@ -97,11 +97,6 @@ function showCard(cardNumber) {
   document.getElementById("summary-section").classList.add("d-none");
   document.getElementById("flow-section").classList.add("d-none");
   document.getElementById("flow-explanation").classList.add("d-none");
-  document.getElementById("summary-sub-section").classList.add("d-none");
-  document.getElementById("flow-section-sub").classList.add("d-none");
-  document
-    .getElementById("flow-explanation-sub-section")
-    .classList.add("d-none");
   document.getElementById("sample-image-section").classList.add("d-none");
 
   // Xóa trạng thái active của tất cả các card
@@ -124,6 +119,12 @@ function showCard(cardNumber) {
   } else if (cardNumber === 3) {
     document.getElementById("card3-section").classList.remove("d-none");
   }
+
+  // Hide manual menu when switching cards
+  const manualMenu = document.getElementById("manual-menu");
+  if (manualMenu) {
+    manualMenu.classList.add("d-none");
+  }
 }
 
 function createScenario(cardNumber) {
@@ -131,12 +132,7 @@ function createScenario(cardNumber) {
   const summarySection = document.getElementById("summary-section");
   const flowSection = document.getElementById("flow-section");
   const flowExplanation = document.getElementById("flow-explanation");
-  const summarySubSection = document.getElementById("summary-sub-section");
-  const flowSubSection = document.getElementById("flow-section-sub");
   const summaryTitle = document.getElementById("summary-title");
-  const flowExplanationSubSection = document.getElementById(
-    "flow-explanation-sub-section"
-  );
   const sampleImageSection = document.getElementById("sample-image-section");
   if (cardNumber === 3) {
     summaryTitle.textContent = "マニュアル";
@@ -144,21 +140,17 @@ function createScenario(cardNumber) {
     summaryTitle.textContent = "シナリオ";
   }
   // Ẩn các section khác với hiệu ứng fade
-  [
-    summarySection,
-    flowSection,
-    flowExplanation,
-    summarySubSection,
-    sampleImageSection,
-  ].forEach((section) => {
-    if (!section.classList.contains("d-none")) {
-      section.classList.add("fade-out");
-      setTimeout(() => {
-        section.classList.add("d-none");
-        section.classList.remove("fade-out");
-      }, 500);
+  [summarySection, flowSection, flowExplanation, sampleImageSection].forEach(
+    (section) => {
+      if (!section.classList.contains("d-none")) {
+        section.classList.add("fade-out");
+        setTimeout(() => {
+          section.classList.add("d-none");
+          section.classList.remove("fade-out");
+        }, 500);
+      }
     }
-  });
+  );
 
   // Hiện processing
   processingElement.classList.remove("d-none");
@@ -177,9 +169,6 @@ function createScenario(cardNumber) {
       let summaryText = "";
       let svgContent = "";
       let explanationText = "";
-      let summarySubText = "";
-      let svgContentSub = "";
-      let explanationTextSub = "";
 
       if (cardNumber === 1) {
         summaryText = `この画面は、<strong>旅費精算申請</strong>を行うためのフォームです。申請者情報、出張期間、目的地、目的、旅費明細などの情報を入力することで、上司に申請を提出できます。
@@ -372,8 +361,7 @@ function createScenario(cardNumber) {
     </table>
 </div>`;
       } else if (cardNumber === 3) {
-        summaryText = `<strong>旅費精算</strong>を行うには、出張する従業員に前もって概算で旅費を渡しておく<strong>「事前仮払い精算」</strong>と、いったん従業員が全額を立て替えてから後日精算する<strong>「事後精算」</strong>の、大きく2つの方法があります。どちらの方法を選ぶかで、旅費精算の流れは変わります。
-                ここでは、旅費精算の2つの方法について、それぞれ説明します。
+        summaryText = `<strong>旅費精算</strong>を行うには、出張する従業員に前もって概算で旅費を渡しておく<strong>「事前仮払い精算」</strong>という方法があります。
                 
                 <strong>事前仮払精算</strong>
                 仮払いは、出張にかかる費用を概算で見積もり、あらかじめ従業員に渡しておく方法です。出張を終え、実際にかかった金額と仮払い金額に差額があった場合は、追加支給や返金などの精算を行います。
@@ -407,60 +395,24 @@ function createScenario(cardNumber) {
 
 -5. 仮払いした額と実費との差額を精算する
 業員が作成した仮払経費精算書は、上司の承認を経て、領収書などとともに経理部に提出されます。経理担当者は内容を確認し、仮払金に余剰や不足があった場合は返金や追加支払いを行います。`;
-
-        summarySubText = `<strong>事後精算</strong>
-        事後精算は、出張にかかる費用を従業員が立て替え、後日、実費精算をする方法です。出張にかかる費用は従業員が一時的に自費で支払い、後日その領収書を会社に提出して、立て替えたお金の払い戻しを受けます。事後精算方式は、精算処理が一度で済むため事務手続きがシンプルです。しかし、実際に旅費精算を行うまでの間、従業員に金銭的な負担をかけることになります。
-        事後精算の場合は、下記のような流れで旅費精算を行います。`;
-
-        const flowStepsSub = [
-          "1.出張前に従業員が旅費の申請をする",
-          "2.出張中の経費を立て替える",
-          "3.領収書をもとに従業員が旅費精算書を作成する",
-          "4.旅費精算書を提出し、上司の承認を得る",
-          "5.経理部が旅費精算書を確認する",
-          "6.小口現金や振込などで精算する",
-        ];
-        svgContentSub = createFlowSVG(flowStepsSub, "#f7b066");
-
-        explanationTextSub = `-1. 出張前に従業員が仮払申請書を提出する
-        出張する従業員は、事前に必要な金額を上司または経理部に申請します。出張にかかる費用は高額になることが多いため、事前に申請しておことで後の旅費精算がスムースになります。
-
--2. 出張中の経費を立て替える
-出張中は、必要な費用を従業員が立て替えて支払います。立替払いにあたって受け取った領収書やレシートは、必ず保管しておかなければなりません。
-
--3. 領収書をもとに従業員が旅費精算書を作成する
-出張から戻った従業員は、領収書などをもとに旅費精算書を作成します。旅費精算書には、費用の項目や目的、金額などを漏れなく記載します。
-
--4. 旅費精算書を提出し、上司の承認を得る
-従業員は作成した旅費精算書を領収書に上司に提出します。上司は事前申請と旅費精算書を比較し、予定外の支出がないかなどを確認します。確認後、問題がなければ、上司の承認を経て経理部に旅費精算書が提出されます。
-
--5. 経理部が旅費精算書を確認する
-経理担当者は、提出された旅費精算書を細かくチェックします。記載内容や計算に誤りはないか、計上されている金額は適切か、経費とみなされない費用が含まれていないかなど、しっかりと精査が必要です。経理担当者によるチェックで漏れやミスが見つかった場合は、差し戻しとなります。
-
--6. 小口現金や振込などで精算する
-経理担当者によるチェックで問題なければ、従業員に精算金が支給されます。精算方法は、小口現金での支払いや銀行振込、翌月の給与と合算しての支払いなど、会社によって異なります。`;
       }
       if (summaryText) {
         typeText(summaryText, 0, () => {
-          // Sau khi summaryText hoàn thành, hiện flowSection
           if (svgContent) {
             flowSection.classList.remove("d-none");
             flowSection.classList.add("fade-in");
             const flowContainer = document.getElementById("flow-container");
             flowContainer.innerHTML = svgContent;
 
-            // Sau khi flowSection hiện, hiện explanationText
             if (explanationText) {
               setTimeout(() => {
                 flowExplanation.classList.remove("d-none");
                 flowExplanation.classList.add("fade-in");
 
-                // Nếu là cardNumber 1 hoặc 2
                 if (cardNumber === 1 || cardNumber === 2) {
                   document.getElementById("flow-explanation-text").innerHTML =
                     explanationText;
 
-                  // Chỉ hiện sample image section cho cardNumber === 1
                   if (cardNumber === 1) {
                     const sampleImageSection = document.getElementById(
                       "sample-image-section"
@@ -469,63 +421,115 @@ function createScenario(cardNumber) {
                       sampleImageSection.classList.remove("d-none");
                       sampleImageSection.classList.add("fade-in");
 
-                      // Sau khi hiện ảnh xong, mới hiện explanation
                       setTimeout(() => {
                         flowExplanation.classList.remove("d-none");
                         flowExplanation.classList.add("fade-in");
                       }, 500);
                     }, 500);
                   }
-                } else {
-                  // Các cardNumber khác vẫn giữ nguyên hiệu ứng typing
-                  typeText(
-                    explanationText,
-                    0,
-                    () => {
-                      if (summarySubText) {
-                        setTimeout(() => {
-                          summarySubSection.classList.remove("d-none");
-                          summarySubSection.classList.add("fade-in");
-                          typeText(
-                            summarySubText,
-                            0,
-                            () => {
-                              if (svgContentSub) {
-                                setTimeout(() => {
-                                  flowSubSection.classList.remove("d-none");
-                                  flowSubSection.classList.add("fade-in");
-                                  const flowContainerSub =
-                                    document.getElementById(
-                                      "flow-container-sub"
-                                    );
-                                  flowContainerSub.innerHTML = svgContentSub;
+                } else if (cardNumber === 3) {
+                  // First, make sure flow-explanation and manual-menu are visible
+                  flowExplanation.classList.remove("d-none");
+                  flowExplanation.classList.add("fade-in");
 
-                                  if (explanationTextSub) {
-                                    setTimeout(() => {
-                                      flowExplanationSubSection.classList.remove(
-                                        "d-none"
-                                      );
-                                      flowExplanationSubSection.classList.add(
-                                        "fade-in"
-                                      );
-                                      typeText(
-                                        explanationTextSub,
-                                        0,
-                                        () => {},
-                                        "flow-explanation-text-sub-section"
-                                      );
-                                    }, 500);
-                                  }
-                                }, 500);
-                              }
-                            },
-                            "typing-text-sub-section"
-                          );
-                        }, 500);
-                      }
-                    },
+                  // Show manual menu for card 3
+                  const manualMenu = document.getElementById("manual-menu");
+                  manualMenu.classList.remove("d-none");
+
+                  // Then create and show menu items
+                  const menuItems =
+                    document.getElementById("manual-menu-items");
+                  menuItems.innerHTML = ""; // Clear existing items
+
+                  // Extract steps from the text
+                  const steps = explanationText
+                    .split("-")
+                    .filter((step) => step.trim());
+                  const explanationElement = document.getElementById(
                     "flow-explanation-text"
                   );
+                  explanationElement.innerHTML = ""; // Clear existing content
+
+                  // Function to show each step and its explanation
+                  function showStepAndExplanation(index) {
+                    if (index >= steps.length) return;
+
+                    const step = steps[index];
+                    const firstLine = step.split("\n")[0].trim();
+
+                    // Create menu item
+                    const menuItem = document.createElement("a");
+                    menuItem.href = "#";
+                    menuItem.className = "nav-link text-dark";
+                    menuItem.textContent = firstLine;
+                    menuItem.onclick = (e) => {
+                      e.preventDefault();
+
+                      // Remove active class from all menu items
+                      menuItems
+                        .querySelectorAll(".nav-link")
+                        .forEach((item) => {
+                          item.classList.remove("active");
+                        });
+
+                      // Add active class to clicked item
+                      menuItem.classList.add("active");
+
+                      // Find and scroll to the corresponding section
+                      const sections = explanationElement.querySelectorAll(
+                        ".explanation-section"
+                      );
+                      if (sections[index]) {
+                        sections[index].scrollIntoView({
+                          behavior: "smooth",
+                          block: "center",
+                        });
+                      }
+                    };
+
+                    // Add menu item with fade-in effect
+                    menuItem.style.opacity = "0";
+                    menuItems.appendChild(menuItem);
+                    setTimeout(() => {
+                      menuItem.style.transition = "opacity 0.5s";
+                      menuItem.style.opacity = "1";
+                    }, 100);
+
+                    // Create explanation section
+                    const sectionDiv = document.createElement("div");
+                    sectionDiv.className = "explanation-section mb-4";
+                    sectionDiv.style.opacity = "0";
+
+                    // Use typeText for the explanation content
+                    const typingDiv = document.createElement("div");
+                    sectionDiv.appendChild(typingDiv);
+                    explanationElement.appendChild(sectionDiv);
+
+                    // Show explanation section with fade-in effect
+                    setTimeout(() => {
+                      sectionDiv.style.transition = "opacity 0.5s";
+                      sectionDiv.style.opacity = "1";
+
+                      // Type the text for this section
+                      typeText(
+                        step,
+                        0,
+                        () => {
+                          // After typing is complete, show next step
+                          setTimeout(() => {
+                            showStepAndExplanation(index + 1);
+                          }, 500);
+                        },
+                        (typingDiv.id = `typing-section-${index}`)
+                      );
+                    }, 500);
+                  }
+
+                  // Start showing steps
+                  showStepAndExplanation(0);
+
+                  // Initialize editor after content is loaded
+                  initializeEditor();
                 }
               }, 500);
             }
@@ -619,4 +623,141 @@ function downloadScenarioSVG() {
   link.href = URL.createObjectURL(blob);
   link.download = "scenario.svg";
   link.click();
+}
+
+function initializeEditor() {
+  const explanationText = document.getElementById("flow-explanation-text");
+  const toolbarTemplate = document.getElementById("editor-toolbar");
+  let toolbar = null;
+
+  // Function to show toolbar
+  function showToolbar(e) {
+    const selection = window.getSelection();
+    if (selection.toString().length > 0) {
+      if (!toolbar) {
+        toolbar = toolbarTemplate.content.cloneNode(true).firstElementChild;
+        document.body.appendChild(toolbar);
+
+        // Add event listeners to toolbar buttons
+        toolbar.querySelectorAll("button").forEach((button) => {
+          button.addEventListener("click", (e) => {
+            e.preventDefault();
+            const command = button.dataset.command;
+
+            if (command === "delete") {
+              const selection = window.getSelection();
+              selection.getRangeAt(0).deleteContents();
+            } else {
+              formatText(command);
+            }
+            hideToolbar();
+          });
+        });
+      }
+
+      const rect = selection.getRangeAt(0).getBoundingClientRect();
+      toolbar.style.display = "block";
+      toolbar.style.top = `${
+        window.scrollY + rect.top - toolbar.offsetHeight - 10
+      }px`;
+      toolbar.style.left = `${window.scrollX + rect.left}px`;
+    }
+  }
+
+  // Function to hide toolbar
+  function hideToolbar() {
+    if (toolbar) {
+      toolbar.style.display = "none";
+    }
+  }
+
+  // Add event listeners
+  explanationText.addEventListener("mouseup", showToolbar);
+  document.addEventListener("mousedown", (e) => {
+    if (toolbar && !toolbar.contains(e.target)) {
+      hideToolbar();
+    }
+  });
+}
+
+function formatText(command) {
+  const selection = window.getSelection();
+  if (!selection.toString()) return;
+
+  const range = selection.getRangeAt(0);
+  const container = range.commonAncestorContainer;
+  let allTextHasFormat = true;
+
+  // Function to check if a node has the specified format
+  function hasFormat(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const parent = node.parentElement;
+      if (!parent || parent.tagName !== "SPAN") return false;
+
+      const style = window.getComputedStyle(parent);
+      switch (command) {
+        case "bold":
+          return style.fontWeight === "700";
+        case "underline":
+          return style.textDecoration.includes("underline");
+        case "highlight":
+          return style.backgroundColor === "rgb(255, 243, 205)";
+        default:
+          return false;
+      }
+    }
+    return false;
+  }
+
+  // Check all text nodes in the selection
+  const nodeIterator = document.createNodeIterator(
+    container,
+    NodeFilter.SHOW_TEXT,
+    {
+      acceptNode: function (node) {
+        return range.intersectsNode(node)
+          ? NodeFilter.FILTER_ACCEPT
+          : NodeFilter.FILTER_REJECT;
+      },
+    }
+  );
+
+  let currentNode;
+  while ((currentNode = nodeIterator.nextNode())) {
+    if (currentNode.textContent.trim() && !hasFormat(currentNode)) {
+      allTextHasFormat = false;
+      break;
+    }
+  }
+
+  const selectedText = range.toString();
+  range.deleteContents();
+
+  if (allTextHasFormat) {
+    // If all text has the format, remove it
+    const textNode = document.createTextNode(selectedText);
+    range.insertNode(textNode);
+  } else {
+    // Apply format to the entire selection
+    const span = document.createElement("span");
+    switch (command) {
+      case "bold":
+        span.style.fontWeight = "bold";
+        break;
+      case "underline":
+        span.style.textDecoration = "underline";
+        break;
+      case "highlight":
+        span.style.backgroundColor = "#fff3cd";
+        span.style.padding = "2px 4px";
+        span.style.borderRadius = "2px";
+        break;
+    }
+    span.textContent = selectedText;
+    range.insertNode(span);
+  }
+
+  // Update selection
+  selection.removeAllRanges();
+  selection.addRange(range);
 }
