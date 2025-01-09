@@ -96,7 +96,6 @@ function showCard(cardNumber) {
   document.getElementById("processing").classList.add("d-none");
   document.getElementById("summary-section").classList.add("d-none");
   document.getElementById("flow-section").classList.add("d-none");
-  document.getElementById("menu-buttons").classList.add("d-none");
   document.getElementById("flow-explanation").classList.add("d-none");
   document.getElementById("sample-image-section").classList.add("d-none");
 
@@ -120,90 +119,13 @@ function showCard(cardNumber) {
   } else if (cardNumber === 3) {
     document.getElementById("card3-section").classList.remove("d-none");
   }
+
+  // Hide manual menu when switching cards
+  const manualMenu = document.getElementById("manual-menu");
+  if (manualMenu) {
+    manualMenu.classList.add("d-none");
+  }
 }
-
-function showStepsSequentially(stepIndex = 0) {
-    const explanations = [
-        "出張前に従業員が仮払申請書を提出する\n従業員は仮払申請書を提出し、旅費の仮払いを申請します。仮払申請書には、出張の日程や移動ルート、交通手段などから計算した概算費用の金額を記載します。",
-        "経理部が必要費用を確認する\n経理部は申請内容を確認し、必要費用が妥当かどうか、申請書に漏れがないかをチェックします。",
-        "従業員に仮払分の金額を渡す\n経理部は申請された金額を従業員に支払います。従業員の受領印などで、仮払いを確認します。",
-        "出張後に仮払経費精算書を提出する\n出張から戻った従業員は、実際にかかった費用の領収書を基に、仮払経費精算書を作成します。",
-        "仮払いした額と実費との差額を精算する\n経理部は仮払経費精算書を確認し、余剰や不足を精算します。"
-    ];
-
-    const menuButtons = document.getElementById("menu-buttons");
-    const flowExplanation = document.getElementById("flow-explanation-text");
-
-    // Reset nội dung menu và giải thích
-    if (stepIndex === 0) {
-        menuButtons.innerHTML = `<h5 class="text-center mb-3">事前仮払精算のマニュアル</h5>`;
-        flowExplanation.innerHTML = ""; // Xóa các phần giải thích cũ (chỉ reset 1 lần)
-    }
-
-    // Tạo menu item cho bước hiện tại
-    const menuCard = document.createElement("div");
-    menuCard.className = "menu-card";
-    menuCard.id = `menu-${stepIndex + 1}`;
-
-    // Biểu tượng
-    const icon = document.createElement("div");
-    icon.className = "menu-icon";
-    icon.textContent = stepIndex + 1;
-
-    // Văn bản menu
-    const text = document.createElement("div");
-    text.className = "menu-text";
-    text.textContent = explanations[stepIndex].split("\n")[0];
-
-    menuCard.appendChild(icon);
-    menuCard.appendChild(text);
-
-    // Sự kiện click vào menu
-    menuCard.addEventListener("click", () => {
-        // Đặt menu trạng thái active
-        document.querySelectorAll(".menu-card").forEach((card) => card.classList.remove("active"));
-        menuCard.classList.add("active");
-
-        // Focus và highlight phần giải thích tương ứng
-        document.querySelectorAll(".explanation-step").forEach((step) => step.classList.remove("highlight"));
-        const target = document.getElementById(`step-${stepIndex + 1}`);
-        if (target) {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
-            target.classList.add("highlight");
-        }
-    });
-
-    menuButtons.appendChild(menuCard); // Thêm menu vào danh sách
-
-    // Tạo phần giải thích cho bước hiện tại
-    const explanationDiv = document.createElement("div");
-    explanationDiv.id = `step-${stepIndex + 1}`;
-    explanationDiv.className = "explanation-step";
-    flowExplanation.appendChild(explanationDiv);
-
-    // Đặt menu active và chạy typeText
-    menuCard.classList.add("active");
-
-    const explanationWithStep = `<strong>${stepIndex + 1}. </strong>${explanations[stepIndex]}`;
-    typeText(
-        explanationWithStep,
-        0,
-        () => {
-            // Khi hoàn thành typeText, highlight phần giải thích và hiển thị menu tiếp theo
-            explanationDiv.classList.add("highlight");
-            explanationDiv.scrollIntoView({ behavior: "smooth", block: "start" });
-
-            // Sau khi xong phần hiện tại, hiển thị bước tiếp theo nếu có
-            if (stepIndex + 1 < explanations.length) {
-                setTimeout(() => showStepsSequentially(stepIndex + 1), 500); // Delay trước khi hiển thị menu tiếp theo
-            }
-        },
-        explanationDiv.id
-    );
-}
-
-
-
 
 function createScenario(cardNumber) {
   const processingElement = document.getElementById("processing");
@@ -212,28 +134,23 @@ function createScenario(cardNumber) {
   const flowExplanation = document.getElementById("flow-explanation");
   const summaryTitle = document.getElementById("summary-title");
   const sampleImageSection = document.getElementById("sample-image-section");
-  const menuButtons = document.getElementById("menu-buttons");
-  menuButtons.innerHTML = ""; // Xóa menu cũ (nếu có)
   if (cardNumber === 3) {
     summaryTitle.textContent = "マニュアル";
   } else {
-    summaryTitle.textContent = "まとめ";
+    summaryTitle.textContent = "シナリオ";
   }
   // Ẩn các section khác với hiệu ứng fade
-  [
-    summarySection,
-    flowSection,
-    flowExplanation,
-    sampleImageSection,
-  ].forEach((section) => {
-    if (!section.classList.contains("d-none")) {
-      section.classList.add("fade-out");
-      setTimeout(() => {
-        section.classList.add("d-none");
-        section.classList.remove("fade-out");
-      }, 500);
+  [summarySection, flowSection, flowExplanation, sampleImageSection].forEach(
+    (section) => {
+      if (!section.classList.contains("d-none")) {
+        section.classList.add("fade-out");
+        setTimeout(() => {
+          section.classList.add("d-none");
+          section.classList.remove("fade-out");
+        }, 500);
+      }
     }
-  });
+  );
 
   // Hiện processing
   processingElement.classList.remove("d-none");
@@ -444,8 +361,12 @@ function createScenario(cardNumber) {
     </table>
 </div>`;
       } else if (cardNumber === 3) {
-        summaryText = `<strong>事前仮払精算</strong>
-                仮払いは、出張にかかる費用を概算で見積もり、あらかじめ従業員に渡しておく方法です。
+        summaryText = `<strong>旅費精算</strong>を行うには、出張する従業員に前もって概算で旅費を渡しておく<strong>「事前仮払い精算」</strong>という方法があります。
+                
+                <strong>事前仮払精算</strong>
+                仮払いは、出張にかかる費用を概算で見積もり、あらかじめ従業員に渡しておく方法です。出張を終え、実際にかかった金額と仮払い金額に差額があった場合は、追加支給や返金などの精算を行います。
+
+特に海外出張や長期出張などの場合、かかる費用はかなり高額になることが予想されます。時的とはいえ、その費用を出張が終わるまですべて従業員に立て替えさせるのは無理があるでしょう。「事前仮払方式」なら、出張中に必要な費用を事前に渡しておけるので、従業員に金銭的な負担をかけずに済みます。ただし、出張前と出張後にそれぞれ処理が必要になるため、そのぶん手間がかかります。
 
 仮払いで旅費精算を行う流れは、下記のとおりです。`;
 
@@ -474,30 +395,24 @@ function createScenario(cardNumber) {
 
 -5. 仮払いした額と実費との差額を精算する
 業員が作成した仮払経費精算書は、上司の承認を経て、領収書などとともに経理部に提出されます。経理担当者は内容を確認し、仮払金に余剰や不足があった場合は返金や追加支払いを行います。`;
-
-
       }
       if (summaryText) {
         typeText(summaryText, 0, () => {
-          // Sau khi summaryText hoàn thành, hiện flowSection
           if (svgContent) {
             flowSection.classList.remove("d-none");
             flowSection.classList.add("fade-in");
             const flowContainer = document.getElementById("flow-container");
             flowContainer.innerHTML = svgContent;
 
-            // Sau khi flowSection hiện, hiện explanationText
             if (explanationText) {
               setTimeout(() => {
                 flowExplanation.classList.remove("d-none");
                 flowExplanation.classList.add("fade-in");
 
-                // Nếu là cardNumber 1 hoặc 2
                 if (cardNumber === 1 || cardNumber === 2) {
                   document.getElementById("flow-explanation-text").innerHTML =
                     explanationText;
 
-                  // Chỉ hiện sample image section cho cardNumber === 1
                   if (cardNumber === 1) {
                     const sampleImageSection = document.getElementById(
                       "sample-image-section"
@@ -506,17 +421,115 @@ function createScenario(cardNumber) {
                       sampleImageSection.classList.remove("d-none");
                       sampleImageSection.classList.add("fade-in");
 
-                      // Sau khi hiện ảnh xong, mới hiện explanation
                       setTimeout(() => {
                         flowExplanation.classList.remove("d-none");
                         flowExplanation.classList.add("fade-in");
                       }, 500);
                     }, 500);
                   }
-                } else {
-                  // Các cardNumber khác vẫn giữ nguyên hiệu ứng typing
-                  document.getElementById("menu-buttons").classList.remove("d-none");
-                  showStepsSequentially(0);
+                } else if (cardNumber === 3) {
+                  // First, make sure flow-explanation and manual-menu are visible
+                  flowExplanation.classList.remove("d-none");
+                  flowExplanation.classList.add("fade-in");
+
+                  // Show manual menu for card 3
+                  const manualMenu = document.getElementById("manual-menu");
+                  manualMenu.classList.remove("d-none");
+
+                  // Then create and show menu items
+                  const menuItems =
+                    document.getElementById("manual-menu-items");
+                  menuItems.innerHTML = ""; // Clear existing items
+
+                  // Extract steps from the text
+                  const steps = explanationText
+                    .split("-")
+                    .filter((step) => step.trim());
+                  const explanationElement = document.getElementById(
+                    "flow-explanation-text"
+                  );
+                  explanationElement.innerHTML = ""; // Clear existing content
+
+                  // Function to show each step and its explanation
+                  function showStepAndExplanation(index) {
+                    if (index >= steps.length) return;
+
+                    const step = steps[index];
+                    const firstLine = step.split("\n")[0].trim();
+
+                    // Create menu item
+                    const menuItem = document.createElement("a");
+                    menuItem.href = "#";
+                    menuItem.className = "nav-link text-dark";
+                    menuItem.textContent = firstLine;
+                    menuItem.onclick = (e) => {
+                      e.preventDefault();
+
+                      // Remove active class from all menu items
+                      menuItems
+                        .querySelectorAll(".nav-link")
+                        .forEach((item) => {
+                          item.classList.remove("active");
+                        });
+
+                      // Add active class to clicked item
+                      menuItem.classList.add("active");
+
+                      // Find and scroll to the corresponding section
+                      const sections = explanationElement.querySelectorAll(
+                        ".explanation-section"
+                      );
+                      if (sections[index]) {
+                        sections[index].scrollIntoView({
+                          behavior: "smooth",
+                          block: "center",
+                        });
+                      }
+                    };
+
+                    // Add menu item with fade-in effect
+                    menuItem.style.opacity = "0";
+                    menuItems.appendChild(menuItem);
+                    setTimeout(() => {
+                      menuItem.style.transition = "opacity 0.5s";
+                      menuItem.style.opacity = "1";
+                    }, 100);
+
+                    // Create explanation section
+                    const sectionDiv = document.createElement("div");
+                    sectionDiv.className = "explanation-section mb-4";
+                    sectionDiv.style.opacity = "0";
+
+                    // Use typeText for the explanation content
+                    const typingDiv = document.createElement("div");
+                    sectionDiv.appendChild(typingDiv);
+                    explanationElement.appendChild(sectionDiv);
+
+                    // Show explanation section with fade-in effect
+                    setTimeout(() => {
+                      sectionDiv.style.transition = "opacity 0.5s";
+                      sectionDiv.style.opacity = "1";
+
+                      // Type the text for this section
+                      typeText(
+                        step,
+                        0,
+                        () => {
+                          // After typing is complete, show next step
+                          setTimeout(() => {
+                            showStepAndExplanation(index + 1);
+                          }, 500);
+                        },
+                        (typingDiv.id = `typing-section-${index}`)
+                      );
+                    }, 500);
+                  }
+
+                  // Start showing steps
+                  showStepAndExplanation(0);
+
+                  // Initialize editor after content is loaded
+                  initializeEditor();
                 }
               }, 500);
             }
@@ -610,4 +623,141 @@ function downloadScenarioSVG() {
   link.href = URL.createObjectURL(blob);
   link.download = "scenario.svg";
   link.click();
+}
+
+function initializeEditor() {
+  const explanationText = document.getElementById("flow-explanation-text");
+  const toolbarTemplate = document.getElementById("editor-toolbar");
+  let toolbar = null;
+
+  // Function to show toolbar
+  function showToolbar(e) {
+    const selection = window.getSelection();
+    if (selection.toString().length > 0) {
+      if (!toolbar) {
+        toolbar = toolbarTemplate.content.cloneNode(true).firstElementChild;
+        document.body.appendChild(toolbar);
+
+        // Add event listeners to toolbar buttons
+        toolbar.querySelectorAll("button").forEach((button) => {
+          button.addEventListener("click", (e) => {
+            e.preventDefault();
+            const command = button.dataset.command;
+
+            if (command === "delete") {
+              const selection = window.getSelection();
+              selection.getRangeAt(0).deleteContents();
+            } else {
+              formatText(command);
+            }
+            hideToolbar();
+          });
+        });
+      }
+
+      const rect = selection.getRangeAt(0).getBoundingClientRect();
+      toolbar.style.display = "block";
+      toolbar.style.top = `${
+        window.scrollY + rect.top - toolbar.offsetHeight - 10
+      }px`;
+      toolbar.style.left = `${window.scrollX + rect.left}px`;
+    }
+  }
+
+  // Function to hide toolbar
+  function hideToolbar() {
+    if (toolbar) {
+      toolbar.style.display = "none";
+    }
+  }
+
+  // Add event listeners
+  explanationText.addEventListener("mouseup", showToolbar);
+  document.addEventListener("mousedown", (e) => {
+    if (toolbar && !toolbar.contains(e.target)) {
+      hideToolbar();
+    }
+  });
+}
+
+function formatText(command) {
+  const selection = window.getSelection();
+  if (!selection.toString()) return;
+
+  const range = selection.getRangeAt(0);
+  const container = range.commonAncestorContainer;
+  let allTextHasFormat = true;
+
+  // Function to check if a node has the specified format
+  function hasFormat(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const parent = node.parentElement;
+      if (!parent || parent.tagName !== "SPAN") return false;
+
+      const style = window.getComputedStyle(parent);
+      switch (command) {
+        case "bold":
+          return style.fontWeight === "700";
+        case "underline":
+          return style.textDecoration.includes("underline");
+        case "highlight":
+          return style.backgroundColor === "rgb(255, 243, 205)";
+        default:
+          return false;
+      }
+    }
+    return false;
+  }
+
+  // Check all text nodes in the selection
+  const nodeIterator = document.createNodeIterator(
+    container,
+    NodeFilter.SHOW_TEXT,
+    {
+      acceptNode: function (node) {
+        return range.intersectsNode(node)
+          ? NodeFilter.FILTER_ACCEPT
+          : NodeFilter.FILTER_REJECT;
+      },
+    }
+  );
+
+  let currentNode;
+  while ((currentNode = nodeIterator.nextNode())) {
+    if (currentNode.textContent.trim() && !hasFormat(currentNode)) {
+      allTextHasFormat = false;
+      break;
+    }
+  }
+
+  const selectedText = range.toString();
+  range.deleteContents();
+
+  if (allTextHasFormat) {
+    // If all text has the format, remove it
+    const textNode = document.createTextNode(selectedText);
+    range.insertNode(textNode);
+  } else {
+    // Apply format to the entire selection
+    const span = document.createElement("span");
+    switch (command) {
+      case "bold":
+        span.style.fontWeight = "bold";
+        break;
+      case "underline":
+        span.style.textDecoration = "underline";
+        break;
+      case "highlight":
+        span.style.backgroundColor = "#fff3cd";
+        span.style.padding = "2px 4px";
+        span.style.borderRadius = "2px";
+        break;
+    }
+    span.textContent = selectedText;
+    range.insertNode(span);
+  }
+
+  // Update selection
+  selection.removeAllRanges();
+  selection.addRange(range);
 }

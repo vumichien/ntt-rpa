@@ -370,81 +370,248 @@
             color: #495057;
             white-space: pre-line;
         }
-
-        #menu-buttons {
-            margin-top: 20px;
-        }
-
-        #menu-buttons h5 {
-            font-weight: bold;
-            color: #0d6efd;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .menu-card {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: white;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-            padding: 15px;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-
-
-        .menu-card:hover {
-            background: linear-gradient(135deg, #e9f7fe, #d1ecf1);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transform: translateY(-3px);
-        }
-
-        .menu-card .menu-icon {
-            width: 40px;
-            height: 40px;
-            background-color: #0d6efd;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .menu-card.active {
-            background: linear-gradient(135deg, #0d6efd, #0a58ca);
-            color: white;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .menu-card.active .menu-icon {
-            background-color: white;
-            color: #0d6efd;
-        }
-
-        .menu-text {
-            font-weight: 500;
-            font-size: 16px;
-            flex: 1;
-        }
-
-        .explanation-step {
-            margin-bottom: 20px;
+    
+        /* Add these to your existing styles */
+        .explanation-section {
             padding: 10px;
-            border-left: 4px solid #dee2e6;
-            background-color: #f8f9fa;
-            border-radius: 5px;
-            transition: background-color 0.3s, border-color 0.3s;
+            border-radius: 4px;
         }
-
-        .explanation-step.highlight {
-            background-color: #e9f7fe;
-            border-left-color: #0d6efd;
+    
+        .explanation-section:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+    
+        #manual-menu .nav-link {
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
+    
+        #flow-explanation-text {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+    
+        /* Update manual menu styles */
+        #manual-menu {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+        }
+    
+        #manual-menu .nav-link {
+            display: block;
+            padding: 8px 12px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            color: #495057;
+            text-decoration: none;
+        }
+    
+        #manual-menu .nav-link:hover {
+            background-color: rgba(13, 110, 253, 0.1);
+            color: #0d6efd !important;
+        }
+    
+        #manual-menu .nav-link.active {
+            background-color: #0d6efd;
+        }
+    
+        #manual-menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+    
+        .explanation-section {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+    
+        .explanation-section:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+    
+        #flow-explanation-text {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-left: 15px;
+        }
+    
+        /* Add border between menu and content */
+        @media (min-width: 768px) {
+            .col-md-3 {
+                border-right: 1px solid #dee2e6;
+            }
+        }
+    
+        /* Elegant explanation section styles */
+        #flow-explanation .border {
+            border-color: #e9ecef !important;
+        }
+    
+        /* Manual menu styles */
+        #manual-menu {
+            position: relative;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+    
+        #manual-menu::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -1px;
+            height: 100%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, #dee2e6, transparent);
+        }
+    
+        #manual-menu h6 {
+            font-size: 1.1rem;
+            color: #0d6efd;
+            position: relative;
+        }
+    
+        #manual-menu .nav-link {
+            display: block;
+            padding: 0.8rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: #495057;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+    
+        #manual-menu .nav-link:hover {
+            background-color: #fff;
+            color: #0d6efd;
+            border-color: #e9ecef;
+            transform: translateX(5px);
+        }
+    
+        #manual-menu .nav-link.active {
+            background-color: rgba(13, 110, 253, 0.1);
+            color: #0d6efd;
+            border-color: #e9ecef;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            font-weight: 500;
+        }
+    
+        /* Explanation text styles */
+        #flow-explanation-text {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 1rem;
+        }
+    
+        .explanation-section {
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+    
+        .explanation-section:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+        }
+    
+        /* Scrollbar styling */
+        #flow-explanation-text::-webkit-scrollbar {
+            width: 6px;
+        }
+    
+        #flow-explanation-text::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+    
+        #flow-explanation-text::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+    
+        #flow-explanation-text::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    
+        /* Add smooth transition for all elements */
+        #flow-explanation * {
+            transition: all 0.3s ease;
+        }
+    
+        /* Add responsive padding */
+        @media (min-width: 768px) {
+            #flow-explanation .border {
+                padding: 2rem;
+            }
+        }
+    
+        /* Remove text selection background */
+        ::selection {
+            background-color: rgba(13, 110, 253, 0.1);
+            color: inherit;
+        }
+    
+        /* For Firefox */
+        ::-moz-selection {
+            background-color: rgba(13, 110, 253, 0.1);
+            color: inherit;
+        }
+    
+        /* Ensure text remains visible when selected */
+        #flow-explanation-text {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+    
+        /* Add these styles */
+        .editor-toolbar {
+            position: absolute;
+            display: none;
+            z-index: 1000;
+            background: white !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+    
+        .editor-toolbar .btn-group {
+            display: inline-flex;
+        }
+    
+        .editor-toolbar button {
+            padding: 0.25rem 0.5rem;
+        }
+    
+        .editor-toolbar button:hover {
+            background-color: #e9ecef;
+        }
+    
+        /* Style for highlighted text */
+        .highlighted {
+            background-color: #fff3cd;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+    
+        /* Make content editable area look better */
+        [contenteditable="true"] {
+            outline: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+    
+        [contenteditable="true"]:focus {
+            background-color: #fff;
+            box-shadow: inset 0 0 0 2px rgba(13, 110, 253, 0.1);
         }
     </style>
 </head>
@@ -617,7 +784,7 @@
         </div>
         <!-- Summary -->
         <div id="summary-section" class="d-none mt-4">
-            <h5 class="form-label mb-3" id="summary-title">まとめ</h5>
+            <h5 class="form-label mb-3" id="summary-title">シナリオ</h5>
             <div class="border rounded p-3 bg-light">
                 <div id="typing-text" class="mb-3"></div>
             </div>
@@ -636,22 +803,46 @@
             </div>
         </div>
         <!-- フローの説明 -->
-        <div class="row">
-            <div class="col-md-3">
-                <!-- Menu buttons -->
-                <div id="menu-buttons" class="d-none">
-
-                </div>
-            </div>
-            <div class="col-md-9">
-                <!-- Existing explanation container -->
-                <div id="flow-explanation" class="d-none mt-4">
-                    <div class="border rounded p-3 bg-light">
-                        <div id="flow-explanation-text" class="mb-3"></div>
+        <div id="flow-explanation" class="d-none mt-4">
+            <div class="border rounded p-4 bg-white shadow-sm">
+                <div class="row g-4">
+                    <!-- Manual menu column -->
+                    <div class="col-md-3">
+                        <div id="manual-menu" class="d-none">
+                            <h6 class="fw-bold text-primary mb-3 pb-2 border-bottom">
+                                <i class="bi bi-book me-2"></i>マニュアル
+                            </h6>
+                            <div id="manual-menu-items" class="nav flex-column">
+                                <!-- Menu items will be dynamically added here -->
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                    <!-- Explanation text column -->
+                    <div class="col-md-9">
+                        <div id="flow-explanation-text" class="ps-md-4" contenteditable="true"></div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
         </div>
+        <!-- Add toolbar template -->
+        <template id="editor-toolbar">
+            <div class="editor-toolbar bg-light border rounded p-2 mb-2">
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-outline-secondary" data-command="bold" title="Bold">
+                        <i class="bi bi-type-bold"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" data-command="underline" title="Underline">
+                        <i class="bi bi-type-underline"></i>
+                    </button>
+                </div>
+                <div class="btn-group ms-2">
+                    <button class="btn btn-sm btn-outline-danger" data-command="delete" title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+                </div>
+        </template>
     </div>
 </body>
 </html>
