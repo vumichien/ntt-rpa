@@ -11,7 +11,7 @@
     <script src="{% static 'flowchart/js/chatbot.js' %}"></script>
 </head>
 <body class="bg-white">
-    <!-- Tiêu đề -->
+    <!-- タイトル -->
     <div class="container mt-4">
         <div class="col-12">
             <h1 class="text-center border border-primary bg-light text-primary py-3 rounded">
@@ -20,19 +20,19 @@
         </div>
     </div>
 
-    <!-- Nội dung chính -->
+    <!-- メインコンテンツ -->
     <div class="container mt-4">
         <div class="row g-3 mb-4 px-2">
-            <!-- Nửa màn hình bên trái -->
+            <!-- 左半分の画面 -->
             <div class="col-md-6 d-flex flex-column border bg-light">
                 <h2 class="text-center mt-2">インポートシナリオ</h2>
                 <div class="flowchart-container flex-grow-1 overflow-auto">
                     <svg class="svg-flowchart" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Nodes -->
+                        <!-- ノード -->
                         <rect x="140" y="20" width="120" height="50" rx="10" fill="#f7b066"></rect>
                         <text x="200" y="50" text-anchor="middle" font-size="14" fill="black">開始</text>
 
-                        <!-- Black Box surrounding nodes -->
+                        <!-- ノードを囲むブラックボックス -->
                         <rect x="120" y="100" width="320" height="260" fill="none" stroke="black" stroke-width="2"></rect>
 
                         <rect x="140" y="120" width="120" height="50" rx="10" fill="#f7b066"></rect>
@@ -49,29 +49,29 @@
 
                         <rect x="140" y="410" width="120" height="50" rx="10" fill="#f7b066"></rect>
                         <text x="200" y="440" text-anchor="middle" font-size="14" fill="black">完了</text>
-                        <!-- Arrows -->
+                        <!-- 矢印 -->
                         <defs>
                             <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
                                 <polygon points="0 0, 10 3.5, 0 7" fill="#0d6efd"></polygon>
                             </marker>
                         </defs>
 
-                        <!-- Arrows -->
+                        <!-- 矢印 -->
                         <line x1="200" y1="70" x2="200" y2="100" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
                         <line x1="200" y1="170" x2="200" y2="200" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
                         <line x1="200" y1="250" x2="200" y2="280" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
                         <line x1="200" y1="360" x2="200" y2="410" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
 
-                        <!-- Polyline from 操作1 to 操作4 -->
+                        <!-- 操作1から操作4へのポリライン -->
                         <polyline points="260,145 360,145 360,200" fill="none" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
 
-                        <!-- Polyline from 操作4 to 操作3 -->
+                        <!-- 操作4から操作3へのポリライン -->
                         <polyline points="360,250 360,305 260,305" fill="none" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />
                     </svg>
                 </div>
             </div>
 
-            <!-- Nửa màn hình bên phải -->
+            <!-- 右半分の画面 -->
             <div class="col-md-6 d-flex flex-column border bg-light">
                 <h2 class="text-center mt-2">チャットボット</h2>
                <div class="chat-container d-flex flex-column flex-grow-1 mb-2">

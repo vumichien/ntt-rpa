@@ -1,5 +1,5 @@
 function showProcessing() {
-  // Reset all sections first
+  // すべてのセクションをリセット
   resetAllSections();
 
   const processingSection = document.getElementById("processing");
@@ -45,12 +45,12 @@ function generateFlows() {
   const flowchartsSection = document.getElementById("flowcharts-section");
   flowchartsSection.classList.remove("d-none");
 
-  // Get selected actions
+  // 選択された操作を取得
   const checkbox1 = document.getElementById("checkbox1").checked;
   const checkbox2 = document.getElementById("checkbox2").checked;
   const checkbox3 = document.getElementById("checkbox3").checked;
 
-  // Generate description based on selected checkboxes
+  // 選択されたチェックボックスに基づいて説明を生成
   let description = "以下の操作が選択されました：\n";
   if (checkbox1) {
     description += "・システムに新しい入力操作が追加されました。\n";
@@ -65,9 +65,9 @@ function generateFlows() {
     description += "・操作は選択されませんでした。\n";
   }
 
-  // Type out the description
+  // 説明を入力
   const actionDescription = document.getElementById("action-description");
-  actionDescription.innerHTML = ""; // Clear existing content
+  actionDescription.innerHTML = ""; // 既存のコンテンツをクリア
   typeText(description, 0, () => {}, "action-description");
 }
 
@@ -76,34 +76,34 @@ function redirectToChatbot() {
 }
 
 function downloadSVG() {
-  // Lấy phần tử chứa SVG
+  // SVGを含む要素を取得
   const flowchartContainer = document.getElementById("import-scenario");
   if (!flowchartContainer) {
-    alert("SVG element not found!");
+    alert("SVG要素が見つかりません！");
     return;
   }
 
-  // Tìm thẻ <svg> bên trong phần tử
+  // 要素内の<svg>タグを見つける
   const svgElement = flowchartContainer.querySelector("svg");
   if (!svgElement) {
-    alert("No SVG found in the specified container!");
+    alert("指定されたコンテナにSVGが見つかりません！");
     return;
   }
 
-  // Chuẩn bị dữ liệu SVG
+  // SVGデータを準備
   const svgContent = svgElement.outerHTML;
   const blob = new Blob([svgContent], { type: "image/svg+xml;charset=utf-8" });
 
-  // Tạo link để tải xuống
+  // ダウンロードリンクを作成
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "import-scenario.svg"; // Tên file khi tải xuống
+  link.download = "import-scenario.svg"; // ダウンロード時のファイル名
   link.click();
 }
 
-// Add new function to reset all sections
+// すべてのセクションをリセットする新しい関数を追加
 function resetAllSections() {
-  // Reset all sections to d-none
+  // すべてのセクションをd-noneにリセット
   const sections = [
     "processing",
     "summary-section",
@@ -118,19 +118,19 @@ function resetAllSections() {
     }
   });
 
-  // Reset typing text content
+  // タイピングテキストのコンテンツをリセット
   const typingElement = document.getElementById("typing-text");
   if (typingElement) {
     typingElement.innerHTML = "";
   }
 
-  // Reset checkboxes
+  // チェックボックスをリセット
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach((checkbox) => {
     checkbox.checked = false;
   });
 
-  // Also reset action description
+  // アクションの説明もリセット
   const actionDescription = document.getElementById("action-description");
   if (actionDescription) {
     actionDescription.innerHTML = "";
