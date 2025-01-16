@@ -11,7 +11,7 @@
     <script src="{% static 'flowchart/js/scripts.js' %}"></script>
     <script src="{% static 'workflow/js/workflow.js' %}"></script>
     <style>
-        /* Header styles */
+        /* ヘッダースタイル */
         .header-title {
             background: linear-gradient(135deg, #0d6efd, #0dcaf0);
             color: white;
@@ -26,7 +26,7 @@
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
     
-        /* Card styles */
+        /* カードスタイル */
         .card {
             border: none;
             border-radius: 15px;
@@ -57,7 +57,7 @@
             transform: scale(1.1);
         }
     
-        /* Button styles */
+        /* ボタンスタイル */
         .btn-primary {
             background: linear-gradient(135deg, #0d6efd, #0a58ca);
             border: none;
@@ -74,7 +74,7 @@
             background: linear-gradient(135deg, #0a58ca, #084298);
         }
     
-        /* Flow container styles */
+        /* フローコンテナスタイル */
         #flow-container, #flow-container-sub {
             background: white;
             border-radius: 15px;
@@ -88,7 +88,7 @@
             align-items: center;
         }
     
-        /* Form control styles */
+        /* フォームコントロールスタイル */
         .form-control {
             border-radius: 8px;
             border: 1px solid #dee2e6;
@@ -101,20 +101,20 @@
             border-color: #0d6efd;
         }
     
-        /* Section headers */
+        /* セクションヘッダー */
         .form-label {
             font-weight: 600;
             color: #495057;
             margin-bottom: 0.5rem;
         }
     
-        /* Processing spinner */
+        /* 処理中スピナー */
         .spinner-border {
             width: 3rem;
             height: 3rem;
         }
     
-        /* Summary section */
+        /* サマリーセクション */
         #summary-section, #summary-sub-section {
             background: white;
             border-radius: 15px;
@@ -178,7 +178,7 @@
             }
         }
     
-        /* Typing animation */
+        /* タイピングアニメーション */
         .typing-cursor {
             display: inline-block;
             width: 2px;
@@ -188,7 +188,7 @@
             animation: blink 1s infinite;
         }
     
-        /* Text highlight effect */
+        /* テキストハイライト効果 */
         #typing-text strong, #flow-explanation-text strong, #typing-text-sub-section strong, #flow-explanation-text-sub-section strong{
             background: linear-gradient(120deg, rgba(13, 110, 253, 0.1) 0%, rgba(13, 110, 253, 0.1) 100%);
             padding: 0 4px;
@@ -196,7 +196,7 @@
             font-weight: 500;
         }
     
-        /* Flow section */
+        /* フローセクション */
         #flow-section, #flow-section-sub {
             background-color: #f8f9fa;
             border-radius: 15px;
@@ -204,7 +204,7 @@
             margin-top: 2rem;
         }
     
-        /* Loading animation styles */
+        /* ローディングアニメーションスタイル */
         .loading-container, .loading-container-sub {
             padding: 2rem;
             border-radius: 15px;
@@ -274,7 +274,7 @@
             }
         }
     
-        /* Fade in/out animation */
+        /* フェードイン/アウトアニメーション */
         .fade-in {
             animation: fadeIn 0.5s ease-in;
         }
@@ -307,7 +307,7 @@
             }
         }
     
-        /* Textarea styles */
+        /* テキストエリアスタイル */
         .form-control.auto-expand {
             min-height: 60px;
             transition: all 0.3s ease;
@@ -329,7 +329,7 @@
             opacity: 0.8;
         }
     
-        /* Summary section và Flow explanation styles */
+        /* サマリーセクションとフロー説明スタイル */
         #summary-section, #flow-explanation, #summary-section-sub, #flow-explanation-sub-section {
             background: white;
             border-radius: 15px;
@@ -371,7 +371,7 @@
             white-space: pre-line;
         }
     
-        /* Add these to your existing styles */
+        /* これらを既存のスタイルに追加 */
         .explanation-section {
             padding: 10px;
             border-radius: 4px;
@@ -391,7 +391,7 @@
             overflow-y: auto;
         }
     
-        /* Update manual menu styles */
+        /* マニュアルメニュースタイルの更新 */
         #manual-menu {
             background-color: #f8f9fa;
             border-radius: 8px;
@@ -440,19 +440,19 @@
             padding-left: 15px;
         }
     
-        /* Add border between menu and content */
+        /* メニューとコンテンツの間に境界線を追加 */
         @media (min-width: 768px) {
             .col-md-3 {
                 border-right: 1px solid #dee2e6;
             }
         }
     
-        /* Elegant explanation section styles */
+        /* エレガントな説明セクションスタイル */
         #flow-explanation .border {
             border-color: #e9ecef !important;
         }
     
-        /* Manual menu styles */
+        /* マニュアルメニュースタイル */
         #manual-menu {
             position: relative;
             background-color: #f8f9fa;
@@ -503,7 +503,7 @@
             font-weight: 500;
         }
     
-        /* Explanation text styles */
+        /* 説明テキストスタイル */
         #flow-explanation-text {
             max-height: 70vh;
             overflow-y: auto;
@@ -523,7 +523,7 @@
             transform: translateY(-2px);
         }
     
-        /* Scrollbar styling */
+        /* スクロールバーのスタイリング */
         #flow-explanation-text::-webkit-scrollbar {
             width: 6px;
         }
@@ -542,31 +542,31 @@
             background: #a8a8a8;
         }
     
-        /* Add smooth transition for all elements */
+        /* すべての要素にスムーズなトランジションを追加 */
         #flow-explanation * {
             transition: all 0.3s ease;
         }
     
-        /* Add responsive padding */
+        /* レスポンシブパディングを追加 */
         @media (min-width: 768px) {
             #flow-explanation .border {
                 padding: 2rem;
             }
         }
     
-        /* Remove text selection background */
+        /* テキスト選択背景を削除 */
         ::selection {
             background-color: rgba(13, 110, 253, 0.1);
             color: inherit;
         }
     
-        /* For Firefox */
+        /* Firefox用 */
         ::-moz-selection {
             background-color: rgba(13, 110, 253, 0.1);
             color: inherit;
         }
     
-        /* Ensure text remains visible when selected */
+        /* 選択時にテキストが見えるようにする */
         #flow-explanation-text {
             -webkit-user-select: text;
             -moz-user-select: text;
@@ -574,7 +574,7 @@
             user-select: text;
         }
     
-        /* Add these styles */
+        /* これらのスタイルを追加 */
         .editor-toolbar {
             position: absolute;
             display: none;
@@ -595,14 +595,14 @@
             background-color: #e9ecef;
         }
     
-        /* Style for highlighted text */
+        /* ハイライトされたテキストのスタイル */
         .highlighted {
             background-color: #fff3cd;
             padding: 0 2px;
             border-radius: 2px;
         }
     
-        /* Make content editable area look better */
+        /* コンテンツ編集可能エリアを見栄え良くする */
         [contenteditable="true"] {
             outline: none;
             padding: 0.5rem;
@@ -613,6 +613,63 @@
             background-color: #fff;
             box-shadow: inset 0 0 0 2px rgba(13, 110, 253, 0.1);
         }
+    
+        .gpt-popup {
+            position: absolute;
+            background: #2D2D2D;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 300px;
+            padding: 8px;
+        }
+        
+        .gpt-popup-content {
+            display: flex;
+            align-items: center;
+            background: #404040;
+            border-radius: 20px;
+            padding: 6px 12px;
+        }
+    
+        .gpt-popup-textarea {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 14px;
+            padding: 4px 8px;
+            resize: none;
+            outline: none;
+            min-height: 24px;
+        }
+    
+        .gpt-popup-textarea::placeholder {
+            color: #888888;
+        }
+    
+        .gpt-popup-send {
+            background: none;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            transition: background-color 0.2s;
+        }
+    
+        .gpt-popup-send:hover {
+            background-color: #505050;
+        }
+    
+        .gpt-popup-send i {
+            font-size: 16px;
+        }
     </style>
 </head>
 <body class="bg-white">
@@ -621,7 +678,7 @@
             自動生成
         </h1>
 
-        <!-- Phần chọn card -->
+        <!-- カード選択セクション -->
         <div id="card-section" class="row mt-3 g-4">
             <div class="col-md-4">
                 <div class="card text-center h-100" style="cursor:pointer;" onclick="showCard(1)">
@@ -652,7 +709,7 @@
             </div>
         </div>
 
-        <!-- Card 1 Form -->
+        <!-- カード1フォーム -->
         <div id="card1-section" class="d-none mt-4">
             <div class="mb-3">
                 <label class="form-label">自動化したい作業の概要</label>
@@ -685,7 +742,7 @@
             <button class="btn btn-primary" onclick="createScenario(1)">作成</button>
         </div>
 
-        <!-- Card 2 Form -->
+        <!-- カード2フォーム -->
         <div id="card2-section" class="d-none mt-4">
             <div class="row g-3 mb-3">
                 <div class="col-md-6">
@@ -739,7 +796,7 @@
             </div>
             <button class="btn btn-primary" onclick="createScenario(2)">作成</button>
         </div>
-        <!-- Card 3 Form -->
+        <!-- カード3フォーム -->
         <div id="card3-section" class="d-none mt-4">
             <div class="mb-3">
                 <label class="form-label">やりたい作業内容/分からない作業内容</label>
@@ -772,7 +829,7 @@
             </div>
             <button class="btn btn-primary" onclick="createScenario(3)">作成</button>
         </div>
-        <!-- Processing -->
+        <!-- 処理中 -->
         <div id="processing" class="text-center d-none mt-4">
             <div class="loading-container">
                 <div class="loading-spinner"></div>
@@ -782,20 +839,20 @@
                 </div>
             </div>
         </div>
-        <!-- Summary -->
+        <!-- サマリー -->
         <div id="summary-section" class="d-none mt-4">
             <h5 class="form-label mb-3" id="summary-title">シナリオ</h5>
             <div class="border rounded p-3 bg-light">
                 <div id="typing-text" class="mb-3"></div>
             </div>
         </div>
-        <!-- Flow SVG -->
+        <!-- フローSVG -->
         <div id="flow-section" class="d-none mt-4 text-center">
             <h5 class="form-label mb-3">手順</h5>
             <div id="flow-container" class="d-flex justify-content-center">
             </div>
         </div>
-        <!-- Sample Image Section -->
+        <!-- サンプル画像セクション -->
         <div id="sample-image-section" class="d-none mt-4 text-center">
             <h5 class="form-label mb-3">サンプル画面</h5>
             <div class="border rounded p-3 bg-light">
@@ -806,43 +863,66 @@
         <div id="flow-explanation" class="d-none mt-4">
             <div class="border rounded p-4 bg-white shadow-sm">
                 <div class="row g-4">
-                    <!-- Manual menu column -->
-                    <div class="col-md-3">
-                        <div id="manual-menu" class="d-none">
+                    <!-- マニュアルメニュー列 -->
+                    <div id="manual-menu-container" class="col-md-3 d-none">
+                        <div id="manual-menu">
                             <h6 class="fw-bold text-primary mb-3 pb-2 border-bottom">
                                 <i class="bi bi-book me-2"></i>マニュアル
                             </h6>
                             <div id="manual-menu-items" class="nav flex-column">
-                                <!-- Menu items will be dynamically added here -->
+                                <!-- メニュー項目はここに動的に追加されます -->
                             </div>
                         </div>
                     </div>
-                    <!-- Explanation text column -->
-                    <div class="col-md-9">
+                    <!-- 説明テキスト列 -->
+                    <div id="explanation-column" class="col-md-12">
+                        <div class="d-flex justify-content-end mb-3">
+                            <button id="download-explanation" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-download me-1"></i>説明をダウンロード
+                            </button>
+                        </div>
                         <div id="flow-explanation-text" class="ps-md-4" contenteditable="true"></div>
                     </div>
-                    </div>
-                    </div>
-                    </div>
-        </div>
-        <!-- Add toolbar template -->
+                </div>
+                </div>
+                </div>
+        <!-- ツールバーテンプレートを追加 -->
         <template id="editor-toolbar">
             <div class="editor-toolbar bg-light border rounded p-2 mb-2">
                 <div class="btn-group">
-                    <button class="btn btn-sm btn-outline-secondary" data-command="bold" title="Bold">
+                    <button class="btn btn-sm btn-outline-secondary" data-command="bold" title="太字">
                         <i class="bi bi-type-bold"></i>
                     </button>
-                    <button class="btn btn-sm btn-outline-secondary" data-command="underline" title="Underline">
+                    <button class="btn btn-sm btn-outline-secondary" data-command="underline" title="下線">
                         <i class="bi bi-type-underline"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" data-command="highlight" title="ハイライト">
+                        <i class="bi bi-pen"></i>
                     </button>
                 </div>
                 <div class="btn-group ms-2">
-                    <button class="btn btn-sm btn-outline-danger" data-command="delete" title="Delete">
+                    <button class="btn btn-sm btn-outline-primary" data-command="askGPT" title="ChatGPTに質問する">
+                        <i class="bi bi-chat-dots"></i> ChatGPTに質問する
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" data-command="delete" title="削除">
                         <i class="bi bi-trash"></i>
                     </button>
                 </div>
-                </div>
+            </div>
         </template>
+<!-- 新しいGPTポップアップテンプレートを追加 -->
+<template id="gpt-popup">
+    <div class="gpt-popup">
+        <div class="gpt-popup-input">
+            <div class="gpt-popup-content">
+                <textarea class="gpt-popup-textarea" rows="1" placeholder="質問を入力してください..."></textarea>
+                <button class="gpt-popup-send">
+                    <i class="bi bi-arrow-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</template>
     </div>
 </body>
 </html>

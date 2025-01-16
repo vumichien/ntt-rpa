@@ -1,9 +1,9 @@
 """
-WSGI config for scenario_project project.
+シナリオプロジェクトのWSGI設定。
 
-It exposes the WSGI callable as a module-level variable named ``application``.
+WSGI呼び出し可能オブジェクトをモジュールレベルの変数「application」として公開します。
 
-For more information on this file, see
+このファイルの詳細については、次を参照してください：
 https://docs.djangoproject.com/en/4.2/howto/deployment/wsgi/
 """
 

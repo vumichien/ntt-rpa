@@ -1,9 +1,9 @@
 """
-ASGI config for scenario_project project.
+シナリオプロジェクトのASGI設定。
 
-It exposes the ASGI callable as a module-level variable named ``application``.
+ASGI呼び出し可能オブジェクトをモジュールレベルの変数「application」として公開します。
 
-For more information on this file, see
+このファイルの詳細については、次を参照してください：
 https://docs.djangoproject.com/en/4.2/howto/deployment/asgi/
 """
 

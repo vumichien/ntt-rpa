@@ -5,17 +5,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const flowchartSvg = document.querySelector('.flowchart-container svg');
     const blackBox = flowchartSvg.querySelector('rect[fill="none"]'); // BlackBox
 
-    // Hiển thị tin nhắn mặc định khi vào trang
+    // ページにアクセスしたときにデフォルトメッセージを表示
     appendChatbotMessage('どの操作を修正したいですか？');
 
-    // Cập nhật trạng thái nút gửi dựa trên nội dung
+    // コンテンツに基づいて送信ボタンの状態を更新
     userInput.addEventListener('input', () => {
         adjustTextareaHeight(userInput);
         sendButton.disabled = !userInput.value.trim();
         sendButton.classList.toggle('active', !!userInput.value.trim());
     });
 
-    // Lắng nghe sự kiện keydown
+    // keydownイベントをリッスン
     userInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
@@ -23,16 +23,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Sự kiện click gửi tin nhắn
+    // メッセージ送信イベント
     sendButton.addEventListener('click', sendMessage);
 
-    // Điều chỉnh chiều cao của textarea
+    // textareaの高さを調整
     function adjustTextareaHeight(textarea) {
         textarea.style.height = 'auto';
         textarea.style.height = `${textarea.scrollHeight}px`;
     }
 
-    // Gửi tin nhắn
+    // メッセージを送信
     function sendMessage() {
         const message = userInput.value.trim();
         if (!message) return;
@@ -42,11 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
         sendButton.disabled = true;
         sendButton.classList.remove('active');
 
-        // Xử lý phản hồi từ chatbot
+        // チャットボットからの応答を処理
         handleChatbotResponse(message);
     }
 
-    // Hiển thị tin nhắn của người dùng
+    // ユーザーメッセージを表示
     function appendUserMessage(message) {
         const messageContainer = document.createElement('div');
         messageContainer.className = 'message-container user-message-container';
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollToBottom();
     }
 
-    // Hiển thị tin nhắn của chatbot
+    // チャットボットメッセージを表示
     function appendChatbotMessage(message) {
         const messageContainer = document.createElement('div');
         messageContainer.className = 'message-container chatbot-message-container';
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollToBottom();
     }
 
-    // Hiển thị dấu hiệu "đang suy nghĩ" của chatbot
+    // チャットボットの「考え中」インジケーターを表示
     function showThinkingIndicator() {
         const thinkingIndicator = document.createElement('div');
         thinkingIndicator.className = 'message-container chatbot-message-container thinking-indicator';
@@ -104,12 +104,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return thinkingIndicator;
     }
 
-    // Cuộn xuống cuối hộp thoại
+    // ダイアログの最後までスクロール
     function scrollToBottom() {
         chatOutput.scrollTop = chatOutput.scrollHeight;
     }
 
-    // Xử lý phản hồi từ chatbot
+    // チャットボットからの応答を処理
     function handleChatbotResponse(userMessage) {
         const thinkingIndicator = showThinkingIndicator();
 
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1500);
     }
 
-    // Cập nhật sơ đồ bước 1
+    // フローチャートのステップ1を更新
     function updateFlowchartStep1() {
         const polylineToRemove = flowchartSvg.querySelector('polyline[points="260,145 360,145 360,200"]');
         if (polylineToRemove) polylineToRemove.remove();
@@ -146,44 +146,44 @@ document.addEventListener('DOMContentLoaded', () => {
         flowchartSvg.appendChild(newLine);
     }
 
-    // Cập nhật sơ đồ bước 2
+    // フローチャートのステップ2を更新
    function updateFlowchartStep2() {
         const polylineToRemove = flowchartSvg.querySelector('polyline[points="360,250 360,305 260,305"]');
         if (polylineToRemove) polylineToRemove.remove();
 
-        // Đổi tên label từ 'ログインをクリック' thành 'ID存在チェック'
+        // ラベルの名前を「ログインをクリック」から「ID存在チェック」に変更
         const textToUpdate = flowchartSvg.querySelector('text[x="200"][y="310"]');
         if (textToUpdate) {
             textToUpdate.textContent = 'ID存在チェック';
         }
-        // Thêm パスワードを再入力
+        // パスワードを再入力を追加
         const operation5 = createNode(300, 280, 'パスワードを再入力', '#C1E5F5');
         flowchartSvg.appendChild(operation5.node);
         flowchartSvg.appendChild(operation5.text);
 
-        // Thêm ログインをクリック
+        // ログインをクリックを追加
         const operation6 = createNode(220, 390, 'ログインをクリック', '#C1E5F5');
         flowchartSvg.appendChild(operation6.node);
         flowchartSvg.appendChild(operation6.text);
 
-        // Thêm đường từ パスワード入力 đến パスワード再入力
+        // パスワード入力からパスワード再入力までの線を追加
         flowchartSvg.appendChild(createLine(360, 250, 360, 280));
 
-        // Tạo hai đường thẳng từ ID存在チェック và パスワード再入力 đi xuống
+        // ID存在チェックとパスワード再入力から下に伸びる2本の線を作成
         flowchartSvg.appendChild(createLineNoMarker(200, 330, 200, 350));
         flowchartSvg.appendChild(createLineNoMarker(360, 330, 360, 350));
 
-        // Tạo đường ngang nối điểm từ ID存在チェック và パスワード再入力
+        // ID存在チェックとパスワード再入力を接続する水平線を作成
         flowchartSvg.appendChild(createLineNoMarker(200, 350, 360, 350));
 
-        // Tạo đường thẳng từ điểm giữa (nối ID存在チェック và パスワード再入力) xuống ログインをクリック
+        // ID存在チェックとパスワード再入力を接続する点からログインをクリックまでの垂直線を作成
         flowchartSvg.appendChild(createLine(280, 350, 280, 390));
 
-        // Mở rộng blackbox nếu cần
+        // 必要に応じてblackboxを拡張
         resizeBlackBox(100, 90);
     }
 
-    // Tạo node (rect và text)
+    // ノード（rectとtext）を作成
     function createNode(x, y, label, color) {
         const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         rect.setAttribute('x', x);
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return { node: rect, text: text };
     }
 
-    // Tạo line
+    // 線を作成
     function createLine(x1, y1, x2, y2) {
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
         line.setAttribute('x1', x1);
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return line;
     }
 
-    // Tạo polyline
+    // ポリラインを作成
     function createPolyline(points) {
         const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
         polyline.setAttribute('points', points);
@@ -239,26 +239,26 @@ document.addEventListener('DOMContentLoaded', () => {
         return polyline;
     }
 
-    // Mở rộng blackbox
+    // blackboxを拡張
    function resizeBlackBox(addWidth, addHeight) {
         const currentWidth = parseInt(blackBox.getAttribute('width'));
         const currentHeight = parseInt(blackBox.getAttribute('height'));
 
-        // Cập nhật kích thước của blackbox
+        // blackboxのサイズを更新
         blackBox.setAttribute('width', currentWidth + addWidth);
         blackBox.setAttribute('height', currentHeight + addHeight);
 
-        // Tìm node 完了 và đường nối từ blackbox đến 完了
-        const completeNode = flowchartSvg.querySelector('rect[x="140"][y="410"]'); // Node 完了
-        const completeText = flowchartSvg.querySelector('text[x="200"][y="440"]'); // Text 完了
-        const lineToComplete = flowchartSvg.querySelector('line[x1="200"][y1="360"][x2="200"][y2="410"]'); // Line nối
+        // ノード完了とblackboxから完了への線を見つける
+        const completeNode = flowchartSvg.querySelector('rect[x="140"][y="410"]'); // ノード完了
+        const completeText = flowchartSvg.querySelector('text[x="200"][y="440"]'); // テキスト完了
+        const lineToComplete = flowchartSvg.querySelector('line[x1="200"][y1="360"][x2="200"][y2="410"]'); // 接続線
 
-        // Cập nhật vị trí của node 完了 và text 完了
+        // ノード完了とテキスト完了の位置を更新
         const newY = parseInt(completeNode.getAttribute('y')) + addHeight;
         completeNode.setAttribute('y', newY);
         completeText.setAttribute('y', newY + 30);
 
-        // Cập nhật vị trí của line nối
+        // 接続線の位置を更新
         lineToComplete.setAttribute('y1', parseInt(lineToComplete.getAttribute('y1')) + addHeight);
         lineToComplete.setAttribute('y2', parseInt(lineToComplete.getAttribute('y2')) + addHeight);
     }
@@ -293,11 +293,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function downloadSVG() {
-        const svgElement = flowchartSvg.outerHTML; // Lấy nội dung SVG
+        const svgElement = flowchartSvg.outerHTML; // SVGコンテンツを取得
         const blob = new Blob([svgElement], { type: 'image/svg+xml;charset=utf-8' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = 'scenario.svg'; // Tên tệp khi tải xuống
+        link.download = 'scenario.svg'; // ダウンロード時のファイル名
         link.click();
     }
 

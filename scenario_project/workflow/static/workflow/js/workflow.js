@@ -1,17 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Auto expand textarea
+  // テキストエリアの自動拡張
   document.querySelectorAll(".auto-expand").forEach((textarea) => {
     textarea.addEventListener("input", function () {
       this.style.height = "auto";
       this.style.height = this.scrollHeight + "px";
     });
 
-    // Khởi tạo chiều cao ban đầu
+    // 初期高さを設定
     textarea.style.height = "auto";
     textarea.style.height = textarea.scrollHeight + "px";
   });
 
-  // Function to initialize file upload functionality
+  // ファイルアップロード機能を初期化する関数
   function initializeFileUpload(addBtnId, containerId) {
     const addFileBtn = document.getElementById(addBtnId);
     const fileContainer = document.getElementById(containerId);
@@ -35,18 +35,18 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
         fileContainer.appendChild(newFileInput);
 
-        // Show all remove buttons when there's more than one file input
+        // ファイル入力が複数ある場合、すべての削除ボタンを表示
         const removeButtons = fileContainer.querySelectorAll(".remove-file");
         removeButtons.forEach((btn) => (btn.style.display = "block"));
       });
 
-      // Handle remove button clicks using event delegation
+      // 削除ボタンのクリックをイベント委譲で処理
       fileContainer.addEventListener("click", function (e) {
         if (e.target.closest(".remove-file")) {
           const fileInputGroup = e.target.closest(".file-input-group");
           fileInputGroup.remove();
 
-          // Hide remove button if only one file input remains
+          // ファイル入力が1つしかない場合、削除ボタンを非表示
           const removeButtons = fileContainer.querySelectorAll(".remove-file");
           if (removeButtons.length === 1) {
             removeButtons[0].style.display = "none";
@@ -56,20 +56,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Initialize file upload for all containers
-  initializeFileUpload("add-file-btn", "file-upload-container"); // For card 1
+  // すべてのコンテナのファイルアップロードを初期化
+  initializeFileUpload("add-file-btn", "file-upload-container"); // カード1用
   initializeFileUpload(
     "add-file-btn-scenario",
     "file-upload-container-scenario"
-  ); // For card 2 scenario
-  initializeFileUpload("add-file-btn-update", "file-upload-container-update"); // For card 2 update info
-  initializeFileUpload("add-file-btn-card3", "file-upload-container-card3"); // For card 3
+  ); // カード2シナリオ用
+  initializeFileUpload("add-file-btn-update", "file-upload-container-update"); // カード2更新情報用
+  initializeFileUpload("add-file-btn-card3", "file-upload-container-card3"); // カード3用
 });
 
 function typeText(text, index, callback, elementId = "typing-text") {
   const typingElement = document.getElementById(elementId);
   if (index < text.length) {
-    // Xử lý đặc biệt cho các dòng bắt đầu bằng "-"
+    // "-"で始まる行を強調
     let currentText = text.substring(0, index + 1);
     currentText = currentText.replace(/^-(.+)$/gm, "<strong>• $1</strong>");
     currentText = currentText.replace(/\n/g, "<br>");
@@ -89,7 +89,7 @@ function typeText(text, index, callback, elementId = "typing-text") {
 }
 
 function showCard(cardNumber) {
-  // Ẩn tất cả các section
+  // すべてのセクションを非表示
   document.getElementById("card1-section").classList.add("d-none");
   document.getElementById("card2-section").classList.add("d-none");
   document.getElementById("card3-section").classList.add("d-none");
@@ -99,11 +99,11 @@ function showCard(cardNumber) {
   document.getElementById("flow-explanation").classList.add("d-none");
   document.getElementById("sample-image-section").classList.add("d-none");
 
-  // Xóa trạng thái active của tất cả các card
+  // すべてのカードのアクティブ状態を削除
   const cards = document.querySelectorAll("#card-section .card");
   cards.forEach((card) => card.classList.remove("active"));
 
-  // Thêm trạng thái active cho card được chọn
+  // 選択されたカードにアクティブ状態を追加
   const selectedCard = document.querySelector(
     `#card-section .col-md-4:nth-child(${cardNumber}) .card`
   );
@@ -111,7 +111,7 @@ function showCard(cardNumber) {
     selectedCard.classList.add("active");
   }
 
-  // Hiển thị section tương ứng
+  // 選択されたセクションを表示
   if (cardNumber === 1) {
     document.getElementById("card1-section").classList.remove("d-none");
   } else if (cardNumber === 2) {
@@ -120,7 +120,7 @@ function showCard(cardNumber) {
     document.getElementById("card3-section").classList.remove("d-none");
   }
 
-  // Hide manual menu when switching cards
+  // カード切り替え時にマニュアルメニューを非表示
   const manualMenu = document.getElementById("manual-menu");
   if (manualMenu) {
     manualMenu.classList.add("d-none");
@@ -139,7 +139,7 @@ function createScenario(cardNumber) {
   } else {
     summaryTitle.textContent = "シナリオ";
   }
-  // Ẩn các section khác với hiệu ứng fade
+  // すべてのセクションを非表示
   [summarySection, flowSection, flowExplanation, sampleImageSection].forEach(
     (section) => {
       if (!section.classList.contains("d-none")) {
@@ -152,7 +152,7 @@ function createScenario(cardNumber) {
     }
   );
 
-  // Hiện processing
+  // 処理中セクションを表示
   processingElement.classList.remove("d-none");
   processingElement.classList.add("fade-in");
 
@@ -162,7 +162,7 @@ function createScenario(cardNumber) {
       processingElement.classList.add("d-none");
       processingElement.classList.remove("fade-out");
 
-      // Hiện summary section với hiệu ứng fade
+      // シナリオセクションを表示
       summarySection.classList.remove("d-none");
       summarySection.classList.add("fade-in");
 
@@ -178,7 +178,7 @@ function createScenario(cardNumber) {
 <strong>出張情報:</strong> 出張期間、目的地、目的、日当額を設定します。
 <strong>旅費明細:</strong> 出張中の交通手段や詳細な費用を入力します。`;
 
-        // Tạo SVG flow đơn giản (theo chiều dọc, màu cam #f7b066)
+        // シンプルなSVGフローを作成（垂直方向、カメラマン色#f7b066）
         svgContent = createFlowSVG(
           ["申請者情報の入力", "出張情報の入力", "旅費明細の入力"],
           "#f7b066"
@@ -380,7 +380,7 @@ function createScenario(cardNumber) {
 
         svgContent = createFlowSVG(flowSteps, "#f7b066");
 
-        // Add explanation text to the summary section
+        // シナリオセクションに説明テキストを追加
         explanationText = `-1. 出張前に従業員が仮払申請書を提出する
 張する従業員は仮払申請書を提出し、旅費の仮払いを申請します。仮払申請書には、出張の日程や移動ルート、交通手段などから計算した概算費用の金額を記載します。仮払申請書は申請者の上司に提出され、容について承認を受けます。
 
@@ -398,149 +398,182 @@ function createScenario(cardNumber) {
       }
       if (summaryText) {
         typeText(summaryText, 0, () => {
-          if (svgContent) {
-            flowSection.classList.remove("d-none");
-            flowSection.classList.add("fade-in");
-            const flowContainer = document.getElementById("flow-container");
-            flowContainer.innerHTML = svgContent;
+          flowSection.classList.remove("d-none");
+          flowSection.classList.add("fade-in");
 
-            if (explanationText) {
-              setTimeout(() => {
-                flowExplanation.classList.remove("d-none");
-                flowExplanation.classList.add("fade-in");
-
-                if (cardNumber === 1 || cardNumber === 2) {
-                  document.getElementById("flow-explanation-text").innerHTML =
-                    explanationText;
-
-                  if (cardNumber === 1) {
-                    const sampleImageSection = document.getElementById(
-                      "sample-image-section"
-                    );
-                    setTimeout(() => {
-                      sampleImageSection.classList.remove("d-none");
-                      sampleImageSection.classList.add("fade-in");
-
-                      setTimeout(() => {
-                        flowExplanation.classList.remove("d-none");
-                        flowExplanation.classList.add("fade-in");
-                      }, 500);
-                    }, 500);
-                  }
-                } else if (cardNumber === 3) {
-                  // First, make sure flow-explanation and manual-menu are visible
+          createFlowSVG(
+            cardNumber === 1
+              ? ["申請者情報の入力", "出張情報の入力", "旅費明細の入力"]
+              : cardNumber === 2
+              ? [
+                  "納品書の確認",
+                  "バーコードスキャン",
+                  "商品の検品",
+                  "温度・湿度チェック（必要に応じて)",
+                  "作業記録の保存",
+                ]
+              : [
+                  "1.出張前に従業員が仮払申請書を提出する",
+                  "2.経理部が必要費用を確認する",
+                  "3.従業員に仮払分の金額を渡す",
+                  "4.出張後に従業員が仮払経費精算書を提出する",
+                  "5.仮払いした金額と実費との差額を精算する",
+                ],
+            "#f7b066",
+            cardNumber === 2 ? [1, 3] : [],
+            // フローダイアグラムが完了した後に呼び出されるコールバック関数
+            () => {
+              if (explanationText) {
+                setTimeout(() => {
                   flowExplanation.classList.remove("d-none");
                   flowExplanation.classList.add("fade-in");
 
-                  // Show manual menu for card 3
-                  const manualMenu = document.getElementById("manual-menu");
-                  manualMenu.classList.remove("d-none");
+                  if (cardNumber === 1 || cardNumber === 2) {
+                    // メニューコンテナを非表示にし、explanationを全幅にする
+                    document
+                      .getElementById("manual-menu-container")
+                      .classList.add("d-none");
+                    document
+                      .getElementById("explanation-column")
+                      .classList.remove("col-md-9");
+                    document
+                      .getElementById("explanation-column")
+                      .classList.add("col-md-12");
 
-                  // Then create and show menu items
-                  const menuItems =
-                    document.getElementById("manual-menu-items");
-                  menuItems.innerHTML = ""; // Clear existing items
+                    document.getElementById("flow-explanation-text").innerHTML =
+                      explanationText;
 
-                  // Extract steps from the text
-                  const steps = explanationText
-                    .split("-")
-                    .filter((step) => step.trim());
-                  const explanationElement = document.getElementById(
-                    "flow-explanation-text"
-                  );
-                  explanationElement.innerHTML = ""; // Clear existing content
-
-                  // Function to show each step and its explanation
-                  function showStepAndExplanation(index) {
-                    if (index >= steps.length) return;
-
-                    const step = steps[index];
-                    const firstLine = step.split("\n")[0].trim();
-
-                    // Create menu item
-                    const menuItem = document.createElement("a");
-                    menuItem.href = "#";
-                    menuItem.className = "nav-link text-dark";
-                    menuItem.textContent = firstLine;
-                    menuItem.onclick = (e) => {
-                      e.preventDefault();
-
-                      // Remove active class from all menu items
-                      menuItems
-                        .querySelectorAll(".nav-link")
-                        .forEach((item) => {
-                          item.classList.remove("active");
-                        });
-
-                      // Add active class to clicked item
-                      menuItem.classList.add("active");
-
-                      // Find and scroll to the corresponding section
-                      const sections = explanationElement.querySelectorAll(
-                        ".explanation-section"
+                    if (cardNumber === 1) {
+                      const sampleImageSection = document.getElementById(
+                        "sample-image-section"
                       );
-                      if (sections[index]) {
-                        sections[index].scrollIntoView({
-                          behavior: "smooth",
-                          block: "center",
-                        });
-                      }
-                    };
+                      setTimeout(() => {
+                        sampleImageSection.classList.remove("d-none");
+                        sampleImageSection.classList.add("fade-in");
+                      }, 500);
+                    }
+                  } else if (cardNumber === 3) {
+                    // メニューコンテナを表示し、レイアウトを調整
+                    document
+                      .getElementById("manual-menu-container")
+                      .classList.remove("d-none");
+                    document
+                      .getElementById("explanation-column")
+                      .classList.remove("col-md-12");
+                    document
+                      .getElementById("explanation-column")
+                      .classList.add("col-md-9");
 
-                    // Add menu item with fade-in effect
-                    menuItem.style.opacity = "0";
-                    menuItems.appendChild(menuItem);
-                    setTimeout(() => {
-                      menuItem.style.transition = "opacity 0.5s";
-                      menuItem.style.opacity = "1";
-                    }, 100);
+                    // カード3のマニュアルメニューを表示
+                    const manualMenu = document.getElementById("manual-menu");
+                    manualMenu.classList.remove("d-none");
 
-                    // Create explanation section
-                    const sectionDiv = document.createElement("div");
-                    sectionDiv.className = "explanation-section mb-4";
-                    sectionDiv.style.opacity = "0";
+                    // メニューアイテムを作成し、表示
+                    const menuItems =
+                      document.getElementById("manual-menu-items");
+                    menuItems.innerHTML = ""; // 既存のアイテムをクリア
 
-                    // Use typeText for the explanation content
-                    const typingDiv = document.createElement("div");
-                    sectionDiv.appendChild(typingDiv);
-                    explanationElement.appendChild(sectionDiv);
+                    // テキストからステップを抽出
+                    const steps = explanationText
+                      .split("-")
+                      .filter((step) => step.trim());
+                    const explanationElement = document.getElementById(
+                      "flow-explanation-text"
+                    );
+                    explanationElement.innerHTML = ""; // 既存のコンテンツをクリア
 
-                    // Show explanation section with fade-in effect
-                    setTimeout(() => {
-                      sectionDiv.style.transition = "opacity 0.5s";
-                      sectionDiv.style.opacity = "1";
+                    // 各ステップとその説明を表示する関数
+                    function showStepAndExplanation(index) {
+                      if (index >= steps.length) return;
 
-                      // Type the text for this section
-                      typeText(
-                        step,
-                        0,
-                        () => {
-                          // After typing is complete, show next step
-                          setTimeout(() => {
-                            showStepAndExplanation(index + 1);
-                          }, 500);
-                        },
-                        (typingDiv.id = `typing-section-${index}`)
-                      );
-                    }, 500);
+                      const step = steps[index];
+                      const firstLine = step.split("\n")[0].trim();
+
+                      // メニューアイテムを作成
+                      const menuItem = document.createElement("a");
+                      menuItem.href = "#";
+                      menuItem.className = "nav-link text-dark";
+                      menuItem.textContent = firstLine;
+                      menuItem.onclick = (e) => {
+                        e.preventDefault();
+
+                        // すべてのメニューアイテムからアクティブクラスを削除
+                        menuItems
+                          .querySelectorAll(".nav-link")
+                          .forEach((item) => {
+                            item.classList.remove("active");
+                          });
+
+                        // クリックされたアイテムにアクティブクラスを追加
+                        menuItem.classList.add("active");
+
+                        // 対応するセクションを見つけてスクロール
+                        const sections = explanationElement.querySelectorAll(
+                          ".explanation-section"
+                        );
+                        if (sections[index]) {
+                          sections[index].scrollIntoView({
+                            behavior: "smooth",
+                            block: "center",
+                          });
+                        }
+                      };
+
+                      // メニューアイテムをフェードイン効果で追加
+                      menuItem.style.opacity = "0";
+                      menuItems.appendChild(menuItem);
+                      setTimeout(() => {
+                        menuItem.style.transition = "opacity 0.5s";
+                        menuItem.style.opacity = "1";
+                      }, 100);
+
+                      // 説明セクションを作成
+                      const sectionDiv = document.createElement("div");
+                      sectionDiv.className = "explanation-section mb-4";
+                      sectionDiv.style.opacity = "0";
+
+                      // typeTextを使用して説明コンテンツを表示
+                      const typingDiv = document.createElement("div");
+                      sectionDiv.appendChild(typingDiv);
+                      explanationElement.appendChild(sectionDiv);
+
+                      // 説明セクションをフェードイン効果で表示
+                      setTimeout(() => {
+                        sectionDiv.style.transition = "opacity 0.5s";
+                        sectionDiv.style.opacity = "1";
+
+                        // このセクションのテキストを表示
+                        typeText(
+                          step,
+                          0,
+                          () => {
+                            // 入力が完了したら次のステップを表示
+                            setTimeout(() => {
+                              showStepAndExplanation(index + 1);
+                            }, 500);
+                          },
+                          (typingDiv.id = `typing-section-${index}`)
+                        );
+                      }, 500);
+                    }
+
+                    // ステップを表示開始
+                    showStepAndExplanation(0);
+
+                    // コンテンツがロードされた後にエディタを初期化
+                    initializeEditor();
                   }
-
-                  // Start showing steps
-                  showStepAndExplanation(0);
-
-                  // Initialize editor after content is loaded
-                  initializeEditor();
-                }
-              }, 500);
+                }, 500);
+              }
             }
-          }
+          );
         });
       }
     }, 500);
   }, 2000);
 }
 
-function createFlowSVG(steps, color, greenIndices = []) {
+function createFlowSVG(steps, color, greenIndices = [], onComplete) {
   const measureText = (text) => {
     const temp = document.createElement("span");
     temp.style.visibility = "hidden";
@@ -553,61 +586,116 @@ function createFlowSVG(steps, color, greenIndices = []) {
     return width;
   };
 
-  // Tính toán chiều rộng cần thiết cho mỗi box
+  // サイズを計算
   let maxWidth = 120;
   steps.forEach((step) => {
     const textWidth = measureText(step);
     maxWidth = Math.max(maxWidth, textWidth + 60);
   });
 
-  // Tính toán kích thước SVG
   let svgWidth = maxWidth + 80;
   let svgHeight = steps.length * 100 + 40;
-  let startX = (svgWidth - maxWidth) / 2; // Tính toán vị trí x bắt đầu của rect
+  let startX = (svgWidth - maxWidth) / 2;
+  let centerX = svgWidth / 2;
 
-  let svg = `<svg width="${svgWidth}" height="${svgHeight}" xmlns="http://www.w3.org/2000/svg" style="display: block; margin: auto;">
+  // SVGコンテナを作成
+  const svg = `<svg width="${svgWidth}" height="${svgHeight}" xmlns="http://www.w3.org/2000/svg" style="display: block; margin: auto;">
     <defs>
-        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-            <polygon points="0 0, 10 3.5, 0 7" fill="#0d6efd"></polygon>
-        </marker>
-    </defs>`;
+      <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#0d6efd"></polygon>
+      </marker>
+    </defs>
+  </svg>`;
 
-  steps.forEach((step, index) => {
-    let rectColor = color;
-    if (greenIndices && greenIndices.includes(index)) {
-      rectColor = "#C1E5F5";
+  // SVGをDOMに挿入
+  const flowContainer = document.getElementById("flow-container");
+  flowContainer.innerHTML = svg;
+  const svgElement = flowContainer.querySelector("svg");
+
+  // nodeを作成する関数
+  function createNode(step, index) {
+    const y = 20 + index * 100;
+    const rectColor = greenIndices.includes(index) ? "#C1E5F5" : color;
+
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.style.opacity = "0";
+    g.innerHTML =
+      step === "温度・湿度チェック（必要に応じて)"
+        ? `<rect x="${startX}" y="${y}" width="${maxWidth}" height="60" rx="10" fill="${rectColor}"></rect>
+         <text x="${centerX}" y="${
+            y + 25
+          }" text-anchor="middle" dominant-baseline="middle" font-size="14" fill="black">
+           <tspan x="${centerX}" dy="0">温度・湿度チェック</tspan>
+           <tspan x="${centerX}" dy="20">（必要に応じて)</tspan>
+         </text>`
+        : `<rect x="${startX}" y="${y}" width="${maxWidth}" height="50" rx="10" fill="${rectColor}"></rect>
+         <text x="${centerX}" y="${
+            y + 30
+          }" text-anchor="middle" font-size="14" fill="black">${step}</text>`;
+
+    return g;
+  }
+
+  // edgeを作成する関数
+  function createEdge(index, step) {
+    const y = 20 + index * 100;
+    const height = steps[index].includes("温度・湿度チェック（必要に応じて)")
+      ? 60
+      : 50;
+
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.style.opacity = "0";
+    g.innerHTML = `<line x1="${centerX}" y1="${
+      y + height
+    }" x2="${centerX}" y2="${y + 100}" 
+      stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />`;
+
+    return g;
+  }
+
+  // 順番に要素を表示
+  function animateElements(index = 0) {
+    if (index >= steps.length) {
+      // すべての要素が表示されたらコールバックを呼び出す
+      if (onComplete) onComplete();
+      return;
     }
 
-    let y = 20 + index * 100;
-    let centerX = svgWidth / 2; // Tính toán điểm giữa SVG
+    // nodeを作成し、表示
+    const node = createNode(steps[index], index);
+    svgElement.appendChild(node);
 
-    if (step === "温度・湿度チェック（必要に応じて)") {
-      svg += `<rect x="${startX}" y="${y}" width="${maxWidth}" height="60" rx="10" fill="${rectColor}"></rect>`;
-      svg += `
-            <text x="${centerX}" y="${
-        y + 25
-      }" text-anchor="middle" dominant-baseline="middle" font-size="14" fill="black">
-                <tspan x="${centerX}" dy="0">温度・湿度チェック</tspan>
-                <tspan x="${centerX}" dy="20">（必要に応じて)</tspan>
-            </text>`;
-    } else {
-      svg += `<rect x="${startX}" y="${y}" width="${maxWidth}" height="50" rx="10" fill="${rectColor}"></rect>`;
-      svg += `<text x="${centerX}" y="${
-        y + 30
-      }" text-anchor="middle" font-size="14" fill="black">${step}</text>`;
-    }
+    // nodeのアニメーション
+    setTimeout(() => {
+      node.style.transition = "opacity 0.5s ease-in";
+      node.style.opacity = "1";
 
-    if (index < steps.length - 1) {
-      let arrowStartY =
-        y + (step === "温度・湿度チェック（必要に応じて)" ? 60 : 50);
-      svg += `<line x1="${centerX}" y1="${arrowStartY}" x2="${centerX}" y2="${
-        y + 100
-      }" stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />`;
-    }
-  });
+      // edgeを作成し、表示（nodeが最後でない場合）
+      if (index < steps.length - 1) {
+        setTimeout(() => {
+          const edge = createEdge(index, steps[index]);
+          svgElement.appendChild(edge);
 
-  svg += `</svg>`;
-  return svg;
+          // edgeのアニメーション
+          setTimeout(() => {
+            edge.style.transition = "opacity 0.5s ease-in";
+            edge.style.opacity = "1";
+
+            // 次のnodeに進む
+            setTimeout(() => animateElements(index + 1), 300);
+          }, 50);
+        }, 300);
+      } else {
+        // nodeが最後の場合、アニメーションが完了したらコールバックを呼び出す
+        setTimeout(() => {
+          if (onComplete) onComplete();
+        }, 500);
+      }
+    }, 50);
+  }
+
+  // アニメーションを開始
+  setTimeout(() => animateElements(), 100);
 }
 
 function downloadScenarioSVG() {
@@ -630,7 +718,7 @@ function initializeEditor() {
   const toolbarTemplate = document.getElementById("editor-toolbar");
   let toolbar = null;
 
-  // Function to show toolbar
+  // ツールバーを表示する関数
   function showToolbar(e) {
     const selection = window.getSelection();
     if (selection.toString().length > 0) {
@@ -638,7 +726,7 @@ function initializeEditor() {
         toolbar = toolbarTemplate.content.cloneNode(true).firstElementChild;
         document.body.appendChild(toolbar);
 
-        // Add event listeners to toolbar buttons
+        // ツールバーボタンにイベントリスナーを追加
         toolbar.querySelectorAll("button").forEach((button) => {
           button.addEventListener("click", (e) => {
             e.preventDefault();
@@ -646,7 +734,10 @@ function initializeEditor() {
 
             if (command === "delete") {
               const selection = window.getSelection();
-              selection.getRangeAt(0).deleteContents();
+              const range = selection.getRangeAt(0);
+              range.deleteContents();
+            } else if (command === "removeFormat") {
+              removeAllFormatting();
             } else {
               formatText(command);
             }
@@ -664,14 +755,14 @@ function initializeEditor() {
     }
   }
 
-  // Function to hide toolbar
+  // ツールバーを非表示にする関数
   function hideToolbar() {
     if (toolbar) {
       toolbar.style.display = "none";
     }
   }
 
-  // Add event listeners
+  // イベントリスナーを追加
   explanationText.addEventListener("mouseup", showToolbar);
   document.addEventListener("mousedown", (e) => {
     if (toolbar && !toolbar.contains(e.target)) {
@@ -679,85 +770,365 @@ function initializeEditor() {
     }
   });
 }
+function removeAllFormatting() {
+  const selection = window.getSelection();
+  if (!selection.toString()) return;
+
+  const range = selection.getRangeAt(0);
+
+  // 一時的なcontainerを作成
+  const tempDiv = document.createElement("div");
+  tempDiv.appendChild(range.cloneContents());
+
+  // 純粋なテキストを取得
+  const plainText = tempDiv.textContent || tempDiv.innerText;
+
+  // 古いコンテンツを削除し、新しいテキストを挿入
+  range.deleteContents();
+  const textNode = document.createTextNode(plainText);
+  range.insertNode(textNode);
+
+  // selectionを更新してテキストの末端にカーソルを移動
+  selection.removeAllRanges();
+  const newRange = document.createRange();
+  newRange.setStartAfter(textNode);
+  newRange.setEndAfter(textNode);
+  selection.addRange(newRange);
+}
 
 function formatText(command) {
   const selection = window.getSelection();
   if (!selection.toString()) return;
 
+  if (command === "askGPT") {
+    showGPTPopup(selection);
+    return;
+  }
+
   const range = selection.getRangeAt(0);
-  const container = range.commonAncestorContainer;
-  let allTextHasFormat = true;
 
-  // Function to check if a node has the specified format
-  function hasFormat(node) {
-    if (node.nodeType === Node.TEXT_NODE) {
-      const parent = node.parentElement;
-      if (!parent || parent.tagName !== "SPAN") return false;
-
-      const style = window.getComputedStyle(parent);
-      switch (command) {
-        case "bold":
-          return style.fontWeight === "700";
-        case "underline":
-          return style.textDecoration.includes("underline");
-        case "highlight":
-          return style.backgroundColor === "rgb(255, 243, 205)";
-        default:
-          return false;
-      }
-    }
-    return false;
+  // spanの親を見つける
+  let currentNode = selection.anchorNode;
+  while (currentNode && currentNode.nodeType === Node.TEXT_NODE) {
+    currentNode = currentNode.parentNode;
   }
 
-  // Check all text nodes in the selection
-  const nodeIterator = document.createNodeIterator(
-    container,
-    NodeFilter.SHOW_TEXT,
-    {
-      acceptNode: function (node) {
-        return range.intersectsNode(node)
-          ? NodeFilter.FILTER_ACCEPT
-          : NodeFilter.FILTER_REJECT;
-      },
-    }
-  );
+  // 現在のformatをチェック
+  let existingFormats = {
+    bold: false,
+    underline: false,
+    highlight: false,
+  };
 
-  let currentNode;
-  while ((currentNode = nodeIterator.nextNode())) {
-    if (currentNode.textContent.trim() && !hasFormat(currentNode)) {
-      allTextHasFormat = false;
-      break;
-    }
-  }
+  // 要求されたformatが現在のformatと一致するかチェック
+  let hasCurrentFormat = false;
 
-  const selectedText = range.toString();
-  range.deleteContents();
+  if (currentNode && currentNode.tagName === "SPAN") {
+    existingFormats.bold = currentNode.style.fontWeight === "bold";
+    existingFormats.underline =
+      currentNode.style.textDecoration === "underline";
+    existingFormats.highlight =
+      currentNode.style.backgroundColor === "rgb(255, 243, 205)";
 
-  if (allTextHasFormat) {
-    // If all text has the format, remove it
-    const textNode = document.createTextNode(selectedText);
-    range.insertNode(textNode);
-  } else {
-    // Apply format to the entire selection
-    const span = document.createElement("span");
     switch (command) {
       case "bold":
-        span.style.fontWeight = "bold";
+        hasCurrentFormat = existingFormats.bold;
         break;
       case "underline":
-        span.style.textDecoration = "underline";
+        hasCurrentFormat = existingFormats.underline;
         break;
       case "highlight":
-        span.style.backgroundColor = "#fff3cd";
-        span.style.padding = "2px 4px";
-        span.style.borderRadius = "2px";
+        hasCurrentFormat = existingFormats.highlight;
         break;
     }
-    span.textContent = selectedText;
-    range.insertNode(span);
   }
 
-  // Update selection
+  // 新しいspanを作成し、formatを適用
+  const span = document.createElement("span");
+
+  // 新しいformatを適用し、現在のformatを保持
+  switch (command) {
+    case "bold":
+      if (!hasCurrentFormat) span.style.fontWeight = "bold";
+      if (existingFormats.underline) span.style.textDecoration = "underline";
+      if (existingFormats.highlight) {
+        span.style.backgroundColor = "#fff3cd";
+        span.style.padding = "2px 4px";
+      }
+      break;
+    case "underline":
+      if (existingFormats.bold) span.style.fontWeight = "bold";
+      if (!hasCurrentFormat) span.style.textDecoration = "underline";
+      if (existingFormats.highlight) {
+        span.style.backgroundColor = "#fff3cd";
+        span.style.padding = "2px 4px";
+      }
+      break;
+    case "highlight":
+      if (existingFormats.bold) span.style.fontWeight = "bold";
+      if (existingFormats.underline) span.style.textDecoration = "underline";
+      if (!hasCurrentFormat) {
+        span.style.backgroundColor = "#fff3cd";
+        span.style.padding = "2px 4px";
+      }
+      break;
+  }
+
+  // formatを適用する処理
+  try {
+    if (
+      currentNode &&
+      currentNode.tagName === "SPAN" &&
+      currentNode.contains(range.startContainer) &&
+      currentNode.contains(range.endContainer)
+    ) {
+      // spanのstyleを更新
+      if (hasCurrentFormat) {
+        // formatが既に存在する場合、削除
+        switch (command) {
+          case "bold":
+            currentNode.style.fontWeight = "";
+            break;
+          case "underline":
+            currentNode.style.textDecoration = "";
+            break;
+          case "highlight":
+            currentNode.style.backgroundColor = "";
+            currentNode.style.padding = "";
+            break;
+        }
+
+        // まだstyleが残っているかチェック
+        const hasRemainingStyles =
+          currentNode.style.fontWeight === "bold" ||
+          currentNode.style.textDecoration === "underline" ||
+          currentNode.style.backgroundColor === "rgb(255, 243, 205)";
+
+        // styleが残っていない場合、spanをtext nodeに置き換え
+        if (!hasRemainingStyles) {
+          const textContent = currentNode.textContent;
+          const textNode = document.createTextNode(textContent);
+          currentNode.parentNode.replaceChild(textNode, currentNode);
+        }
+      } else {
+        // formatが存在しない場合、追加
+        switch (command) {
+          case "bold":
+            currentNode.style.fontWeight = "bold";
+            break;
+          case "underline":
+            currentNode.style.textDecoration = "underline";
+            break;
+          case "highlight":
+            currentNode.style.backgroundColor = "#fff3cd";
+            currentNode.style.padding = "2px 4px";
+            break;
+        }
+      }
+    } else if (span.style.length > 0) {
+      // spanがまだ存在しない場合、作成
+      const surroundRange = range.cloneRange();
+      surroundRange.surroundContents(span);
+      range.setStart(surroundRange.startContainer, surroundRange.startOffset);
+      range.setEnd(surroundRange.endContainer, surroundRange.endOffset);
+    }
+  } catch (e) {
+    console.error("Error applying format:", e);
+  }
+
+  // クリーンアップ
   selection.removeAllRanges();
   selection.addRange(range);
+  range.commonAncestorContainer.normalize();
 }
+
+function downloadExplanation() {
+  const explanationText = document.getElementById("flow-explanation-text");
+  const content = explanationText.innerHTML;
+
+  // HTMLテンプレートを作成
+  const htmlContent = `
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>説明文書</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding: 20px; }
+        .content { max-width: 800px; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <div class="content">
+        ${content}
+    </div>
+</body>
+</html>`;
+
+  // Blobを作成し、ダウンロード
+  const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "explanation.html";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+// downloadボタンにイベントリスナーを追加
+document.addEventListener("DOMContentLoaded", function () {
+  const downloadBtn = document.getElementById("download-explanation");
+  if (downloadBtn) {
+    downloadBtn.addEventListener("click", downloadExplanation);
+  }
+});
+
+// selectionとrangeを保存する変数
+let savedSelection = null;
+let savedRange = null;
+
+function showGPTPopup(selection) {
+  savedSelection = selection;
+  savedRange = selection.getRangeAt(0);
+
+  const existingPopup = document.querySelector(".gpt-popup");
+  if (existingPopup) {
+    existingPopup.remove();
+  }
+
+  const popupTemplate = document.getElementById("gpt-popup");
+  const popup = popupTemplate.content.cloneNode(true).firstElementChild;
+
+  const rect = savedRange.getBoundingClientRect();
+  popup.style.top = `${window.scrollY + rect.bottom + 5}px`;
+  popup.style.left = `${window.scrollX + rect.left}px`;
+
+  const textarea = popup.querySelector(".gpt-popup-textarea");
+  const sendButton = popup.querySelector(".gpt-popup-send");
+
+  // textareaを自動的にリサイズ
+  textarea.addEventListener("input", function () {
+    this.style.height = "auto";
+    this.style.height = this.scrollHeight + "px";
+  });
+
+  // Enterキーを押したときの処理
+  textarea.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      replaceWithDetailedText();
+    }
+  });
+
+  // sendボタンを押したときの処理
+  sendButton.addEventListener("click", replaceWithDetailedText);
+
+  document.body.appendChild(popup);
+  textarea.focus();
+
+  // 外側をクリックしたときにポップアップを閉じる
+  document.addEventListener("mousedown", (e) => {
+    if (!popup.contains(e.target)) {
+      popup.remove();
+    }
+  });
+}
+
+function replaceWithDetailedText() {
+  if (!savedRange) return;
+
+  const sectionId = savedRange.startContainer.parentElement
+    .closest(".explanation-section")
+    ?.querySelector('[id^="typing-section-"]')?.id;
+
+  if (sectionId) {
+    const sectionNumber = parseInt(sectionId.split("-")[2]);
+    let newText = "";
+
+    // セクション番号に基づいて詳細なテキストをハードコード
+    switch (sectionNumber) {
+      case 0:
+        newText = `<strong>1. 出張前に従業員が仮払申請書を提出する</strong>：
+
+従業員は出張に行く前に、会社に対して旅費などの仮払いを申請するために「仮払申請書」を提出します。
+この書類には、出張の日程、目的地、移動手段（電車、飛行機など）、および宿泊先などを記載し、予想される費用を計算して明記します。
+仮払申請書は、従業員の直属の上司に提出され、内容の確認と承認を受ける必要があります。
+
+<strong>例文</strong>：
+   • 仮払申請書には、「〇月〇日～〇月〇日、大阪出張、往復新幹線代とホテル代」といった具体的な情報を記載します。
+   • 上司に提出する際、「出張予定の詳細を確認していただけますか？」と伝えます。`;
+        break;
+      case 1:
+        newText = `<strong>2. 経理部が必要費用を確認する</strong>：
+上司が仮払申請書の内容を確認し、承認した後、その申請書は経理部に回されます。
+経理担当者は、申請内容を詳細にチェックし、以下の点を確認します：
+   • 費用が妥当かどうか（例えば、高級ホテルを選んでいないか）。
+   • 記載内容に漏れや不備がないか。
+もし申請内容に不備があれば、申請者に修正を依頼する場合もあります。
+
+<strong>例文</strong>：
+   • 経理部：「このタクシー代は具体的な利用時間やルートが記載されていません。追加で情報をいただけますか？」
+   • 従業員：「了解しました。ルートの詳細を追記して再提出します。」`;
+        break;
+      case 2:
+        newText = `<strong>3. 従業員に仮払分の金額を渡す</strong>：
+経理担当者の確認が完了し、申請内容に問題がなければ、申請された仮払い金額が従業員に支払われます。
+この際、従業員には受領印を押してもらうか、サインを求めることで、金銭の受け渡しが記録に残るようにします。
+
+<strong>例文</strong>：
+   • 経理部：「申請された金額〇万円をこちらで確認しました。受領印をお願いします。」
+   • 従業員：「わかりました。こちらに印を押します。」`;
+        break;
+      case 3:
+        newText = `<strong>4. 出張後に従業員が仮払経費精算書を提出する</strong>：
+出張を終えた従業員は、出張中に実際にかかった費用を整理し、「仮払経費精算書」を作成します。この書類には、領収書や明細を添付し、具体的にどの費目にいくら支払ったのかを記載します。
+仮払金をどのように使ったかを会社に報告するための重要な手続きです。
+
+<strong>例文</strong>：
+   • 従業員：「出張時のホテル代の領収書と電車代の領収書を添付しました。」
+   • 上司：「内容を確認します。領収書が漏れていないか確認してください。」`;
+        break;
+      case 4:
+        newText = `<strong>5. 仮払いした額と実費との差額を精算する</strong>：
+従業員が作成した「仮払経費精算書」は上司に提出され、承認を得た後に経理部に送られます。
+経理部では、領収書と精算書の内容を確認し、以下のように差額を処理します：
+   • 仮払い金が実費より多かった場合：従業員が会社に差額を返金します。
+   • 仮払い金が実費より少なかった場合：会社が不足分を従業員に追加支給します。
+
+<strong>例文</strong>：
+   • 経理部：「仮払金が実費より1,000円多かったため、こちらの振込用紙で返金をお願いします。」
+   • 従業員：「了解しました。明日までに返金手続きを行います。」`;
+        break;
+      default:
+        newText = selection.toString();
+    }
+
+    // テキストを置換する前にselectionを復元
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(savedRange);
+
+    // typeTextを使用してテキストを置換
+    typeText(
+      newText,
+      0,
+      () => {
+        // 置換後にsaved selectionをクリア
+        savedSelection = null;
+        savedRange = null;
+      },
+      sectionId
+    );
+  }
+
+  // ポップアップを削除
+  const popup = document.querySelector(".gpt-popup");
+  if (popup) {
+    popup.remove();
+  }
+}
+
