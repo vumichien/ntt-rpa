@@ -2,7 +2,7 @@
     height: calc(100vh - 250px);
 }
 
-/* Chat container sử dụng Bootstrap classes */
+/* チャットコンテナはBootstrapクラスを使用します */
 .chat-container {
     display: flex;
     flex-direction: column;
