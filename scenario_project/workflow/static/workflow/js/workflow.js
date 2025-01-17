@@ -290,10 +290,87 @@ function createScenario(cardNumber) {
 • 処理終了後に使用リソース（ブラウザ・Excel）を解放することで、システムの安定性を向上。`;
 
         explanationText = `
-<div class="row">
-  <div class="col-md-6">
-    <h5>変更前のスクリプト:</h5>
-    <pre class="code-block old-script"><code>
+<div class="container-fluid">
+    <!-- Overview Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">スクリプト改善の概要</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">ステップ</th>
+                            <th scope="col">変更内容</th>
+                            <th scope="col">改善効果</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="3" class="table-primary"><strong>1. 基本処理フロー</strong></td>
+                        </tr>
+                        <tr>
+                            <td>変更なし</td>
+                            <td>• Excelファイルのオープン<br>• システムログイン<br>• データ入力<br>• 申請実行</td>
+                            <td>基本的な自動化処理の維持</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3" class="table-success"><strong>2. 確認ダイアログ処理（新規追加）</strong></td>
+                        </tr>
+                        <tr>
+                            <td>新機能</td>
+                            <td>• ダイアログの存在確認<br>• OKボタンの自動クリック</td>
+                            <td>• 処理の確実性向上<br>• 申請確定の自動化</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3" class="table-success"><strong>3. 完了確認処理（新規追加）</strong></td>
+                        </tr>
+                        <tr>
+                            <td>新機能</td>
+                            <td>• 処理完了の待機処理（3秒）<br>• 完了メッセージの確認<br>• 結果通知の表示</td>
+                            <td>• 処理結果の確実な確認<br>• エラー状態の早期検知</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3" class="table-success"><strong>4. リソース管理（新規追加）</strong></td>
+                        </tr>
+                        <tr>
+                            <td>新機能</td>
+                            <td>• ブラウザの自動クローズ<br>• Excelファイルの自動クローズ</td>
+                            <td>• システムリソースの適切な解放<br>• メモリ使用の最適化</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3" class="table-success"><strong>5. エラー時の後処理（新規追加）</strong></td>
+                        </tr>
+                        <tr>
+                            <td>新機能</td>
+                            <td>• エラー発生時のリソース解放<br>• ブラウザとExcelの確実なクローズ</td>
+                            <td>• 異常終了時のリソース管理<br>• システム安定性の向上</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Comparison Section -->
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">スクリプトコードの比較</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">変更前のスクリプト</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre class="code-block old-script"><code>
 '***********************************************
 ' 出張旅費請求<span class="text-danger">簡易版</span>自動化スクリプト
 ' 概要：Excelの出張記録から経費精算システムへの自動入力を行う<span class="text-danger">（簡易版）</span>
@@ -349,10 +426,16 @@ On Error Resume Next
 If Err.Number <> 0 Then
     MessageBox("エラーが発生しました。: " & Err.Description)
 End If</code></pre>
-  </div>
-  <div class="col-md-6">
-    <h5>変更後のスクリプト:</h5>
-    <pre class="code-block new-script" id="new-script"><code>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">変更後のスクリプト</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre class="code-block new-script" id="new-script"><code>
 '***********************************************
 ' 出張旅費請求自動化スクリプト
 ' 概要：Excelの出張記録から経費精算システムへの自動入力を行う
@@ -429,25 +512,38 @@ If Err.Number <> 0 Then
     <span class="text-success">CloseIE()
     CloseExcel()</span>
 End If</code></pre>
-  </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 <style>
-  .code-block {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 5px;
-    font-family: monospace;
-    white-space: pre;
-    font-size: 12px;
-  }
-  .text-danger {
-    color: #dc3545;
-    background-color: #ffe6e6;
-  }
-  .text-success {
-    color: #28a745;
-    background-color: #e6ffe6;
-  }
+    .code-block {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        font-family: monospace;
+        white-space: pre;
+        font-size: 12px;
+        margin-bottom: 0;
+    }
+    .text-danger {
+        color: #dc3545;
+        background-color: #ffe6e6;
+    }
+    .text-success {
+        color: #28a745;
+        background-color: #e6ffe6;
+    }
+    .card-header {
+        border-bottom: 0;
+    }
+    .table th, .table td {
+        vertical-align: middle;
+    }
 </style>`;
       } else if (cardNumber === 3) {
         summaryText = `<strong>旅費精算</strong>を行うには、出張する従業員に前もって概算で旅費を渡しておく<strong>「事前仮払い精算」</strong>という方法があります。
