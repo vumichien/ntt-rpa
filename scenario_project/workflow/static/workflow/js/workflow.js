@@ -308,7 +308,7 @@ function createScenario(cardNumber) {
                     </thead>
                     <tbody>
                         <tr>
-                            <td colspan="3" class="table-primary"><strong>1. 基本処理フロー</strong></td>
+                            <td colspan="3" style="background-color: rgb(247, 176, 102); color: black;"><strong>1. 基本処理フロー（変更なし）</strong></td>
                         </tr>
                         <tr>
                             <td>変更なし</td>
@@ -317,7 +317,7 @@ function createScenario(cardNumber) {
                         </tr>
 
                         <tr>
-                            <td colspan="3" class="table-success"><strong>2. 確認ダイアログ処理（新規追加）</strong></td>
+                            <td colspan="3" style="background-color: rgb(193, 229, 245); color: black;"><strong>2. 確認ダイアログ処理（新規追加）</strong></td>
                         </tr>
                         <tr>
                             <td>新機能</td>
@@ -326,7 +326,7 @@ function createScenario(cardNumber) {
                         </tr>
 
                         <tr>
-                            <td colspan="3" class="table-success"><strong>3. 完了確認処理（新規追加）</strong></td>
+                            <td colspan="3" style="background-color: rgb(193, 229, 245); color: black;"><strong>3. 完了確認処理（新規追加）</strong></td>
                         </tr>
                         <tr>
                             <td>新機能</td>
@@ -335,7 +335,7 @@ function createScenario(cardNumber) {
                         </tr>
 
                         <tr>
-                            <td colspan="3" class="table-success"><strong>4. リソース管理（新規追加）</strong></td>
+                            <td colspan="3" style="background-color: rgb(193, 229, 245); color: black;"><strong>4. リソース管理（新規追加）</strong></td>
                         </tr>
                         <tr>
                             <td>新機能</td>
@@ -344,12 +344,12 @@ function createScenario(cardNumber) {
                         </tr>
 
                         <tr>
-                            <td colspan="3" class="table-success"><strong>5. エラー時の後処理（新規追加）</strong></td>
+                            <td colspan="3" style="background-color: rgb(255, 102, 102); color: black;"><strong>5. 手動確認処理（削除）</strong></td>
                         </tr>
                         <tr>
-                            <td>新機能</td>
-                            <td>• エラー発生時のリソース解放<br>• ブラウザとExcelの確実なクローズ</td>
-                            <td>• 異常終了時のリソース管理<br>• システム安定性の向上</td>
+                            <td>機能削除</td>
+                            <td>• 手動での確認ダイアログ操作<br>• 手動でのブラウザ・Excel終了</td>
+                            <td>• 人的作業の自動化<br>• 処理時間の短縮</td>
                         </tr>
                     </tbody>
                 </table>
