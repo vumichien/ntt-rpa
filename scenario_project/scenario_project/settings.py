@@ -15,6 +15,8 @@ from pathlib import Path
 # プロジェクト内のパスをこのように構築します: BASE_DIR / 'subdir'。
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'flowchart/data'
 
 # クイックスタート開発設定 - 本番環境には不適切
 # 詳細は次を参照してください：
@@ -118,8 +120,11 @@ USE_TZ = True
 # 静的ファイル (CSS, JavaScript, 画像)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-# STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",   
+]
 
 # デフォルトの主キーのフィールドタイプ
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

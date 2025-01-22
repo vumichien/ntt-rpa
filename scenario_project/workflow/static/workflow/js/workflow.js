@@ -489,7 +489,7 @@ function createScenario(cardNumber) {
                       const step = steps[index];
                       const firstLine = step.split("\n")[0].trim();
 
-                      // メニューアイテムを作成
+                      // Create menu item
                       const menuItem = document.createElement("a");
                       menuItem.href = "#";
                       menuItem.className = "nav-link text-dark";
@@ -497,20 +497,16 @@ function createScenario(cardNumber) {
                       menuItem.onclick = (e) => {
                         e.preventDefault();
 
-                        // すべてのメニューアイテムからアクティブクラスを削除
-                        menuItems
-                          .querySelectorAll(".nav-link")
-                          .forEach((item) => {
-                            item.classList.remove("active");
-                          });
+                        // Remove active class from all menu items
+                        menuItems.querySelectorAll(".nav-link").forEach((item) => {
+                          item.classList.remove("active");
+                        });
 
-                        // クリックされたアイテムにアクティブクラスを追加
+                        // Add active class to clicked item
                         menuItem.classList.add("active");
 
-                        // 対応するセクションを見つけてスクロール
-                        const sections = explanationElement.querySelectorAll(
-                          ".explanation-section"
-                        );
+                        // Scroll to corresponding section
+                        const sections = explanationElement.querySelectorAll(".explanation-section");
                         if (sections[index]) {
                           sections[index].scrollIntoView({
                             behavior: "smooth",
@@ -519,7 +515,7 @@ function createScenario(cardNumber) {
                         }
                       };
 
-                      // メニューアイテムをフェードイン効果で追加
+                      // Add menu item with fade-in effect
                       menuItem.style.opacity = "0";
                       menuItems.appendChild(menuItem);
                       setTimeout(() => {
@@ -527,27 +523,51 @@ function createScenario(cardNumber) {
                         menuItem.style.opacity = "1";
                       }, 100);
 
-                      // 説明セクションを作成
+                      // Create explanation section
                       const sectionDiv = document.createElement("div");
                       sectionDiv.className = "explanation-section mb-4";
                       sectionDiv.style.opacity = "0";
 
-                      // typeTextを使用して説明コンテンツを表示
+                      // Add image for specific steps
+                      const image = document.createElement("img");
+                      image.style.width = "100%"; // Adjust size as needed
+                      image.style.marginBottom = "20px"; // Add padding between image and text
+                      switch (index) {
+                        case 0:
+                          image.src = "/media/step1.png";
+                          break;
+                        case 1:
+                          image.src = "/media/step2.png";
+                          break;
+                        case 3:
+                          image.src = "/media/step4.png";
+                          break;
+                        case 4:
+                          image.src = "/media/step5.png";
+                          break;
+                        default:
+                          image.src = "";
+                      }
+                      if (image.src) {
+                        sectionDiv.appendChild(image);
+                      }
+
+                      // Use typeText to display explanation content
                       const typingDiv = document.createElement("div");
                       sectionDiv.appendChild(typingDiv);
                       explanationElement.appendChild(sectionDiv);
 
-                      // 説明セクションをフェードイン効果で表示
+                      // Display explanation section with fade-in effect
                       setTimeout(() => {
                         sectionDiv.style.transition = "opacity 0.5s";
                         sectionDiv.style.opacity = "1";
 
-                        // このセクションのテキストを表示
+                        // Display text for this section
                         typeText(
                           step,
                           0,
                           () => {
-                            // 入力が完了したら次のステップを表示
+                            // Show next step after current one is complete
                             setTimeout(() => {
                               showStepAndExplanation(index + 1);
                             }, 500);
@@ -557,10 +577,10 @@ function createScenario(cardNumber) {
                       }, 500);
                     }
 
-                    // ステップを表示開始
+                    // Show steps and explanations
                     showStepAndExplanation(0);
 
-                    // コンテンツがロードされた後にエディタを初期化
+                    // Initialize editor after content is loaded
                     initializeEditor();
                   }
                 }, 500);
@@ -946,7 +966,26 @@ function downloadExplanation() {
   const explanationText = document.getElementById("flow-explanation-text");
   const content = explanationText.innerHTML;
 
-  // HTMLテンプレートを作成
+  // Function to convert image to base64
+  function getBase64Image(img) {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    return canvas.toDataURL("image/png");
+  }
+
+  // Replace image sources with base64 data
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = content;
+  const images = tempDiv.querySelectorAll("img");
+  images.forEach((img) => {
+    const base64Image = getBase64Image(img);
+    img.src = base64Image;
+  });
+
+  // Create HTML template
   const htmlContent = `
 <!DOCTYPE html>
 <html lang="ja">
@@ -962,12 +1001,12 @@ function downloadExplanation() {
 </head>
 <body>
     <div class="content">
-        ${content}
+        ${tempDiv.innerHTML}
     </div>
 </body>
 </html>`;
 
-  // Blobを作成し、ダウンロード
+  // Create Blob and download
   const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
