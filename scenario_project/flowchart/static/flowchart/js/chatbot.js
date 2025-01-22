@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
     const flowchartSvg = document.querySelector('.flowchart-container svg');
-    const blackBox = flowchartSvg.querySelector('rect[fill="none"]'); // BlackBox
+    const blackBox = flowchartSvg.querySelector('rect[fill="none"]'); // ブラックボックス
 
     // ページにアクセスしたときにデフォルトメッセージを表示
     appendChatbotMessage('どの操作を修正したいですか？');

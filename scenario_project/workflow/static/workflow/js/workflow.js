@@ -167,7 +167,6 @@ function createScenario(cardNumber) {
       summarySection.classList.add("fade-in");
 
       let summaryText = "";
-      let svgContent = "";
       let explanationText = "";
 
       if (cardNumber === 1) {
@@ -177,12 +176,6 @@ function createScenario(cardNumber) {
 <strong>申請者情報:</strong> 申請者および承認者の情報を入力します。
 <strong>出張情報:</strong> 出張期間、目的地、目的、日当額を設定します。
 <strong>旅費明細:</strong> 出張中の交通手段や詳細な費用を入力します。`;
-
-        // シンプルなSVGフローを作成（垂直方向、カメラマン色#f7b066）
-        svgContent = createFlowSVG(
-          ["申請者情報の入力", "出張情報の入力", "旅費明細の入力"],
-          "#f7b066"
-        );
 
         explanationText = `
 <div class="table-responsive">
@@ -280,86 +273,278 @@ function createScenario(cardNumber) {
   </table>
 </div>`;
       } else if (cardNumber === 2) {
-        summaryText = `変更内容の要約:
--追加: 「バーコードスキャン」と「温度・湿度チェック」ステップを導入。
--削除: 「保管場所の決定」をシステムによる自動化に変更。
--変更: 「入庫記録の入力」をバーコードスキャンによる自動入力へ改善。
+        summaryText = `<strong>変更点:</strong>
+1. 確認ダイアログの処理が追加されている: 
+• 申請実行後に表示される確認ダイアログ（「申請を実行しますか？」）の処理が含まれている。
+• ダイアログが表示された場合、「OK」ボタンをクリックして申請を確定する手順が追加。
 
-主な改善点：
-• 作業効率の向上：バーコードスキャンによる自動入力で作業時間を短縮
-• ヒューマンエラーの削減：手動入力を減らし、入力ミスを防止
-• 品質管理の強化：温度・湿度チェックの導入で保管品質を向上`;
+2. 業務終了後に以下の後処理が実行される:
+• 経費精算システムのブラウザを閉じる。
+• 開いていたExcelファイルを閉じる。
 
-        svgContent = createFlowSVG(
-          [
-            "納品書の確認",
-            "バーコードスキャン",
-            "商品の検品",
-            "温度・湿度チェック（必要に応じて)",
-            "作業記録の保存",
-          ],
-          "#f7b066",
-          [1, 3]
-        );
+<strong>主な改善点：</strong>
+1. 完全な業務処理の保証:
+• 確認ダイアログを操作し、申請確定の確認を自動化。
+
+2. リソース管理の徹底:
+• 処理終了後に使用リソース（ブラウザ・Excel）を解放することで、システムの安定性を向上。`;
 
         explanationText = `
-<div class="table-responsive">
-    <table class="table table-hover">
-        <thead class="table-light">
-            <tr>
-                <th scope="col">ステップ</th>
-                <th scope="col">変更内容</th>
-                <th scope="col">改善効果</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td colspan="3" class="table-primary"><strong>1. 納品書の確認</strong></td>
-            </tr>
-            <tr>
-                <td>変更なし</td>
-                <td>従来通りの納品書確認プロセス</td>
-                <td>正確な入荷確認の維持</td>
-            </tr>
+<div class="container-fluid">
+    <!-- Overview Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">スクリプト改善の概要</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">ステップ</th>
+                            <th scope="col">変更内容</th>
+                            <th scope="col">改善効果</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="3" style="background-color: rgb(247, 176, 102); color: black;"><strong>1. 基本処理フロー（変更なし）</strong></td>
+                        </tr>
+                        <tr>
+                            <td>変更なし</td>
+                            <td>• Excelファイルのオープン<br>• システムログイン<br>• データ入力<br>• 申請実行</td>
+                            <td>基本的な自動化処理の維持</td>
+                        </tr>
 
-            <tr>
-                <td colspan="3" class="table-success"><strong>2. バーコードスキャン（新規追加）</strong></td>
-            </tr>
-            <tr>
-                <td>新機能</td>
-                <td>• 商品のバーコードをスキャン<br>• 自動でデータベースに登録</td>
-                <td>• 入力時間の短縮（約70%削減）<br>• 入力ミスの防止<br>• トレーサビリティの向上</td>
-            </tr>
+                        <tr>
+                            <td colspan="3" style="background-color: rgb(193, 229, 245); color: black;"><strong>2. 確認ダイアログ処理（新規追加）</strong></td>
+                        </tr>
+                        <tr>
+                            <td>新機能</td>
+                            <td>• ダイアログの存在確認<br>• OKボタンの自動クリック</td>
+                            <td>• 処理の確実性向上<br>• 申請確定の自動化</td>
+                        </tr>
 
-            <tr>
-                <td colspan="3" class="table-primary"><strong>3. 商品の検品</strong></td>
-            </tr>
-            <tr>
-                <td>一部変更</td>
-                <td>• タブレットでの検品作業<br>• リアルタイムでの数量確認</td>
-                <td>• ペーパーレス化<br>• 即時の在庫反映</td>
-            </tr>
+                        <tr>
+                            <td colspan="3" style="background-color: rgb(193, 229, 245); color: black;"><strong>3. 完了確認処理（新規追加）</strong></td>
+                        </tr>
+                        <tr>
+                            <td>新機能</td>
+                            <td>• 処理完了の待機処理（3秒）<br>• 完了メッセージの確認<br>• 結果通知の表示</td>
+                            <td>• 処理結果の確実な確認<br>• エラー状態の早期検知</td>
+                        </tr>
 
-            <tr>
-                <td colspan="3" class="table-success"><strong>4. 温度・湿度チェック（新規追加）</strong></td>
-            </tr>
-            <tr>
-                <td>新機能</td>
-                <td>• IoTセンサーによる自動計測<br>• 異常値の自動アラート</td>
-                <td>• 品質管理の強化<br>• 保管環境の最適化<br>• 商品劣化の防止</td>
-            </tr>
+                        <tr>
+                            <td colspan="3" style="background-color: rgb(193, 229, 245); color: black;"><strong>4. リソース管理（新規追加）</strong></td>
+                        </tr>
+                        <tr>
+                            <td>新機能</td>
+                            <td>• ブラウザの自動クローズ<br>• Excelファイルの自動クローズ</td>
+                            <td>• システムリソースの適切な解放<br>• メモリ使用の最適化</td>
+                        </tr>
 
-            <tr>
-                <td colspan="3" class="table-primary"><strong>5. 作業記録の保存</strong></td>
-            </tr>
-            <tr>
-                <td>自動化</td>
-                <td>• 作業内容の自動記録<br>• クラウドでのデータ保存</td>
-                <td>• 作業履歴の完全保存<br>• データ分析の容易化</td>
-            </tr>
-        </tbody>
-    </table>
-</div>`;
+                        <tr>
+                            <td colspan="3" style="background-color: rgb(255, 102, 102); color: black;"><strong>5. 手動確認処理（削除）</strong></td>
+                        </tr>
+                        <tr>
+                            <td>機能削除</td>
+                            <td>• 手動での確認ダイアログ操作<br>• 手動でのブラウザ・Excel終了</td>
+                            <td>• 人的作業の自動化<br>• 処理時間の短縮</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Comparison Section -->
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">スクリプトコードの比較</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">変更前のスクリプト</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre class="code-block old-script"><code>
+'***********************************************
+' 出張旅費請求<span class="text-danger">簡易版</span>自動化スクリプト
+' 概要：Excelの出張記録から経費精算システムへの自動入力を行う<span class="text-danger">（簡易版）</span>
+'***********************************************
+
+Sub Main()
+    ' Excel出張記録を開く
+    OpenExcel("C:\Travel\TravelExpense.xlsx", "出張記録")
+    
+    ' 経費精算システムを開く
+    OpenIE("http://expense-system.company.co.jp")
+    
+    ' ログイン処理
+    IE_SetText("ID", "\${従業員ID}")
+    IE_SetText("Password", "\${パスワード}")
+    IE_Click("ログイン")
+    
+    ' 新規申請画面へ遷移
+    IE_Click("新規申請")
+    IE_Click("出張旅費精算")
+    
+    ' Excelから出張データを読み取り
+    row = 2  '2行目からデータ開始
+    Do While Excel_GetValue(row, 1) <> ""
+        ' 出張情報を取得
+        出張日 = Excel_GetValue(row, 1)
+        用務地 = Excel_GetValue(row, 2)
+        用務内容 = Excel_GetValue(row, 3)
+        交通費 = Excel_GetValue(row, 4)
+        宿泊費 = Excel_GetValue(row, 5)
+        日当 = Excel_GetValue(row, 6)
+        
+        ' 経費システムに入力
+        IE_SetText("出張日", 出張日)
+        IE_SetText("用務地", 用務地)
+        IE_SetText("用務内容", 用務内容)
+        IE_SetText("交通費", 交通費)
+        IE_SetText("宿泊費", 宿泊費)
+        IE_SetText("日当", 日当)
+        
+        ' 明細行追加
+        IE_Click("明細追加")
+        
+        row = row + 1
+    Loop
+    
+    ' 申請実行
+    IE_Click("申請")
+End Sub
+
+'エラーハンドリング
+On Error Resume Next
+If Err.Number <> 0 Then
+    MessageBox("エラーが発生しました。: " & Err.Description)
+End If</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">変更後のスクリプト</h5>
+                        </div>
+                        <div class="card-body">
+                            <pre class="code-block new-script" id="new-script"><code>
+'***********************************************
+' 出張旅費請求自動化スクリプト
+' 概要：Excelの出張記録から経費精算システムへの自動入力を行う
+'***********************************************
+
+Sub Main()
+    ' Excel出張記録を開く
+    OpenExcel("C:\Travel\TravelExpense.xlsx", "出張記録")
+    
+    ' 経費精算システムを開く
+    OpenIE("http://expense-system.company.co.jp")
+    
+    ' ログイン処理
+    IE_SetText("ID", "\${従業員ID}")
+    IE_SetText("Password", "\${パスワード}")
+    IE_Click("ログイン")
+    
+    ' 新規申請画面へ遷移
+    IE_Click("新規申請")
+    IE_Click("出張旅費精算")
+    
+    ' Excelから出張データを読み取り
+    row = 2  '2行目からデータ開始
+    Do While Excel_GetValue(row, 1) <> ""
+        ' 出張情報を取得
+        出張日 = Excel_GetValue(row, 1)
+        用務地 = Excel_GetValue(row, 2)
+        用務内容 = Excel_GetValue(row, 3)
+        交通費 = Excel_GetValue(row, 4)
+        宿泊費 = Excel_GetValue(row, 5)
+        日当 = Excel_GetValue(row, 6)
+        
+        ' 経費システムに入力
+        IE_SetText("出張日", 出張日)
+        IE_SetText("用務地", 用務地)
+        IE_SetText("用務内容", 用務内容)
+        IE_SetText("交通費", 交通費)
+        IE_SetText("宿泊費", 宿泊費)
+        IE_SetText("日当", 日当)
+        
+        ' 明細行追加
+        IE_Click("明細追加")
+        
+        row = row + 1
+    Loop
+    
+    ' 申請実行
+    IE_Click("申請")
+    
+    <span class="text-success">' 確認ダイアログの処理
+    If IE_Exists("申請を実行しますか？") Then
+        IE_Click("OK")
+    End If
+    
+    ' 完了確認
+    Wait(3)  '処理完了まで待機
+    If IE_Exists("申請が完了しました") Then
+        MessageBox("出張旅費の申請が完了しました。")
+    Else
+        MessageBox("エラーが発生した可能性があります。確認してください。")
+    End If
+    
+    ' ブラウザを閉じる
+    CloseIE()
+    
+    ' Excelを閉じる
+    CloseExcel()</span>
+End Sub
+
+'エラーハンドリング
+On Error Resume Next
+If Err.Number <> 0 Then
+    MessageBox("エラーが発生しました。: " & Err.Description)
+    <span class="text-success">CloseIE()
+    CloseExcel()</span>
+End If</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .code-block {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        font-family: monospace;
+        white-space: pre;
+        font-size: 12px;
+        margin-bottom: 0;
+    }
+    .text-danger {
+        color: #dc3545;
+        background-color: #ffe6e6;
+    }
+    .text-success {
+        color: #28a745;
+        background-color: #e6ffe6;
+    }
+    .card-header {
+        border-bottom: 0;
+    }
+    .table th, .table td {
+        vertical-align: middle;
+    }
+</style>`;
       } else if (cardNumber === 3) {
         summaryText = `<strong>旅費精算</strong>を行うには、出張する従業員に前もって概算で旅費を渡しておく<strong>「事前仮払い精算」</strong>という方法があります。
                 
@@ -369,16 +554,6 @@ function createScenario(cardNumber) {
 特に海外出張や長期出張などの場合、かかる費用はかなり高額になることが予想されます。時的とはいえ、その費用を出張が終わるまですべて従業員に立て替えさせるのは無理があるでしょう。「事前仮払方式」なら、出張中に必要な費用を事前に渡しておけるので、従業員に金銭的な負担をかけずに済みます。ただし、出張前と出張後にそれぞれ処理が必要になるため、そのぶん手間がかかります。
 
 仮払いで旅費精算を行う流れは、下記のとおりです。`;
-
-        const flowSteps = [
-          "1.出張前に従業員が仮払申請書を提出する",
-          "2.経理部が必要費用を確認する",
-          "3.従業員に仮払分の金額を渡す",
-          "4.出張後に従業員が仮払経費精算書を提出する",
-          "5.仮払いした金額と実費との差額を精算する",
-        ];
-
-        svgContent = createFlowSVG(flowSteps, "#f7b066");
 
         // シナリオセクションに説明テキストを追加
         explanationText = `-1. 出張前に従業員が仮払申請書を提出する
@@ -401,27 +576,54 @@ function createScenario(cardNumber) {
           flowSection.classList.remove("d-none");
           flowSection.classList.add("fade-in");
 
+          // Xác định steps và flowConnections dựa trên cardNumber
+          let steps, highlightIndices, connections;
+
+          if (cardNumber === 1) {
+            steps = ["申請者情報の入力", "出張情報の入力", "旅費明細の入力"];
+            highlightIndices = [];
+            connections = null;
+          } else if (cardNumber === 2) {
+            steps = [
+              "Excelファイルを開く",
+              "経費精算システムを開く",
+              "ログイン処理",
+              "新規申請画面へ遷移",
+              "Excelから出張データを読み取り",
+              "申請実行",
+              "処理完了確認",
+              "後処理",
+              "エラーハンドリング",
+            ];
+            highlightIndices = [6, 7];
+            connections = [
+              { from: 0, to: 1 },
+              { from: 1, to: 2 },
+              { from: 2, to: 3 },
+              { from: 3, to: 4 },
+              { from: 4, to: 5 },
+              { from: 5, to: 6, condition: "成功" },
+              { from: 5, to: 8, condition: "失敗" },
+              { from: 6, to: 7 },
+            ];
+          } else {
+            steps = [
+              "1.出張前に従業員が仮払申請書を提出する",
+              "2.経理部が必要費用を確認する",
+              "3.従業員に仮払分の金額を渡す",
+              "4.出張後に従業員が仮払経費精算書を提出する",
+              "5.仮払いした金額と実費との差額を精算する",
+            ];
+            highlightIndices = [];
+            connections = null;
+          }
+
+          // Tạo flow diagram
           createFlowSVG(
-            cardNumber === 1
-              ? ["申請者情報の入力", "出張情報の入力", "旅費明細の入力"]
-              : cardNumber === 2
-              ? [
-                  "納品書の確認",
-                  "バーコードスキャン",
-                  "商品の検品",
-                  "温度・湿度チェック（必要に応じて)",
-                  "作業記録の保存",
-                ]
-              : [
-                  "1.出張前に従業員が仮払申請書を提出する",
-                  "2.経理部が必要費用を確認する",
-                  "3.従業員に仮払分の金額を渡す",
-                  "4.出張後に従業員が仮払経費精算書を提出する",
-                  "5.仮払いした金額と実費との差額を精算する",
-                ],
+            steps,
             "#f7b066",
-            cardNumber === 2 ? [1, 3] : [],
-            // フローダイアグラムが完了した後に呼び出されるコールバック関数
+            highlightIndices,
+            // Callback function sau khi flow diagram hoàn thành
             () => {
               if (explanationText) {
                 setTimeout(() => {
@@ -429,7 +631,6 @@ function createScenario(cardNumber) {
                   flowExplanation.classList.add("fade-in");
 
                   if (cardNumber === 1 || cardNumber === 2) {
-                    // メニューコンテナを非表示にし、explanationを全幅にする
                     document
                       .getElementById("manual-menu-container")
                       .classList.add("d-none");
@@ -439,7 +640,6 @@ function createScenario(cardNumber) {
                     document
                       .getElementById("explanation-column")
                       .classList.add("col-md-12");
-
                     document.getElementById("flow-explanation-text").innerHTML =
                       explanationText;
 
@@ -585,7 +785,8 @@ function createScenario(cardNumber) {
                   }
                 }, 500);
               }
-            }
+            },
+            connections
           );
         });
       }
@@ -593,7 +794,13 @@ function createScenario(cardNumber) {
   }, 2000);
 }
 
-function createFlowSVG(steps, color, greenIndices = [], onComplete) {
+function createFlowSVG(
+  steps,
+  color,
+  greenIndices = [],
+  onComplete,
+  flowConnections = null
+) {
   const measureText = (text) => {
     const temp = document.createElement("span");
     temp.style.visibility = "hidden";
@@ -606,112 +813,219 @@ function createFlowSVG(steps, color, greenIndices = [], onComplete) {
     return width;
   };
 
-  // サイズを計算
+  // Tính toán maxWidth dựa trên text dài nhất
   let maxWidth = 120;
   steps.forEach((step) => {
     const textWidth = measureText(step);
     maxWidth = Math.max(maxWidth, textWidth + 60);
   });
 
-  let svgWidth = maxWidth + 80;
-  let svgHeight = steps.length * 100 + 40;
-  let startX = (svgWidth - maxWidth) / 2;
-  let centerX = svgWidth / 2;
+  // Tăng khoảng cách giữa các nhánh
+  const branchOffset = maxWidth * 0.8; // Tăng từ 0.6 lên 0.8
 
-  // SVGコンテナを作成
+  // Tính toán tổng width cần thiết cho SVG
+  let totalWidth = maxWidth;
+  if (flowConnections) {
+    // Tìm số lượng nhánh tối đa tại một level
+    const branchCounts = {};
+    flowConnections.forEach((conn) => {
+      if (conn.condition) {
+        branchCounts[conn.from] = (branchCounts[conn.from] || 0) + 1;
+      }
+    });
+    const maxBranches = Math.max(...Object.values(branchCounts), 0);
+    // Tính toán width cần thiết dựa trên số nhánh
+    totalWidth = maxWidth + branchOffset * maxBranches;
+  }
+
+  // Thêm padding cho SVG
+  const svgWidth = totalWidth + 200; // Tăng padding
+  const svgHeight = steps.length * 100 + 40;
+  const centerX = svgWidth / 2;
+
+  // Tính toán vị trí X cho các node
+  let nodePositions = new Array(steps.length).fill(centerX);
+  if (flowConnections) {
+    const branchNodes = flowConnections.reduce((acc, conn) => {
+      if (conn.condition) {
+        if (!acc[conn.from]) {
+          acc[conn.from] = [];
+        }
+        acc[conn.from].push(conn);
+      }
+      return acc;
+    }, {});
+
+    Object.entries(branchNodes).forEach(([fromIndex, connections]) => {
+      connections.forEach((conn, i) => {
+        let currentNode = conn.to;
+        const xOffset = (i === 0 ? -1 : 1) * branchOffset;
+        while (currentNode < steps.length) {
+          nodePositions[currentNode] = centerX + xOffset;
+          const nextConn = flowConnections.find((c) => c.from === currentNode);
+          if (!nextConn || nextConn.condition) break;
+          currentNode = nextConn.to;
+        }
+      });
+    });
+  }
+
+  // Cập nhật SVG container với width mới
   const svg = `<svg width="${svgWidth}" height="${svgHeight}" xmlns="http://www.w3.org/2000/svg" style="display: block; margin: auto;">
     <defs>
-      <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-        <polygon points="0 0, 10 3.5, 0 7" fill="#0d6efd"></polygon>
+      <marker 
+        id="arrowhead" 
+        markerWidth="10" 
+        markerHeight="7" 
+        refX="10" 
+        refY="3.5" 
+        orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="#0d6efd"/>
       </marker>
     </defs>
   </svg>`;
+
+  // Cập nhật hàm createNode để sử dụng vị trí mới
+  function createNode(step, index) {
+    const y = 20 + index * 100;
+    const x = nodePositions[index] - maxWidth / 2;
+    const rectColor = greenIndices.includes(index) ? "#C1E5F5" : color;
+
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.style.opacity = "0";
+    g.innerHTML = `<rect x="${x}" y="${y}" width="${maxWidth}" height="50" rx="10" fill="${rectColor}"></rect>
+         <text x="${nodePositions[index]}" y="${
+      y + 30
+    }" text-anchor="middle" font-size="14" fill="black">${step}</text>`;
+
+    return g;
+  }
 
   // SVGをDOMに挿入
   const flowContainer = document.getElementById("flow-container");
   flowContainer.innerHTML = svg;
   const svgElement = flowContainer.querySelector("svg");
 
-  // nodeを作成する関数
-  function createNode(step, index) {
-    const y = 20 + index * 100;
-    const rectColor = greenIndices.includes(index) ? "#C1E5F5" : color;
-
-    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    g.style.opacity = "0";
-    g.innerHTML =
-      step === "温度・湿度チェック（必要に応じて)"
-        ? `<rect x="${startX}" y="${y}" width="${maxWidth}" height="60" rx="10" fill="${rectColor}"></rect>
-         <text x="${centerX}" y="${
-            y + 25
-          }" text-anchor="middle" dominant-baseline="middle" font-size="14" fill="black">
-           <tspan x="${centerX}" dy="0">温度・湿度チェック</tspan>
-           <tspan x="${centerX}" dy="20">（必要に応じて)</tspan>
-         </text>`
-        : `<rect x="${startX}" y="${y}" width="${maxWidth}" height="50" rx="10" fill="${rectColor}"></rect>
-         <text x="${centerX}" y="${
-            y + 30
-          }" text-anchor="middle" font-size="14" fill="black">${step}</text>`;
-
-    return g;
+  // Mặc định flowConnections nếu không được cung cấp
+  if (!flowConnections) {
+    // Tạo kết nối tuần tự mặc định
+    flowConnections = steps.slice(0, -1).map((_, i) => ({
+      from: i,
+      to: i + 1,
+      condition: null,
+    }));
   }
 
-  // edgeを作成する関数
-  function createEdge(index, step) {
-    const y = 20 + index * 100;
-    const height = steps[index].includes("温度・湿度チェック（必要に応じて)")
+  // Cập nhật hàm animateElements để sử dụng flowConnections
+  function animateElements(index = 0) {
+    if (index >= steps.length) {
+      if (onComplete) onComplete();
+      return;
+    }
+
+    const node = createNode(steps[index], index);
+    svgElement.appendChild(node);
+
+    setTimeout(() => {
+      node.style.transition = "opacity 0.5s ease-in";
+      node.style.opacity = "1";
+
+      // Tìm tất cả các kết nối từ node hiện tại
+      const connections = flowConnections.filter((conn) => conn.from === index);
+
+      if (connections.length > 0) {
+        setTimeout(() => {
+          connections.forEach((conn, i) => {
+            const edge = createEdge(conn.from, conn.to, conn.condition);
+            svgElement.appendChild(edge);
+
+            setTimeout(() => {
+              edge.style.transition = "opacity 0.5s ease-in";
+              edge.style.opacity = "1";
+
+              // Chỉ tiếp tục với node tiếp theo nếu là connection cuối cùng
+              if (i === connections.length - 1) {
+                setTimeout(() => animateElements(index + 1), 300);
+              }
+            }, 50);
+          });
+        }, 300);
+      } else if (index < steps.length - 1) {
+        setTimeout(() => animateElements(index + 1), 300);
+      } else {
+        if (onComplete) onComplete();
+      }
+    }, 50);
+  }
+
+  function createEdge(fromIndex, toIndex, condition = null) {
+    const fromY = 20 + fromIndex * 100;
+    const toY = 20 + toIndex * 100;
+    const fromHeight = steps[fromIndex].includes(
+      "温度・湿度チェック（必要に応じて)"
+    )
       ? 60
       : 50;
 
     const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
     g.style.opacity = "0";
-    g.innerHTML = `<line x1="${centerX}" y1="${
-      y + height
-    }" x2="${centerX}" y2="${y + 100}" 
-      stroke="#0d6efd" stroke-width="2" marker-end="url(#arrowhead)" />`;
 
-    return g;
-  }
+    const fromX = nodePositions[fromIndex];
+    const toX = nodePositions[toIndex];
 
-  // 順番に要素を表示
-  function animateElements(index = 0) {
-    if (index >= steps.length) {
-      // すべての要素が表示されたらコールバックを呼び出す
-      if (onComplete) onComplete();
-      return;
+    if (condition) {
+      // Tạo đường gấp khúc cho nhánh rẽ
+      const path = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "path"
+      );
+      const midY = (fromY + fromHeight + toY) / 2;
+
+      path.setAttribute(
+        "d",
+        `M ${fromX} ${fromY + fromHeight} 
+         L ${fromX} ${midY} 
+         L ${toX} ${midY} 
+         L ${toX} ${toY}`
+      );
+      path.setAttribute("stroke", "#0d6efd");
+      path.setAttribute("stroke-width", "2");
+      path.setAttribute("fill", "none");
+      path.setAttribute("marker-end", "url(#arrowhead)");
+
+      // Điều chỉnh vị trí text condition
+      const textX = (fromX + toX) / 2;
+      const textY = midY - 10;
+      const text = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "text"
+      );
+      text.setAttribute("x", textX);
+      text.setAttribute("y", textY);
+      text.setAttribute("text-anchor", "middle");
+      text.setAttribute("fill", "#0d6efd");
+      text.setAttribute("font-size", "12");
+      text.textContent = condition;
+
+      g.appendChild(path);
+      g.appendChild(text);
+    } else {
+      // Tạo đường thẳng cho luồng bình thường
+      const line = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "line"
+      );
+      line.setAttribute("x1", fromX);
+      line.setAttribute("y1", fromY + fromHeight);
+      line.setAttribute("x2", toX);
+      line.setAttribute("y2", toY);
+      line.setAttribute("stroke", "#0d6efd");
+      line.setAttribute("stroke-width", "2");
+      line.setAttribute("marker-end", "url(#arrowhead)");
+      g.appendChild(line);
     }
 
-    // nodeを作成し、表示
-    const node = createNode(steps[index], index);
-    svgElement.appendChild(node);
-
-    // nodeのアニメーション
-    setTimeout(() => {
-      node.style.transition = "opacity 0.5s ease-in";
-      node.style.opacity = "1";
-
-      // edgeを作成し、表示（nodeが最後でない場合）
-      if (index < steps.length - 1) {
-        setTimeout(() => {
-          const edge = createEdge(index, steps[index]);
-          svgElement.appendChild(edge);
-
-          // edgeのアニメーション
-          setTimeout(() => {
-            edge.style.transition = "opacity 0.5s ease-in";
-            edge.style.opacity = "1";
-
-            // 次のnodeに進む
-            setTimeout(() => animateElements(index + 1), 300);
-          }, 50);
-        }, 300);
-      } else {
-        // nodeが最後の場合、アニメーションが完了したらコールバックを呼び出す
-        setTimeout(() => {
-          if (onComplete) onComplete();
-        }, 500);
-      }
-    }, 50);
+    return g;
   }
 
   // アニメーションを開始
@@ -966,27 +1280,43 @@ function downloadExplanation() {
   const explanationText = document.getElementById("flow-explanation-text");
   const content = explanationText.innerHTML;
 
-  // Function to convert image to base64
-  function getBase64Image(img) {
-    const canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
-    return canvas.toDataURL("image/png");
-  }
+  // Lấy card number từ onclick attribute
+  const activeCard = document.querySelector(".card.active");
+  const onclickAttr = activeCard?.getAttribute("onclick");
+  const cardNumber = onclickAttr
+    ? onclickAttr.match(/showCard\((\d+)\)/)?.[1]
+    : null;
 
-  // Replace image sources with base64 data
-  const tempDiv = document.createElement("div");
-  tempDiv.innerHTML = content;
-  const images = tempDiv.querySelectorAll("img");
-  images.forEach((img) => {
-    const base64Image = getBase64Image(img);
-    img.src = base64Image;
-  });
+  console.log("Card number extracted from onclick:", cardNumber);
 
-  // Create HTML template
-  const htmlContent = `
+  let downloadContent;
+  if (cardNumber === "2") {
+    // Lấy chính xác script mới bằng id
+    const newScript = document.getElementById("new-script")?.textContent;
+
+    if (newScript) {
+      downloadContent = `
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>出張旅費請求自動化スクリプト</title>
+    <style>
+        body { 
+            padding: 20px;
+            font-family: monospace;
+            white-space: pre;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+${newScript}
+</body>
+</html>`;
+    }
+  } else {
+    downloadContent = `
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -1005,13 +1335,15 @@ function downloadExplanation() {
     </div>
 </body>
 </html>`;
+  }
 
-  // Create Blob and download
-  const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
+  // Tạo và download file
+  const blob = new Blob([downloadContent], { type: "text/html;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = "explanation.html";
+  link.download =
+    cardNumber === "2" ? "新出張旅費請求スクリプト.html" : "explanation.html";
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -1091,54 +1423,54 @@ function replaceWithDetailedText() {
     // セクション番号に基づいて詳細なテキストをハードコード
     switch (sectionNumber) {
       case 0:
-        newText = `<strong>1. 出張前に従業員が仮払申請書を提出する</strong>：
+        newText = `<strong>1. 出張前に従業員が仮払申請書を提出する:</strong>
 
 従業員は出張に行く前に、会社に対して旅費などの仮払いを申請するために「仮払申請書」を提出します。
 この書類には、出張の日程、目的地、移動手段（電車、飛行機など）、および宿泊先などを記載し、予想される費用を計算して明記します。
-仮払申請書は、従業員の直属の上司に提出され、内容の確認と承認を受ける必要があります。
+仮払申請書は、従業員の直属の上司に提出され、容について承認を受ける必要があります。
 
-<strong>例文</strong>：
+<strong>例文:</strong>
    • 仮払申請書には、「〇月〇日～〇月〇日、大阪出張、往復新幹線代とホテル代」といった具体的な情報を記載します。
    • 上司に提出する際、「出張予定の詳細を確認していただけますか？」と伝えます。`;
         break;
       case 1:
-        newText = `<strong>2. 経理部が必要費用を確認する</strong>：
+        newText = `<strong>2. 経理部が必要費用を確認する:</strong>
 上司が仮払申請書の内容を確認し、承認した後、その申請書は経理部に回されます。
 経理担当者は、申請内容を詳細にチェックし、以下の点を確認します：
    • 費用が妥当かどうか（例えば、高級ホテルを選んでいないか）。
    • 記載内容に漏れや不備がないか。
 もし申請内容に不備があれば、申請者に修正を依頼する場合もあります。
 
-<strong>例文</strong>：
+<strong>例文:</strong>
    • 経理部：「このタクシー代は具体的な利用時間やルートが記載されていません。追加で情報をいただけますか？」
    • 従業員：「了解しました。ルートの詳細を追記して再提出します。」`;
         break;
       case 2:
-        newText = `<strong>3. 従業員に仮払分の金額を渡す</strong>：
+        newText = `<strong>3. 従業員に仮払分の金額を渡す:</strong>
 経理担当者の確認が完了し、申請内容に問題がなければ、申請された仮払い金額が従業員に支払われます。
 この際、従業員には受領印を押してもらうか、サインを求めることで、金銭の受け渡しが記録に残るようにします。
 
-<strong>例文</strong>：
+<strong>例文:</strong>
    • 経理部：「申請された金額〇万円をこちらで確認しました。受領印をお願いします。」
    • 従業員：「わかりました。こちらに印を押します。」`;
         break;
       case 3:
-        newText = `<strong>4. 出張後に従業員が仮払経費精算書を提出する</strong>：
+        newText = `<strong>4. 出張後に従業員が仮払経費精算書を提出する:</strong>
 出張を終えた従業員は、出張中に実際にかかった費用を整理し、「仮払経費精算書」を作成します。この書類には、領収書や明細を添付し、具体的にどの費目にいくら支払ったのかを記載します。
 仮払金をどのように使ったかを会社に報告するための重要な手続きです。
 
-<strong>例文</strong>：
+<strong>例文:</strong>
    • 従業員：「出張時のホテル代の領収書と電車代の領収書を添付しました。」
    • 上司：「内容を確認します。領収書が漏れていないか確認してください。」`;
         break;
       case 4:
-        newText = `<strong>5. 仮払いした額と実費との差額を精算する</strong>：
+        newText = `<strong>5. 仮払いした額と実費との差額を精算する:</strong>
 従業員が作成した「仮払経費精算書」は上司に提出され、承認を得た後に経理部に送られます。
 経理部では、領収書と精算書の内容を確認し、以下のように差額を処理します：
    • 仮払い金が実費より多かった場合：従業員が会社に差額を返金します。
    • 仮払い金が実費より少なかった場合：会社が不足分を従業員に追加支給します。
 
-<strong>例文</strong>：
+<strong>例文:</strong>
    • 経理部：「仮払金が実費より1,000円多かったため、こちらの振込用紙で返金をお願いします。」
    • 従業員：「了解しました。明日までに返金手続きを行います。」`;
         break;
