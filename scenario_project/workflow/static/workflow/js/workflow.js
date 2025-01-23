@@ -1276,47 +1276,31 @@ function formatText(command) {
   range.commonAncestorContainer.normalize();
 }
 
-function downloadExplanation() {
+function downloadExplanationWithImages() {
   const explanationText = document.getElementById("flow-explanation-text");
   const content = explanationText.innerHTML;
 
-  // Lấy card number từ onclick attribute
-  const activeCard = document.querySelector(".card.active");
-  const onclickAttr = activeCard?.getAttribute("onclick");
-  const cardNumber = onclickAttr
-    ? onclickAttr.match(/showCard\((\d+)\)/)?.[1]
-    : null;
+  // Function to convert image to base64
+  function getBase64Image(img) {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    return canvas.toDataURL("image/png");
+  }
 
-  console.log("Card number extracted from onclick:", cardNumber);
+  // Replace image sources with base64 data
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = content;
+  const images = tempDiv.querySelectorAll("img");
+  images.forEach((img) => {
+    const base64Image = getBase64Image(img);
+    img.src = base64Image;
+  });
 
-  let downloadContent;
-  if (cardNumber === "2") {
-    // Lấy chính xác script mới bằng id
-    const newScript = document.getElementById("new-script")?.textContent;
-
-    if (newScript) {
-      downloadContent = `
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>出張旅費請求自動化スクリプト</title>
-    <style>
-        body { 
-            padding: 20px;
-            font-family: monospace;
-            white-space: pre;
-            background-color: #f8f9fa;
-        }
-    </style>
-</head>
-<body>
-${newScript}
-</body>
-</html>`;
-    }
-  } else {
-    downloadContent = `
+  // Create HTML template
+  const htmlContent = `
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -1335,15 +1319,13 @@ ${newScript}
     </div>
 </body>
 </html>`;
-  }
 
-  // Tạo và download file
-  const blob = new Blob([downloadContent], { type: "text/html;charset=utf-8" });
+  // Create Blob and download
+  const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download =
-    cardNumber === "2" ? "新出張旅費請求スクリプト.html" : "explanation.html";
+  link.download = "explanation.html";
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -1354,7 +1336,7 @@ ${newScript}
 document.addEventListener("DOMContentLoaded", function () {
   const downloadBtn = document.getElementById("download-explanation");
   if (downloadBtn) {
-    downloadBtn.addEventListener("click", downloadExplanation);
+    downloadBtn.addEventListener("click", downloadExplanationWithImages);
   }
 });
 
