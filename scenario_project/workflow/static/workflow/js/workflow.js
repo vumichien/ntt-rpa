@@ -64,6 +64,11 @@ document.addEventListener("DOMContentLoaded", function () {
   ); // カード2シナリオ用
   initializeFileUpload("add-file-btn-update", "file-upload-container-update"); // カード2更新情報用
   initializeFileUpload("add-file-btn-card3", "file-upload-container-card3"); // カード3用
+
+  // Add event listener for the suggestion flow button
+  document
+    .getElementById("show-suggestion-flow")
+    .addEventListener("click", createSuggestionFlow);
 });
 
 function typeText(text, index, callback, elementId = "typing-text") {
@@ -97,7 +102,7 @@ function showCard(cardNumber) {
   document.getElementById("summary-section").classList.add("d-none");
   document.getElementById("flow-section").classList.add("d-none");
   document.getElementById("flow-explanation").classList.add("d-none");
-  document.getElementById("sample-image-section").classList.add("d-none");
+  document.getElementById("suggestion-section").classList.add("d-none");
 
   // すべてのカードのアクティブ状態を削除
   const cards = document.querySelectorAll("#card-section .card");
@@ -133,14 +138,15 @@ function createScenario(cardNumber) {
   const flowSection = document.getElementById("flow-section");
   const flowExplanation = document.getElementById("flow-explanation");
   const summaryTitle = document.getElementById("summary-title");
-  const sampleImageSection = document.getElementById("sample-image-section");
+  const suggestionSection = document.getElementById("suggestion-section");
   if (cardNumber === 3) {
     summaryTitle.textContent = "マニュアル";
   } else {
     summaryTitle.textContent = "シナリオ";
   }
+
   // すべてのセクションを非表示
-  [summarySection, flowSection, flowExplanation, sampleImageSection].forEach(
+  [summarySection, flowSection, flowExplanation, suggestionSection].forEach(
     (section) => {
       if (!section.classList.contains("d-none")) {
         section.classList.add("fade-out");
@@ -704,12 +710,11 @@ End If</code></pre>
                       explanationText;
 
                     if (cardNumber === 1) {
-                      const sampleImageSection = document.getElementById(
-                        "sample-image-section"
-                      );
+                      const suggestionSection =
+                        document.getElementById("suggestion-section");
                       setTimeout(() => {
-                        sampleImageSection.classList.remove("d-none");
-                        sampleImageSection.classList.add("fade-in");
+                        suggestionSection.classList.remove("d-none");
+                        suggestionSection.classList.add("fade-in");
                       }, 500);
                     }
                   } else if (cardNumber === 3) {
@@ -1641,3 +1646,336 @@ function replaceWithDetailedText() {
   }
 }
 
+function createSuggestionFlow() {
+  const steps = [
+    // Excel探す group
+    { text: "エクスプローラでフォルダ遷移する", style: "dashed-blue" },
+    { text: "エクスプローラでフォルダ遷移する", style: "dashed-blue" },
+    { text: "エクスプローラでフォルダ遷移する", style: "dashed-blue" },
+    { text: "Excelを開く", style: "dashed-blue" },
+    { text: "Excelの中身を確認", style: "dashed-blue" },
+    { text: "エクスプローラでフォルダ遷移する", style: "dashed-blue" },
+    { text: "エクスプローラでフォルダ遷移する", style: "normal" },
+    { text: "Excelを開く", style: "normal" },
+    { text: "中身確認", style: "orange-fill" },
+
+    // 決裁システムを探す group
+    { text: "ブラウザを起動する", style: "dashed-blue" },
+    { text: "社内サイトを起動する", style: "dashed-blue" },
+    { text: "社内サイトを遷移してページのリンクを押す", style: "dashed-blue" },
+    { text: "決裁システムかを確認する", style: "dashed-blue" },
+    { text: "社内サイトを遷移してページのリンクを押す", style: "normal" },
+    { text: "決裁システムかを確認する", style: "orange-fill" },
+
+    // 新規起票ページを起こす group
+    { text: "システムにログインする", style: "normal" },
+    { text: "システム内を遷移する", style: "dashed-blue" },
+    { text: "システム内を遷移する", style: "normal" },
+    { text: "システム内を遷移する", style: "normal" },
+    { text: "新規起票のページを開く", style: "normal" },
+    { text: "中身確認", style: "orange-fill" },
+
+    // 新規起票ページに入力 group
+    { text: "GUI1の日付を選択", style: "dashed-blue" },
+    { text: "GUI1の日付を選択", style: "normal" },
+    { text: "ExcelからXXをコピー", style: "normal" },
+    { text: "XXXをGUI2にペーストする", style: "normal" },
+    { text: "Excelの○○からXXXをコピー", style: "dashed-blue" },
+    { text: "XXXをGUI3にペーストする", style: "normal" },
+    { text: "Excelの○○からXXXをコピー", style: "normal" },
+    { text: "XXXをGUI3にペーストする", style: "normal" },
+    { text: "GUI4を押下", style: "dashed-blue" },
+    { text: "別画面からXXをキーワードに検索", style: "dashed-blue" },
+    { text: "検索結果をGUI5に入力", style: "dashed-blue" },
+    { text: "Excelの○○からXXXをコピー", style: "normal" },
+    { text: "XXXをGUI6にペーストする", style: "normal" },
+    { text: "GUI7をクリック", style: "normal" },
+    { text: "別画面の確認画面", style: "normal" },
+    { text: "入力内容の確認", style: "orange-fill" },
+    { text: "申請処理の通知", style: "normal" },
+    { text: "システムを閉じる", style: "normal" },
+  ];
+
+  const stepGroups = {
+    Excel探す: {
+      steps: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      style: "group",
+    },
+    決裁システムを探す: {
+      steps: [9, 10, 11, 12, 13, 14],
+      style: "group",
+    },
+    新規起票ページを起こす: {
+      steps: [15, 16, 17, 18, 19, 20],
+      style: "group",
+    },
+    新規起票ページに入力: {
+      steps: [
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
+      ],
+      style: "group",
+    },
+  };
+
+  createEnhancedFlowSVG("suggestion-flow-container", steps, stepGroups);
+}
+
+function createEnhancedFlowSVG(containerId, steps, stepGroups) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+
+  const measureText = (text) => {
+    const temp = document.createElement("span");
+    temp.style.visibility = "hidden";
+    temp.style.fontSize = "14px";
+    temp.style.position = "absolute";
+    temp.innerHTML = text;
+    document.body.appendChild(temp);
+    const width = temp.offsetWidth;
+    document.body.removeChild(temp);
+    return width;
+  };
+
+  // Calculate maxWidth based on longest text
+  let maxWidth = 120;
+  steps.forEach((step) => {
+    const textWidth = measureText(step.text);
+    maxWidth = Math.max(maxWidth, textWidth + 60);
+  });
+
+  const branchOffset = maxWidth * 0.8;
+  const totalWidth = maxWidth;
+  const svgWidth = totalWidth + 200;
+  const svgHeight = steps.length * 100 + 40;
+  const centerX = svgWidth / 2;
+
+  // Calculate node positions
+  let nodePositions = new Array(steps.length).fill(centerX);
+
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("width", svgWidth + 40);
+  svg.setAttribute("height", svgHeight);
+  svg.style.display = "block";
+  svg.style.margin = "auto";
+
+  const styles = `
+        .node-dashed-blue rect {
+            stroke: #0d6efd;
+            stroke-width: 2;
+            stroke-dasharray: 5,5;
+            fill: white;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .node-normal rect {
+            stroke: #0d6efd;
+            stroke-width: 2;
+            fill: white;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .node-orange-fill rect {
+            stroke: #FFC000;
+            stroke-width: 2;
+            fill: #FFC000;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .group-box {
+            fill: #f8f9fa;
+            stroke: #dee2e6;
+            stroke-width: 1;
+            rx: 5;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .group-label {
+            font-size: 14px;
+            font-weight: bold;
+            fill: #6c757d;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .flow-text {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .flow-line {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .visible {
+            opacity: 1;
+        }
+    `;
+
+  const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+  const style = document.createElementNS("http://www.w3.org/2000/svg", "style");
+  style.textContent = styles;
+  defs.appendChild(style);
+  svg.appendChild(defs);
+
+  const groupElements = [];
+  // Create group boxes first
+  Object.entries(stepGroups).forEach(([groupName, group]) => {
+    const startIndex = Math.min(...group.steps);
+    const endIndex = Math.max(...group.steps);
+    const startY = startIndex * 100;
+    const endY = (endIndex + 1) * 100;
+
+    const groupBox = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "rect"
+    );
+    const rectY = Math.max(startY - 10, 0);
+    const rectHeight = endY - startY - (rectY === 0 ? 20 : 10);
+    groupBox.setAttribute("x", "10");
+    groupBox.setAttribute("y", rectY.toString());
+    groupBox.setAttribute("width", (svgWidth + 20).toString());
+    groupBox.setAttribute("height", rectHeight.toString());
+    groupBox.setAttribute("class", "group-box");
+    svg.appendChild(groupBox);
+
+    // Add group label
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    const textY = startY + (rectY === 0 ? 20 : 10);
+    text.setAttribute("x", "30");
+    text.setAttribute("y", textY.toString());
+    text.setAttribute("class", "group-label");
+    text.textContent = groupName;
+    svg.appendChild(text);
+
+    groupElements.push({
+      box: groupBox,
+      label: text,
+      steps: group.steps,
+    });
+  });
+
+  // Modify the steps creation part
+  const nodes = [];
+  const lines = [];
+
+  steps.forEach((step, index) => {
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.setAttribute("class", `node-${step.style}`);
+
+    const x = nodePositions[index] - maxWidth / 2;
+    const y = 20 + index * 100;
+
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect.setAttribute("x", x.toString());
+    rect.setAttribute("y", y.toString());
+    rect.setAttribute("width", maxWidth.toString());
+    rect.setAttribute("height", "50");
+    rect.setAttribute("rx", "10");
+
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", nodePositions[index].toString());
+    text.setAttribute("y", (y + 30).toString());
+    text.setAttribute("text-anchor", "middle");
+    text.setAttribute("font-size", "14");
+    text.setAttribute("fill", "black");
+    text.setAttribute("class", "flow-text");
+    text.textContent = step.text;
+
+    g.appendChild(rect);
+    g.appendChild(text);
+    svg.appendChild(g);
+    nodes.push({ g, text });
+
+    if (index < steps.length - 1) {
+      const line = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "line"
+      );
+      line.setAttribute("x1", nodePositions[index].toString());
+      line.setAttribute("y1", (y + 50).toString());
+      line.setAttribute("x2", nodePositions[index].toString());
+      line.setAttribute("y2", (y + 100).toString());
+      line.setAttribute("stroke", "#0d6efd");
+      line.setAttribute("stroke-width", "2");
+      line.setAttribute("class", "flow-line");
+      line.setAttribute("marker-end", "url(#arrowhead)");
+      svg.appendChild(line);
+      lines.push(line);
+    }
+  });
+
+  // Add arrowhead marker
+  const marker = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "marker"
+  );
+  marker.setAttribute("id", "arrowhead");
+  marker.setAttribute("markerWidth", "10");
+  marker.setAttribute("markerHeight", "7");
+  marker.setAttribute("refX", "10");
+  marker.setAttribute("refY", "3.5");
+  marker.setAttribute("orient", "auto");
+
+  const polygon = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "polygon"
+  );
+  polygon.setAttribute("points", "0 0, 10 3.5, 0 7");
+  polygon.setAttribute("fill", "#0d6efd");
+
+  marker.appendChild(polygon);
+  defs.appendChild(marker);
+
+  container.appendChild(svg);
+
+  // Add animation
+  function showGroup(groupIndex) {
+    if (groupIndex >= groupElements.length) return;
+
+    const group = groupElements[groupIndex];
+
+    // Show group box and label
+    group.box.classList.add("visible");
+    group.label.classList.add("visible");
+
+    // After group appears, start showing its steps
+    setTimeout(() => {
+      showGroupSteps(groupIndex, 0);
+    }, 500);
+  }
+
+  function showGroupSteps(groupIndex, stepIndex) {
+    const group = groupElements[groupIndex];
+    const groupStepIndices = group.steps;
+
+    if (stepIndex >= groupStepIndices.length) {
+      // When all steps in the group are shown, move to next group
+      setTimeout(() => showGroup(groupIndex + 1), 200);
+      return;
+    }
+
+    const nodeIndex = groupStepIndices[stepIndex];
+
+    // Show current node
+    const currentNode = nodes[nodeIndex];
+    currentNode.g.querySelector("rect").style.opacity = "1";
+    currentNode.text.classList.add("visible");
+
+    // Show line to next node if exists
+    // Modified this part to show lines between groups
+    if (lines[nodeIndex]) {
+      // Check if this is the last step in the current group
+      const isLastInGroup = stepIndex === groupStepIndices.length - 1;
+      // Show the line if it's either:
+      // 1. Not the last step in the group, or
+      // 2. Not the last group (so we connect to the next group)
+      if (!isLastInGroup || groupIndex < groupElements.length - 1) {
+        lines[nodeIndex].classList.add("visible");
+      }
+    }
+
+    // Schedule next step in the group
+    setTimeout(() => showGroupSteps(groupIndex, stepIndex + 1), 200);
+  }
+
+  // Start the animation with the first group
+  setTimeout(() => showGroup(0), 200);
+}
