@@ -170,12 +170,13 @@ function createScenario(cardNumber) {
       let explanationText = "";
 
       if (cardNumber === 1) {
-        summaryText = `この画面は、<strong>旅費精算申請</strong>を行うためのフォームです。申請者情報、出張期間、目的地、目的、旅費明細などの情報を入力することで、上司に申請を提出できます。
-主な構成は以下の通りです：
+        summaryText = `この画面は、<strong>旅費精算申請の自動化処理</strong>を行うためのフローです。Excelファイルから必要な情報を読み取り、経費精算システムに自動入力することで、効率的に申請を提出できます。
+主な処理は以下の通りです：
 
-<strong>申請者情報:</strong> 申請者および承認者の情報を入力します。
-<strong>出張情報:</strong> 出張期間、目的地、目的、日当額を設定します。
-<strong>旅費明細:</strong> 出張中の交通手段や詳細な費用を入力します。`;
+<strong>Excel探す:</strong> 必要なExcelファイルを探してデータを確認します。
+<strong>決裁システムを探す:</strong> 社内サイトから経費精算システムにアクセスします。
+<strong>新規起票ページを起こす:</strong> システムにログインし、新規申請画面を開きます。
+<strong>新規起票ページに入力:</strong> Excelから読み取ったデータを各項目に入力し、申請を完了します。`;
 
         explanationText = `
 <div class="table-responsive">
@@ -580,7 +581,8 @@ End If</code></pre>
           let steps, highlightIndices, connections;
 
           if (cardNumber === 1) {
-            steps = [ "エクスプローラでフォルダ遷移する",
+            steps = [
+              "エクスプローラでフォルダ遷移する",
               "エクスプローラでフォルダ遷移する",
               "エクスプローラでフォルダ遷移する",
               "Excelを開く",
@@ -618,9 +620,27 @@ End If</code></pre>
               "別画面の確認画面",
               "入力内容の確認",
               "申請処理の通知",
-              "システムを閉じる"];
+              "システムを閉じる",
+            ];
             highlightIndices = [];
             connections = null;
+            stepGroups = {
+              Excel探す: {
+                steps: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+              },
+              決裁システムを探す: {
+                steps: [10, 11, 12, 13, 14, 15],
+              },
+              新規起票ページを起こす: {
+                steps: [16, 17, 18, 19, 20],
+              },
+              新規起票ページに入力: {
+                steps: [
+                  21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+                  36, 37, 38,
+                ],
+              },
+            };
           } else if (cardNumber === 2) {
             steps = [
               "Excelファイルを開く",
@@ -644,6 +664,7 @@ End If</code></pre>
               { from: 5, to: 8, condition: "失敗" },
               { from: 6, to: 7 },
             ];
+            stepGroups = null;
           } else {
             steps = [
               "1.出張前に従業員が仮払申請書を提出する",
@@ -654,12 +675,13 @@ End If</code></pre>
             ];
             highlightIndices = [];
             connections = null;
+            stepGroups = null;
           }
 
           // Tạo flow diagram
           createFlowSVG(
             steps,
-            "#f7b066",
+            "#FFFFFF",
             highlightIndices,
             // Callback function sau khi flow diagram hoàn thành
             () => {
@@ -736,15 +758,19 @@ End If</code></pre>
                         e.preventDefault();
 
                         // Remove active class from all menu items
-                        menuItems.querySelectorAll(".nav-link").forEach((item) => {
-                          item.classList.remove("active");
-                        });
+                        menuItems
+                          .querySelectorAll(".nav-link")
+                          .forEach((item) => {
+                            item.classList.remove("active");
+                          });
 
                         // Add active class to clicked item
                         menuItem.classList.add("active");
 
                         // Scroll to corresponding section
-                        const sections = explanationElement.querySelectorAll(".explanation-section");
+                        const sections = explanationElement.querySelectorAll(
+                          ".explanation-section"
+                        );
                         if (sections[index]) {
                           sections[index].scrollIntoView({
                             behavior: "smooth",
@@ -824,7 +850,8 @@ End If</code></pre>
                 }, 500);
               }
             },
-            connections
+            connections,
+            stepGroups
           );
         });
       }
@@ -837,7 +864,8 @@ function createFlowSVG(
   color,
   greenIndices = [],
   onComplete,
-  flowConnections = null
+  flowConnections = null,
+  stepGroups = null
 ) {
   const measureText = (text) => {
     const temp = document.createElement("span");
@@ -908,8 +936,24 @@ function createFlowSVG(
     });
   }
 
-  // Cập nhật SVG container với width mới
-  const svg = `<svg width="${svgWidth}" height="${svgHeight}" xmlns="http://www.w3.org/2000/svg" style="display: block; margin: auto;">
+  // Calculate group dimensions
+  let groupDimensions = {};
+  if (stepGroups) {
+    Object.entries(stepGroups).forEach(([groupName, groupInfo]) => {
+      const startIndex = Math.min(...groupInfo.steps);
+      const endIndex = Math.max(...groupInfo.steps);
+      groupDimensions[groupName] = {
+        startY: 10 + startIndex * 100,
+        height: (endIndex - startIndex + 1) * 100 - 20,
+        steps: groupInfo.steps,
+      };
+    });
+  }
+
+  // Update SVG container with group layers
+  const svg = `<svg width="${
+    svgWidth + 40
+  }" height="${svgHeight}" xmlns="http://www.w3.org/2000/svg" style="display: block; margin: auto;">
     <defs>
       <marker 
         id="arrowhead" 
@@ -921,20 +965,27 @@ function createFlowSVG(
         <polygon points="0 0, 10 3.5, 0 7" fill="#0d6efd"/>
       </marker>
     </defs>
+    ${stepGroups ? `<g id="group-layers"></g>` : ""}
+    <g id="connections"></g>
+    <g id="nodes"></g>
   </svg>`;
 
   // Cập nhật hàm createNode để sử dụng vị trí mới
   function createNode(step, index) {
     const y = 20 + index * 100;
     const x = nodePositions[index] - maxWidth / 2;
-    const rectColor = greenIndices.includes(index) ? "#C1E5F5" : color;
+    const rectColor = greenIndices.includes(index) ? "#C1E5F5" : "#FFFFFF";
 
     const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
     g.style.opacity = "0";
-    g.innerHTML = `<rect x="${x}" y="${y}" width="${maxWidth}" height="50" rx="10" fill="${rectColor}"></rect>
-         <text x="${nodePositions[index]}" y="${
-      y + 30
-    }" text-anchor="middle" font-size="14" fill="black">${step}</text>`;
+    g.innerHTML = `<rect x="${x}" y="${y}" width="${maxWidth}" height="50" rx="10" 
+      fill="${rectColor}" 
+      stroke="#0d6efd" 
+      stroke-width="2"></rect>
+      <text x="${nodePositions[index]}" y="${y + 30}" 
+      text-anchor="middle" 
+      font-size="14" 
+      fill="black">${step}</text>`;
 
     return g;
   }
@@ -954,46 +1005,113 @@ function createFlowSVG(
     }));
   }
 
-  // Cập nhật hàm animateElements để sử dụng flowConnections
+  // Add function to create group background
+  function createGroupBackground(groupName, dimensions) {
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.style.opacity = "0";
+
+    // Create background rectangle
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    const rectY = Math.max(dimensions.startY - 20, 0);
+    const rectHeight = dimensions.height + (rectY === 0 ? 0 : 10);
+    rect.setAttribute("x", "10");
+    rect.setAttribute("y", rectY.toString());
+    rect.setAttribute("width", (svgWidth - 20).toString());
+    rect.setAttribute("height", rectHeight.toString());
+    rect.setAttribute("fill", "#f8f9fa");
+    rect.setAttribute("stroke", "#dee2e6");
+    rect.setAttribute("stroke-width", "1");
+    rect.setAttribute("rx", "5");
+
+    // Create group title
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    const textY = rectY + 25;
+    text.setAttribute("x", "30");
+    text.setAttribute("y", textY.toString());
+    text.setAttribute("font-size", "14");
+    text.setAttribute("font-weight", "bold");
+    text.setAttribute("fill", "#6c757d");
+    text.textContent = groupName;
+
+    g.appendChild(rect);
+    g.appendChild(text);
+    return g;
+  }
+
+  // Update animateElements to handle groups
   function animateElements(index = 0) {
     if (index >= steps.length) {
       if (onComplete) onComplete();
       return;
     }
 
-    const node = createNode(steps[index], index);
-    svgElement.appendChild(node);
+    // Find which group this step belongs to
+    let currentGroup = null;
+    if (stepGroups) {
+      currentGroup = Object.entries(stepGroups).find(([_, group]) =>
+        group.steps.includes(index)
+      );
+    }
 
-    setTimeout(() => {
-      node.style.transition = "opacity 0.5s ease-in";
-      node.style.opacity = "1";
+    // If this is the first step of a group, show the group background first
+    if (currentGroup && currentGroup[1].steps[0] === index) {
+      const groupLayer = svgElement.querySelector("#group-layers");
+      const groupBg = createGroupBackground(
+        currentGroup[0],
+        groupDimensions[currentGroup[0]]
+      );
+      groupLayer.appendChild(groupBg);
 
-      // Tìm tất cả các kết nối từ node hiện tại
-      const connections = flowConnections.filter((conn) => conn.from === index);
+      // Animate group background first, then show the step
+      setTimeout(() => {
+        groupBg.style.transition = "opacity 0.5s ease-in";
+        groupBg.style.opacity = "1";
 
-      if (connections.length > 0) {
+        // After group animation, show the step
         setTimeout(() => {
-          connections.forEach((conn, i) => {
-            const edge = createEdge(conn.from, conn.to, conn.condition);
-            svgElement.appendChild(edge);
-
-            setTimeout(() => {
-              edge.style.transition = "opacity 0.5s ease-in";
-              edge.style.opacity = "1";
-
-              // Chỉ tiếp tục với node tiếp theo nếu là connection cuối cùng
-              if (i === connections.length - 1) {
-                setTimeout(() => animateElements(index + 1), 300);
-              }
-            }, 50);
-          });
+          showStep(index);
         }, 300);
-      } else if (index < steps.length - 1) {
-        setTimeout(() => animateElements(index + 1), 300);
-      } else {
-        if (onComplete) onComplete();
-      }
-    }, 50);
+      }, 50);
+    } else {
+      // If not first step of group, just show the step
+      showStep(index);
+    }
+
+    function showStep(index) {
+      const node = createNode(steps[index], index);
+      svgElement.appendChild(node);
+
+      setTimeout(() => {
+        node.style.transition = "opacity 0.5s ease-in";
+        node.style.opacity = "1";
+
+        const connections = flowConnections.filter(
+          (conn) => conn.from === index
+        );
+
+        if (connections.length > 0) {
+          setTimeout(() => {
+            connections.forEach((conn, i) => {
+              const edge = createEdge(conn.from, conn.to, conn.condition);
+              svgElement.appendChild(edge);
+
+              setTimeout(() => {
+                edge.style.transition = "opacity 0.5s ease-in";
+                edge.style.opacity = "1";
+
+                if (i === connections.length - 1) {
+                  setTimeout(() => animateElements(index + 1), 300);
+                }
+              }, 50);
+            });
+          }, 300);
+        } else if (index < steps.length - 1) {
+          setTimeout(() => animateElements(index + 1), 300);
+        } else {
+          if (onComplete) onComplete();
+        }
+      }, 50);
+    }
   }
 
   function createEdge(fromIndex, toIndex, condition = null) {
